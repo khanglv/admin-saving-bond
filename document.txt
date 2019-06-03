@@ -1,0 +1,6 @@
+ant design: npm install antd
+react router: npm install --save react-router-dom
+react redux: npm install --save react-redux
+react redux thunk: npm install redux-thunk
+NProgress: npm install --save nprogress
+boostrap: npm install bootstrap

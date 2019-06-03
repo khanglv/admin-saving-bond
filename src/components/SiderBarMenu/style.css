@@ -1,0 +1,62 @@
+
+.trigger {
+    font-size: 18px;
+    line-height: 64px;
+    padding: 0 24px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+  
+.trigger:hover {
+    color: #1a8cc5;
+}
+  
+.logo {
+    height: 6.6rem;
+    background: linear-gradient(to right, #4b79a1, #283e51);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid rgb(191, 208, 216);
+}
+
+.ant-layout-header{
+    height: 5vh!important;
+    line-height: 3vh!important;
+}
+
+.ant-menu-item-selected{
+    background: linear-gradient(to right, #547095, #9ca6b0)!important;
+}
+
+.ant-menu-item{
+    margin: 0!important;
+    height: 50px!important;
+}
+
+.ant-menu-item-selected{
+    
+}
+
+.ant-layout-header{
+    background: linear-gradient(to right, #4b79a1, #283e51)!important;
+    height: 5vh!important;
+}
+
+.ant-menu-item:hover{
+    background-color: #6988a7!important;
+}
+
+.ant-menu-dark, .ant-menu-dark .ant-menu-sub{
+    background: linear-gradient(to right, #4b79a1, #283e51)!important;
+}
+
+.ant-layout-sider{
+    height: 100vh;
+    background: linear-gradient(to right, #4b79a1, #283e51)!important;
+}
+
+.middle-text{
+    vertical-align: middle;
+}
