@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { Table, Input, Button, Popconfirm, Form, Alert } from 'antd';
+import ModalAssetBond from './ModalAssetBond';
 const EditableContext = React.createContext();
 
 const EditableRow = ({ form, index, ...props }) => (
@@ -94,78 +95,133 @@ class AssetBond extends Component{
                 title: 'STT',
                 dataIndex: 'id',
                 editable: true,
-                width: 50
+                width: 30
             },
             {
-                title: 'MS T.Phiếu',
+                title: 'MS T.Phiếu', //1
                 dataIndex: 'code_bond',
                 editable: true,
                 width: 100
             },
             {
-                title: 'Số H.Đồng',
+                title: 'Số H.Đồng', //2
                 dataIndex: 'code_contract',
                 width: 100
             },
             {
-                title: 'MS D.Nghiệp',
+                title: 'MS D.Nghiệp', //3
                 dataIndex: 'code_enterprise',
                 width: 100
             },
             {
-                title: 'MS K.Han Vay',
-                dataIndex: 'code_limit',
-                width: 300
-            },
-            {
-                title: 'Lãi suất',
-                dataIndex: 'interest_rate',
+                title: 'K.Han Vay', //4
+                dataIndex: 'code_term_borrow',
                 width: 100
             },
             {
-                title: 'Mã viết tắt',
+                title: 'K.Han T.Toán', //5
+                dataIndex: 'code_term_pay',
+                width: 100
+            },
+            {
+                title: 'Loại T.Phiếu', //6
+                dataIndex: 'type_bond',
+                width: 100
+            },
+            {
+                title: 'SN tính lãi năm', //7
+                dataIndex: 'total_day_interest',
+                width: 100
+            },
+            {
+                title: 'L.Suất H.Hành', //8
+                dataIndex: 'current_interest',
+                width: 50
+            },
+            {
+                title: 'Mã viết tắt', //9
                 dataIndex: 'sort_name',
                 width: 100
             },
             {
-                title: 'TT Trái phiếu',
+                title: 'TT Trái phiếu', //10
                 dataIndex: 'info_bond',
-                width: 200
+                width: 300
             },
             {
-                title: 'TT Trái phiếu',
-                dataIndex: 'info_bond1',
+                title: 'Mệnh giá', //11
+                dataIndex: 'denomination',
                 width: 100
             },
             {
-                title: 'TT Trái phiếu',
-                dataIndex: 'info_bond2',
-                width: 300
+                title: 'SL P.Hành (max)', //12
+                dataIndex: 'max_release',
+                width: 100
             },
             {
-                title: 'TT Trái phiếu',
-                dataIndex: 'info_bond3',
-                width: 300
+                title: 'SL đã P.hành', //13
+                dataIndex: 'released',
+                width: 100
             },
             {
-                title: 'TT Trái phiếu',
-                dataIndex: 'info_bond4',
-                width: 300
+                title: 'SL Lưu hành', //14
+                dataIndex: 'totalOfCirculate',
+                width: 100
             },
             {
-                title: 'TT Trái phiếu',
-                dataIndex: 'info_bond5',
-                width: 300
+                title: 'SL Thu hồi', //15
+                dataIndex: 'totalRecall',
+                width: 100
             },
             {
-                title: 'TT Trái phiếu',
-                dataIndex: 'info_bond6',
-                width: 300
+                title: 'Ngày phát hành', //16
+                dataIndex: 'day_release',
+                width: 100
             },
             {
-                title: 'TT Trái phiếu',
-                dataIndex: 'info_bond7',
-                width: 300
+                title: 'Ngày đáo hạn', //17
+                dataIndex: 'day_expire',
+                width: 100
+            },
+            {
+                title: 'Ngày KT phát hành', //18
+                dataIndex: 'day_break',
+                width: 100
+            },
+            {
+                title: 'Tổng hạn mức huy động', //19
+                dataIndex: 'level_mobilize',
+                width: 150
+            },
+            {
+                title: 'Hạn mức cho', //20
+                dataIndex: 'level_loan',
+                width: 150
+            },
+            {
+                title: 'Kỳ hạn còn lại', //21
+                dataIndex: 'period_remain',
+                width: 150
+            },
+            {
+                title: 'T.Thái niêm yết', //22
+                dataIndex: 'status_listed',
+                width: 50
+            },
+            {
+                title: 'Tài sản đảm bảo', //23
+                dataIndex: 'asset_cover',
+                width: 150
+            },
+            {
+                title: 'S.Lượng Lưu ký', //24
+                dataIndex: 'total_depository',
+                width: 150
+            },
+            {
+                title: 'Flag', //25
+                dataIndex: 'flag',
+                width: 50
             },
             {
                 title: 'operation',
@@ -176,6 +232,7 @@ class AssetBond extends Component{
                             <a href="/">Delete</a>
                         </Popconfirm>
                     ) : null,
+                width: 100
             },
         ];
 
@@ -207,6 +264,7 @@ class AssetBond extends Component{
                 },
             ],
             count: 2,
+            openModalAssetBond: false
         };
     }
 
@@ -216,18 +274,12 @@ class AssetBond extends Component{
     };
 
     handleAdd = () => {
-        const { count, dataSource } = this.state;
-        const newData = {
-            key: count,
-            name: `Edward King ${count}`,
-            age: 32,
-            address: `London, Park Lane no. ${count}`,
-        };
-        this.setState({
-            dataSource: [...dataSource, newData],
-            count: count + 1,
-        });
+        this.setState({openModalAssetBond: true});
     };
+
+    handleCloseModal = ()=>{
+        this.setState({openModalAssetBond: false});
+    }
 
     handleSave = row => {
         const newData = [...this.state.dataSource];
@@ -265,6 +317,7 @@ class AssetBond extends Component{
         });
         return(
             <div>
+                <ModalAssetBond isOpen={this.state.openModalAssetBond} isCloseModal={this.handleCloseModal}/>
                 <Alert style={{fontSize: 18, display: 'flex', alignContent: 'center', justifyContent: 'center'}} message="Trái phiếu" type="success" />
                 <div className="p-top10" style={{padding: 10}}>
                     <Button onClick={this.handleAdd} type="primary" style={{ marginBottom: 16 }}>
@@ -276,7 +329,7 @@ class AssetBond extends Component{
                         bordered
                         dataSource={dataSource}
                         columns={columns}
-                        scroll={{x: 500 }}
+                        scroll={{x: '200%' }}
                     />
                 </div>
             </div>
