@@ -8,11 +8,11 @@ import {
     Select,
     Input,
     Button,
-    Icon
+    Icon,
 } from 'antd';
 const { Option } = Select;
 
-class ModalAssetBond extends Component{
+class ModalTransactionCost extends Component{
 
     constructor(props) {
         super(props);
@@ -56,7 +56,7 @@ class ModalAssetBond extends Component{
 
         return(
             <Modal
-                title="Trái phiếu"
+                title="Phí giao dịch"
                 centered
                 visible={this.props.isOpen}
                 onOk={() => this.setModal2Visible()}
@@ -64,11 +64,20 @@ class ModalAssetBond extends Component{
                 size="lg"
             >
                 <Form {...formItemLayout}>
-                    <Form.Item label="M.số T.Phiếu">
-                        <Input placeholder="Mã số trái phiếu" />
+                    <Form.Item label="*Mã số phí">
+                        <Input placeholder="Nhập mã số phí" />
                     </Form.Item>
-                    <Form.Item label="Số H.Đồng">
-                        <Input placeholder="Số hợp đồng" />
+                    <Form.Item label="*Tên phí">
+                        <Input placeholder="Nhập tên phí" />
+                    </Form.Item>
+                    <Form.Item label="*Tỉ lệ tính">
+                        <Input placeholder="Nhập tỉ lệ tính phí" />
+                    </Form.Item>
+                    <Form.Item label="Ngày áp dụng">
+                        <Input placeholder="Ngày áp dụng" />
+                    </Form.Item>
+                    <Form.Item label="Ghi chú">
+                        <Input placeholder="Ghi chú" />
                     </Form.Item>
                     <Form.Item label="Flag">
                         <Select
@@ -76,27 +85,14 @@ class ModalAssetBond extends Component{
                             style={{ width: '32%' }}
                             onChange={this.handleCurrencyChange}
                         >
-                            <Option value="Open">Open</Option>
-                            <Option value="Close">Close</Option>
+                            <Option value="Open">1</Option>
+                            <Option value="Close">0</Option>
                         </Select>
                     </Form.Item>
-
-                    <Form.Item label="MS D.Nghiệp">
-                            <Select 
-                                showSearch 
-                                placeholder="Nhập mã số doanh nghiệp tại đây!!!"
-                                filterOption={(input, option) =>
-                                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                            }>
-                                <Option value="red">VCSC</Option>
-                                <Option value="green">Techcombank</Option>
-                                <Option value="blue">Vietcombank</Option>
-                            </Select>
-                        </Form.Item>
-                    </Form>
+                </Form>
             </Modal>
         )
     }
 }
 
-export default ModalAssetBond;
+export default ModalTransactionCost;

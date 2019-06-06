@@ -23,3 +23,11 @@ code {
 .p-top10{
   padding-top: 10px;
 }
+
+.middle-text{
+  vertical-align: middle;
+}
+
+.color-main{
+  background: #4b79a1;
+}

@@ -1,7 +1,9 @@
 import React from 'react';
-import SiderBarMenu from '../components/SiderBarMenu/SiderBarMunu';
+import SiderBarMenu from '../components/SiderBarMenu/SiderBarMenu';
 import Home from '../components/Home/Home';
 import AssetBond from '../components/Asset/AssetBond';
+import Frefix from '../components/Frefix/Frefix';
+import TransactionCost from '../components/TransactionCost/TransactionCost';
 
 import { Layout } from 'antd';
 const { Header } = Layout;
@@ -21,3 +23,5 @@ const withSidebar = (View) =>
 
 export const FHome = ()=> withSidebar(Home)
 export const FBond = ()=> withSidebar(AssetBond)
+export const FFrefix = ()=> withSidebar(Frefix)
+export const FTransactionCost = ()=> withSidebar(TransactionCost)

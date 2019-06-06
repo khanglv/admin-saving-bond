@@ -9,7 +9,9 @@ import {Error404} from '../components/Error404/Error404';
 import Login from '../components/Login/Login';
 import {
     FHome,
-    FBond
+    FBond,
+    FFrefix,
+    FTransactionCost
 } from './MainGeneral';
 
 class RouteURL extends Component{
@@ -45,6 +47,8 @@ class RouteURL extends Component{
                         <Route exact path="/" component={FHome} />
                         <Route exact path="/home" component={FHome} />
                         <Route exact path="/asset-bond" component={FBond} />
+                        <Route exact path="/frefix" component={FFrefix} />
+                        <Route exact path="/transaction-cost" component={FTransactionCost} />
                         {/* nhập sai đường dẫn */}
                         <Route exact path="*" component={Error404} />
                     </Switch>

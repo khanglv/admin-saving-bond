@@ -50,11 +50,11 @@ class SiderBarMenu extends Component {
             case "/asset-bond":
                 this.props.history.push('/asset-bond');
                 break;
-            case "/list-sold-bond":
-                this.props.history.push('/list-sold-bond');
+            case "/frefix":
+                this.props.history.push('/frefix');
                 break;
-            case "/bond-investor":
-                this.props.history.push('/bond-investor');
+            case "/transaction-cost":
+                this.props.history.push('/transaction-cost');
                 break;    
             default:
                 break;
@@ -88,12 +88,13 @@ class SiderBarMenu extends Component {
                             }
                         >
                             <Menu.Item key="/asset-bond">
-                                <Icon type="rocket" />
                                 <span className="middle-text">Trái phiếu</span>
                             </Menu.Item>
-                            <Menu.Item key="/list-sold-bond">
-                                <Icon type="history" />
-                                <span className="middle-text">Trái phiếu đã bán</span>
+                            <Menu.Item key="/frefix">
+                                <span className="middle-text">Frefix</span>
+                            </Menu.Item>
+                            <Menu.Item key="/transaction-cost">
+                                <span className="middle-text">Chi phí giao dịch</span>
                             </Menu.Item>
                         </SubMenu>
                         
