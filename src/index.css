@@ -31,3 +31,15 @@ code {
 .color-main{
   background: #4b79a1;
 }
+
+.ant-table-thead > tr{
+  background: #4b79a1!important;
+}
+
+.ant-table-thead > tr > th{
+  color: #fff!important;
+}
+
+.pointer{
+  cursor: pointer;
+}

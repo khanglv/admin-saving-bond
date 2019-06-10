@@ -17,7 +17,12 @@ const doRequest = async (options) => {
         NProgress.start();
         options = {
             ...options,
-            timeout: TIME_OUT
+            timeout: TIME_OUT,
+            config: {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                }
+            }
         }
         const response = await axios(options);
         if(response.status>= 200 && response.status < 300){
@@ -51,6 +56,36 @@ export const getListFrefix = ()=>{
     const options = {
         url: url,
         method: "GET",
+    }
+    return doRequest(options);
+}
+
+export const creatItemFrefix = (data)=>{
+    const url = `${BASE_URL}/prefix/create`;
+    const options = {
+        url: url,
+        method: "POST",
+        data: data
+    }
+    return doRequest(options);
+}
+
+export const updateItemFrefix = (data)=>{
+    const url = `${BASE_URL}/prefix/update`;
+    const options = {
+        url: url,
+        method: "PUT",
+        data: data
+    }
+    return doRequest(options);
+}
+
+export const deleteItemFrefix = (data)=>{
+    const url = `${BASE_URL}/prefix/delete`;
+    const options = {
+        url: url,
+        method: "DELETE",
+        data: data
     }
     return doRequest(options);
 }

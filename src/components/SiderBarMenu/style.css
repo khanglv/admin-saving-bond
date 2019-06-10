@@ -1,14 +1,16 @@
 
 .trigger {
     font-size: 18px;
-    line-height: 64px;
     padding: 0 24px;
-    cursor: pointer;
     transition: color 0.3s;
+    position: absolute;
+    top: -4.3vh;
+    left: 9rem;
+    color: #fff;
 }
   
 .trigger:hover {
-    color: #1a8cc5;
+    color: #fff;
 }
   
 .logo {
@@ -39,9 +41,13 @@
     
 }
 
+.ant-avatar{
+    line-height: 1.2!important;
+}
+
 .ant-layout-header{
     background: linear-gradient(to right, #4b79a1, #283e51)!important;
-    height: 5vh!important;
+    height: 7vh!important;
 }
 
 .ant-menu-item:hover{
@@ -53,7 +59,7 @@
 }
 
 .ant-layout-sider{
-    height: 100vh;
+    height: 93vh;
     background: linear-gradient(to right, #4b79a1, #283e51)!important;
 }
 
