@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Table, Button, Popconfirm, Alert, Icon } from 'antd';
+import { Table, Button, Popconfirm } from 'antd';
 import {getListFrefix} from '../../api/api';
 import ModalTransactionCost from './ModalTransactionCost';
 
@@ -125,10 +125,9 @@ class TransactionCost extends Component{
         return(
             <div>
                 <ModalTransactionCost isOpen={this.state.openModal} isCloseModal={this.handleCloseModal}/>
-                <Alert style={{fontSize: 18, display: 'flex', alignContent: 'center', justifyContent: 'center'}} message="Chi phí giao dịch" type="success" />
                 <div className="p-top10" style={{padding: 10}}>
                     <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
-                        <Icon type="plus" /> <span className="middle-text">Thêm mới</span>
+                        <span>Thêm mới</span>
                     </Button>
                     <Table
                         rowClassName={() => 'editable-row'}

@@ -1,10 +1,18 @@
 import React, {Component} from 'react';
-
+import {creatItemFrefix} from '../../api/api';
 import { 
     Modal,
     Form,
     Input,
+    notification
 } from 'antd';
+
+const openNotificationWithIcon = (type, data) => {
+    notification[type]({
+        message: 'Thông báo',
+        description: data,
+    });
+};
 
 class ModalFrefix extends Component{
 
@@ -13,6 +21,8 @@ class ModalFrefix extends Component{
         const value = props.value || {};
         this.state = {
             currency: value.currency || 'Open',
+            codeFrefix: '',
+            noteFrefix: ''
         };
     }
 
@@ -23,6 +33,28 @@ class ModalFrefix extends Component{
     handleCurrencyChange = currency => {
         this.setState({ currency });
     };
+
+    updateInputValue = (event)=>{
+        this.setState({[event.target.name]: event.target.value});
+    }
+
+    onHandleOk = ()=>{
+        try{
+            let dataTmp = {
+                "KYTU_PREFIX": this.state.codeFrefix,
+                "GHICHU": this.state.noteFrefix
+            }
+            creatItemFrefix(dataTmp).then(()=>{
+                this.setState({codeFrefix: '', noteFrefix: ''});
+                this.props.reloadData();
+                openNotificationWithIcon('success', 'Thao tác thành công ^^!');
+            }).catch(()=>{
+                openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+            });
+        }catch(err){
+            openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+        }
+    }
 
     render(){
         const formItemLayout = {
@@ -35,37 +67,22 @@ class ModalFrefix extends Component{
                 sm: { span: 16 },
             },
         };
-        const tailFormItemLayout = {
-            wrapperCol: {
-                xs: {
-                    span: 24,
-                    offset: 0,
-                },
-                sm: {
-                    span: 16,
-                    offset: 8,
-                },
-            },
-        };
 
         return(
             <Modal
                 title="Frefix"
                 centered
                 visible={this.props.isOpen}
-                onOk={() => this.setModal2Visible()}
+                onOk={() => this.onHandleOk()}
                 onCancel={this.setModal2Visible}
                 size="lg"
             >
                 <Form {...formItemLayout}>
-                    <Form.Item label="*Frefix ID">
-                        <Input placeholder="Nhập frefix ID" />
-                    </Form.Item>
                     <Form.Item label="*Ký tự">
-                        <Input placeholder="Ký tự frefix" />
+                        <Input name="codeFrefix" placeholder="Ký tự frefix" value={this.state.codeFrefix} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
                     <Form.Item label="Ghi chú">
-                        <Input placeholder="Ghi chú" />
+                        <Input name="noteFrefix" placeholder="Ghi chú" value={this.state.noteFrefix} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
                 </Form>
             </Modal>
