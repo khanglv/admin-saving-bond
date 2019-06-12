@@ -11,8 +11,13 @@ import {
     FHome,
     FBond,
     FFrefix,
-    FTransactionCost
+    FCompany,
+    FPaymentPeriod,
+    FFeeTrace,
+    FBankInterest
 } from './MainGeneral';
+
+const accessTokenAuth = localStorage.getItem('accessTokenAuthKey');
 
 class RouteURL extends Component{
     constructor(props){
@@ -25,14 +30,14 @@ class RouteURL extends Component{
         this.setState({isShowLoading : false});
     }
 
-    // shouldComponentUpdate(nextProps, nextState) {
-    //     var currentRouteName = window.location.pathname;
-    //     if(currentRouteName!=='/login' && !accessToken){
-    //         window.location.href = "/login";
-    //         return false;
-    //     }
-    //     return true;
-    // }
+    shouldComponentUpdate(nextProps, nextState) {
+        var currentRouteName = window.location.pathname;
+        if(currentRouteName!=='/login' && !accessTokenAuth){
+            window.location.href = "/login";
+            return false;
+        }
+        return true;
+    }
 
     render() {
         return (
@@ -48,7 +53,10 @@ class RouteURL extends Component{
                         <Route exact path="/home" component={FHome} />
                         <Route exact path="/asset-bond" component={FBond} />
                         <Route exact path="/frefix" component={FFrefix} />
-                        <Route exact path="/transaction-cost" component={FTransactionCost} />
+                        <Route exact path="/company" component={FCompany} />
+                        <Route exact path="/payment-period" component={FPaymentPeriod} />
+                        <Route exact path="/bank-interest" component={FBankInterest} />
+                        <Route exact path="/fee-trade" component={FFeeTrace} />
                         {/* nhập sai đường dẫn */}
                         <Route exact path="*" component={Error404} />
                     </Switch>

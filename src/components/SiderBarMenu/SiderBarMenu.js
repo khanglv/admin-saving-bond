@@ -33,18 +33,24 @@ class SiderBarMenu extends Component {
             current: e.key,
         });
         switch(e.key){
-            case "/directive":
-                this.props.history.push('/directive');
-                break;
             case "/asset-bond":
                 this.props.history.push('/asset-bond');
                 break;
             case "/frefix":
                 this.props.history.push('/frefix');
                 break;
-            case "/transaction-cost":
-                this.props.history.push('/transaction-cost');
-                break;    
+            case "/company":
+                this.props.history.push('/company');
+                break;
+            case "/payment-period":
+                this.props.history.push('/payment-period');
+                break;
+            case "/bank-interest":
+                this.props.history.push('/bank-interest');
+                break;      
+            case "/fee-trade":
+                this.props.history.push('/fee-trade');
+                break;  
             default:
                 break;
         }
@@ -74,8 +80,17 @@ class SiderBarMenu extends Component {
                             <Menu.Item key="/frefix">
                                 <span className="middle-text">Frefix</span>
                             </Menu.Item>
-                            <Menu.Item key="/transaction-cost">
+                            <Menu.Item key="/company">
+                                <span className="middle-text">Công ty</span>
+                            </Menu.Item>
+                            <Menu.Item key="/bank-interest">
+                                <span className="middle-text">Lãi suất ngân hàng</span>
+                            </Menu.Item>
+                            <Menu.Item key="/fee-trade">
                                 <span className="middle-text">Chi phí giao dịch</span>
+                            </Menu.Item>
+                            <Menu.Item key="/payment-period">
+                                <span className="middle-text">Kỳ hạn thanh toán</span>
                             </Menu.Item>
                         </SubMenu>
                         

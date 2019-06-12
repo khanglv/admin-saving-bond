@@ -1,10 +1,14 @@
 import React from 'react';
 import './App.css';
-import RouteURL from './routers/Router'
+import {Provider} from 'react-redux';
+import store from './stores/configureStore';
+import RouteURL from './routers/Router';
 
 function App() {
   return (
-    <RouteURL />
+    <Provider store={store} >
+      {<RouteURL />}
+    </Provider>
   );
 }
 

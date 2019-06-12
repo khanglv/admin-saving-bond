@@ -226,6 +226,7 @@ class AssetBond extends Component{
             {
                 title: 'operation',
                 dataIndex: 'operation',
+                fixed: 'right',
                 render: (text, record) =>
                     this.state.dataSource.length >= 1 ? (
                         <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.key)}>
@@ -329,7 +330,7 @@ class AssetBond extends Component{
                         bordered
                         dataSource={dataSource}
                         columns={columns}
-                        scroll={{x: '200%' }}
+                        scroll={{x: '280%' }}
                     />
                 </div>
             </div>

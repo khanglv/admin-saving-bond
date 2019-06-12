@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { Table, Button, Popconfirm, notification, Icon, Tooltip, Form, Tag} from 'antd';
-import ModalFrefix from './ModalFrefix';
+// import ModalFrefix from './ModalFrefix';
 import {getListFrefix, deleteItemFrefix, updateItemFrefix} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
 import {convertDDMMYYYY} from '../Common/Common';
@@ -12,7 +12,7 @@ const openNotificationWithIcon = (type, data) => {
     });
 };
 
-class FrefixModal extends Component{
+class PaymentPeriodF extends Component{
     constructor(props) {
         super(props);
         this.columns = [
@@ -206,7 +206,7 @@ class FrefixModal extends Component{
 
         return(
             <div>
-                <ModalFrefix isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}/>
+                {/* <ModalFrefix isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}/> */}
                 <div className="p-top10" style={{padding: 10}}>
                     <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
                         <span>Thêm mới</span>
@@ -228,6 +228,6 @@ class FrefixModal extends Component{
     }
 }
 
-const Frefix = Form.create()(FrefixModal);
+const PaymentPeriod = Form.create()(PaymentPeriodF);
 
-export default Frefix;
+export default PaymentPeriod;

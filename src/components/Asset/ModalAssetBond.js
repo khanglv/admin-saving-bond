@@ -3,12 +3,8 @@ import React, {Component} from 'react';
 import { 
     Modal,
     Form,
-    Row,
-    Col,
     Select,
     Input,
-    Button,
-    Icon
 } from 'antd';
 const { Option } = Select;
 
@@ -39,18 +35,6 @@ class ModalAssetBond extends Component{
             wrapperCol: {
                 xs: { span: 24 },
                 sm: { span: 16 },
-            },
-        };
-        const tailFormItemLayout = {
-            wrapperCol: {
-                xs: {
-                    span: 24,
-                    offset: 0,
-                },
-                sm: {
-                    span: 16,
-                    offset: 8,
-                },
             },
         };
 

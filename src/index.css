@@ -12,6 +12,10 @@ code {
     monospace;
 }
 
+.setBackgroundLogin {
+  background-image: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url("/background.jpg");
+}
+
 .left{
   float: left;
 }
@@ -43,3 +47,15 @@ code {
 .pointer{
   cursor: pointer;
 }
+
+.ant-table-small > .ant-table-content > .ant-table-body{
+  margin: 0!important;
+}
+
+.customTag{
+  cursor: pointer!important;
+}
+.customTag:hover{
+  transform: scale(1.2);
+}
+

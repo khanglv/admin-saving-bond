@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import { Table, Button, Popconfirm, notification, Icon, Tooltip, Form, Tag} from 'antd';
-import ModalFrefix from './ModalFrefix';
-import {getListFrefix, deleteItemFrefix, updateItemFrefix} from '../../api/api';
+import ModalCompany from './ModalCompany';
+import {getListCompany, updateItemCompany, deleteItemCompany} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
-import {convertDDMMYYYY} from '../Common/Common';
+import {convertDDMMYYYY, convertToFormat} from '../Common/Common';
 
 const openNotificationWithIcon = (type, data) => {
     notification[type]({
@@ -12,27 +12,75 @@ const openNotificationWithIcon = (type, data) => {
     });
 };
 
-class FrefixModal extends Component{
+class CompanyForm extends Component{
     constructor(props) {
         super(props);
         this.columns = [
             {
                 title: 'STT',
                 dataIndex: 'key',
-                width: 30,
+                width: 20,
                 color: 'red'
             },
             {
-                title: 'Ký tự Frefix', //2
-                dataIndex: 'KYTU_PREFIX',
+                title: 'MS D.Nghiệp', //2
+                dataIndex: 'MSDN',
                 width: 100,
-                editable: true,
             },  
             {
-                title: 'Ghi chú', //3
-                dataIndex: 'GHICHU',
+                title: 'Doanh Nghiệp', //3
+                dataIndex: 'TEN_DN',
                 editable: true,
                 width: 200
+            },
+            {
+                title: 'Địa chỉ', //4
+                dataIndex: 'DIACHI',
+                width: 200,
+                editable: true,
+            },
+            {
+                title: 'Điện thoại', //4
+                dataIndex: 'DIENTHOAI',
+                width: 100,
+                editable: true,
+            },
+            {
+                title: 'Email', //4
+                dataIndex: 'EMAIL',
+                width: 100,
+                editable: true,
+            },
+            {
+                title: 'Ngày cấp G.Phép', //4
+                dataIndex: 'NGAYCAP_GP',
+                width: 100,
+                editable: true,
+            },
+            {
+                title: 'Người Đ.Diện P.Lý', //4
+                dataIndex: 'NGUOI_DDPL',
+                width: 100,
+                editable: true,
+            },
+            {
+                title: 'Trạng thái', //4
+                dataIndex: 'TRANGTHAI',
+                width: 70,
+                editable: true,
+                render: TRANGTHAI =>{
+                    let type = "check-circle";
+                    let color = "green";
+                    if(TRANGTHAI === 0){
+                        type="stop";
+                        color="#faad14"
+                    }
+                    return(
+                        <div className="text-center">
+                            <Icon type={type} style={{color: color}} theme="filled" />
+                        </div>
+                    )
+                }
             },
             {
                 title: 'Ngày tạo', //4
@@ -42,6 +90,7 @@ class FrefixModal extends Component{
             {
                 title: 'Action',
                 dataIndex: 'operation',
+                width: 100,
                 render: (text, record) =>{
                     const { editingKey } = this.state;
                     const editable = this.isEditing(record);
@@ -59,8 +108,8 @@ class FrefixModal extends Component{
                             <div>
                                 <Tooltip title="Chỉnh sửa">
                                     <Icon type="edit" style={{color: editingKey === '' ? '#096dd9' : '#bfbfbf', fontSize: 16}} onClick={() => editingKey === '' && this.onEdit(record.key)}/>
-                                </Tooltip>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.PREFIX_ID)}>
+                                </Tooltip>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.MSDN)}>
                                     <Tooltip title="Xóa dòng này" className="pointer">
                                         <Icon type="delete" style={{color: editingKey === '' ? '#f5222d' : '#bfbfbf', fontSize: 16}}/>
                                     </Tooltip>
@@ -68,8 +117,7 @@ class FrefixModal extends Component{
                             </div>
                          : null
                     )
-                },
-                width: 100
+                }
             },
         ];
         
@@ -89,11 +137,12 @@ class FrefixModal extends Component{
 
     loadData = async()=>{
         try {
-            const res = await getListFrefix();
+            const res = await getListCompany();
             const lstTmp = await (res.filter(item => item.FLAG === 1)).map((item, i) => {
                 return {
                     ...item,
                     "NGAYTAO": convertDDMMYYYY(item.NGAYTAO),
+                    "NGAYCAP_GP": convertDDMMYYYY(item.NGAYCAP_GP),
                     "key": i + 1
                 }
             })
@@ -118,12 +167,11 @@ class FrefixModal extends Component{
 
     handleSaveEdit = async(data)=>{
         try {
-            let dataTmp = {
-                "PREFIX_ID": data.PREFIX_ID,
-                "KYTU_PREFIX": data.KYTU_PREFIX,
-                "GHICHU": data.GHICHU
+            data = {
+                ...data,
+               "NGAYCAP_GP" : convertToFormat(data.NGAYCAP_GP)
             }
-            const res = await updateItemFrefix(dataTmp);
+            const res = await updateItemCompany(data);
             if(res.error){
                 this.loadData();
                 openNotificationWithIcon('error', 'Thao tác thất bại :( ');
@@ -136,12 +184,12 @@ class FrefixModal extends Component{
         }
     }
 
-    handleDelete = async(idFrefix) => {
+    handleDelete = async(msDN) => {
         try{
             let dataTmp = {
-                "PREFIX_ID": idFrefix
+                "MSDN": msDN
             }
-            const res = await deleteItemFrefix(dataTmp);
+            const res = await deleteItemCompany(dataTmp);
             if(res.error){
                 openNotificationWithIcon('error', 'Thao tác thất bại :( ');
             }else{
@@ -164,7 +212,7 @@ class FrefixModal extends Component{
                 const item = newData[index];
                 row = {
                     ...row,
-                    "PREFIX_ID": item.PREFIX_ID
+                    "MSDN": item.MSDN,
                 }
                 this.handleSaveEdit(row);
             } else {
@@ -206,7 +254,7 @@ class FrefixModal extends Component{
 
         return(
             <div>
-                <ModalFrefix isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}/>
+                <ModalCompany isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}/>
                 <div className="p-top10" style={{padding: 10}}>
                     <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
                         <span>Thêm mới</span>
@@ -228,6 +276,6 @@ class FrefixModal extends Component{
     }
 }
 
-const Frefix = Form.create()(FrefixModal);
+const Company = Form.create()(CompanyForm);
 
-export default Frefix;
+export default Company;
