@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {createItemBankInterest} from '../../api/api';
+import {createItemBondType} from '../../api/api';
 import { 
     Modal,
     Form,
@@ -14,15 +14,16 @@ const openNotificationWithIcon = (type, data) => {
     });
 };
 
-class ModalBankInterest extends Component{
+class ModalBondType extends Component{
 
     constructor(props) {
         super(props);
         const value = props.value || {};
         this.state = {
             currency: value.currency || 'Open',
-            nameBank: '',
-            interest: '',
+            codeBondType: '',
+            nameBondType: '',
+            note: '',
             isShowNotice: false
         };
     }
@@ -41,21 +42,23 @@ class ModalBankInterest extends Component{
 
     onHandleOk = async()=>{
         try {
-            if(!this.state.nameBank|| !this.state.interest){
+            if(!this.state.codeBondType|| !this.state.nameBondType){
                 this.setState({isShowNotice: true});
             }else{
                 let dataTmp = {
-                    "TEN_NH": this.state.nameBank,
-                    "LAISUAT_HH": this.state.interest
+                    "MSLTP": this.state.codeBondType,
+                    "TENLOAI_TP": this.state.nameBondType,
+                    "GHICHU": this.state.note
                 }
-                const res = await createItemBankInterest(dataTmp);
+                const res = await createItemBondType(dataTmp);
                 if (res.error) {
-                    openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+                    openNotificationWithIcon('error', 'Thao tác thất bại - ' + res.error);
                 } else {
                     await this.props.reloadData();
                     this.setState({
-                        nameBank: '',
-                        interest: ''
+                        codeBondType: '',
+                        nameBondType: '',
+                        note: ''
                     });
                     await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
                 }
@@ -79,7 +82,7 @@ class ModalBankInterest extends Component{
 
         return(
             <Modal
-                title="Lãi suất ngân hàng"
+                title="Loại trái phiếu"
                 centered
                 visible={this.props.isOpen}
                 onOk={() => this.onHandleOk()}
@@ -88,18 +91,21 @@ class ModalBankInterest extends Component{
             >
                 <Form {...formItemLayout}>
                     <Form.Item 
-                        label="* Tên ngân hàng"
-                        validateStatus = {(this.state.nameBank.length === 0 && this.state.isShowNotice)  ? "error" : null}
-                        help = {(this.state.nameBank.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                        label="* MS loại trái phiếu"
+                        validateStatus = {(this.state.codeBondType.length === 0 && this.state.isShowNotice)  ? "error" : null}
+                        help = {(this.state.codeBondType.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                     >
-                        <Input name="nameBank" placeholder="Tên ngân hàng" value={this.state.nameBank} onChange={event => this.updateInputValue(event)}/>
+                        <Input name="codeBondType" placeholder="Mã số loại trái phiếu" value={this.state.codeBondType} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
                     <Form.Item 
-                        label="* Lãi suất (%)"
-                        validateStatus = {(this.state.interest.length === 0 && this.state.isShowNotice)  ? "error" : null}
-                        help = {(this.state.interest.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                        label="* Tên loại trái phiếu"
+                        validateStatus = {(this.state.nameBondType.length === 0 && this.state.isShowNotice)  ? "error" : null}
+                        help = {(this.state.nameBondType.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                     >
-                        <Input name="interest" placeholder="Lãi suất" value={this.state.interest} onChange={event => this.updateInputValue(event)}/>
+                        <Input name="nameBondType" placeholder="Tên loại trái phiếu" value={this.state.nameBondType} onChange={event => this.updateInputValue(event)}/>
+                    </Form.Item>
+                    <Form.Item label="Ghi chú">
+                        <Input name="note" placeholder="Ghi chú" value={this.state.note} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
                 </Form>
             </Modal>
@@ -107,4 +113,4 @@ class ModalBankInterest extends Component{
     }
 }
 
-export default ModalBankInterest;
+export default ModalBondType;

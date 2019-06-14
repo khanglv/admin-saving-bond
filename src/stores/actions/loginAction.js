@@ -19,7 +19,6 @@ const loginFailed = (errorMessage, status)=>{
     return {
         type: LOGIN_FAILED,
         message: errorMessage,
-        status: status
     }
 }
 
@@ -31,7 +30,7 @@ export const login = (username, password)=> (dispatch)=>{
             localStorage.setItem('accountInfoKey', JSON.stringify(response.user))
             return dispatch(loginSuccess(response));
         }
-        return dispatch(loginFailed(response.data.error, response.status));
+        return dispatch(loginFailed(response.error));
     }).catch(err=>{
         console.log("login err " + JSON.stringify(err));
     });

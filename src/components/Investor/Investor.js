@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import { Table, Button, Popconfirm, notification, Icon, Tooltip, Form, Tag} from 'antd';
-import ModalFeeTrade from './ModalFeeTrade';
-import {getListFeeTrade, deleteItemFeeTrade, updateItemFeeTrade} from '../../api/api';
+import ModalInvestor from './ModalInvestor';
+import {getListInvestor, updateItemInvestor, deleteItemInvestor} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
-import * as common from '../Common/Common';
+import {convertDDMMYYYY} from '../Common/Common';
 
 const openNotificationWithIcon = (type, data) => {
     notification[type]({
@@ -12,39 +12,62 @@ const openNotificationWithIcon = (type, data) => {
     });
 };
 
-class FeeTradeF extends Component{
+class InvestorF extends Component{
     constructor(props) {
         super(props);
         this.columns = [
             {
                 title: 'STT',
                 dataIndex: 'key',
-                width: 30,
+                width: 20,
                 color: 'red'
             },
             {
-                title: 'Tên phí', //2
-                dataIndex: 'TENPHI',
+                title: 'MS nhà đầu tư', //2
+                dataIndex: 'MSNDT',
                 width: 100,
-                editable: true,
             },  
             {
-                title: 'Tỉ lệ tính', //3
-                dataIndex: 'TYLETINH',
+                title: 'MS loại nhà đầu tư', //3
+                dataIndex: 'MS_LOAINDT',
                 editable: true,
                 width: 100
             },
             {
-                title: 'Ngày áp dụng', //3
-                dataIndex: 'NGAYAPDUNG',
+                title: 'Tên nhà đầu tư', //4
+                dataIndex: 'TENNDT',
+                width: 100,
                 editable: true,
-                width: 100
             },
             {
-                title: 'Ghi chú', //3
-                dataIndex: 'GHICHU',
+                title: 'CMND - G.Phép K.Doanh',
+                dataIndex: 'CMND_GPKD',
+                width: 200,
                 editable: true,
-                width: 200
+            },
+            {
+                title: 'Ngày cấp',
+                dataIndex: 'NGAYCAP',
+                width: 100,
+                editable: true,
+            },
+            {
+                title: 'Nơi cấp',
+                dataIndex: 'NOICAP',
+                width: 100,
+                editable: true,
+            },
+            {
+                title: 'Số TK C.Khoán',
+                dataIndex: 'SO_TKCK',
+                width: 100,
+                editable: true,
+            },
+            {
+                title: 'MS Người G.Thiệu',
+                dataIndex: 'MS_NGUOIGIOITHIEU',
+                width: 100,
+                editable: true,
             },
             {
                 title: 'Ngày tạo', //4
@@ -54,6 +77,7 @@ class FeeTradeF extends Component{
             {
                 title: 'Action',
                 dataIndex: 'operation',
+                width: 100,
                 render: (text, record) =>{
                     const { editingKey } = this.state;
                     const editable = this.isEditing(record);
@@ -71,8 +95,8 @@ class FeeTradeF extends Component{
                             <div>
                                 <Tooltip title="Chỉnh sửa">
                                     <Icon type="edit" style={{color: editingKey === '' ? '#096dd9' : '#bfbfbf', fontSize: 16}} onClick={() => editingKey === '' && this.onEdit(record.key)}/>
-                                </Tooltip>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.MSPHI)}>
+                                </Tooltip>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.MSNDT)}>
                                     <Tooltip title="Xóa dòng này" className="pointer">
                                         <Icon type="delete" style={{color: editingKey === '' ? '#f5222d' : '#bfbfbf', fontSize: 16}}/>
                                     </Tooltip>
@@ -80,8 +104,7 @@ class FeeTradeF extends Component{
                             </div>
                          : null
                     )
-                },
-                width: 100
+                }
             },
         ];
         
@@ -101,12 +124,12 @@ class FeeTradeF extends Component{
 
     loadData = async()=>{
         try {
-            const res = await getListFeeTrade();
+            const res = await getListInvestor();
             const lstTmp = await (res.filter(item => item.FLAG === 1)).map((item, i) => {
                 return {
                     ...item,
-                    "NGAYTAO": common.convertDDMMYYYY(item.NGAYTAO),
-                    "NGAYAPDUNG": common.convertDDMMYYYY(item.NGAYAPDUNG),
+                    "NGAYTAO": convertDDMMYYYY(item.NGAYTAO),
+                    "NGAYCAP_GP": convertDDMMYYYY(item.NGAYCAP_GP),
                     "key": i + 1
                 }
             })
@@ -131,7 +154,7 @@ class FeeTradeF extends Component{
 
     handleSaveEdit = async(data)=>{
         try {
-            const res = await updateItemFeeTrade(data);
+            const res = await updateItemInvestor(data);
             if(res.error){
                 this.loadData();
                 openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
@@ -147,9 +170,9 @@ class FeeTradeF extends Component{
     handleDelete = async(id) => {
         try{
             let dataTmp = {
-                "MSPHI": id
+                "MSNDT": id
             }
-            const res = await deleteItemFeeTrade(dataTmp);
+            const res = await deleteItemInvestor(dataTmp);
             if(res.error){
                 openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
             }else{
@@ -172,7 +195,7 @@ class FeeTradeF extends Component{
                 const item = newData[index];
                 row = {
                     ...row,
-                    "MSPHI": item.MSPHI
+                    "MSNDT": item.MSNDT,
                 }
                 this.handleSaveEdit(row);
             } else {
@@ -204,8 +227,8 @@ class FeeTradeF extends Component{
             return {
                 ...col,
                 onCell: record => ({
-                    record, //setting type input(date, number ...)
-                    inputType: col.dataIndex === 'NGAYAPDUNG' ? 'date' : 'text',
+                    record,  //setting type input (date, number ...)
+                    inputType: col.dataIndex === 'NGAYCAP_GP' ? 'date' : (col.dataIndex === 'TRANGTHAI' ? 'options' : 'text') ,
                     dataIndex: col.dataIndex,
                     title: col.title,
                     editing: this.isEditing(record),
@@ -215,7 +238,7 @@ class FeeTradeF extends Component{
 
         return(
             <div>
-                <ModalFeeTrade isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}/>
+                <ModalInvestor isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}/>
                 <div className="p-top10" style={{padding: 10}}>
                     <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
                         <span>Thêm mới</span>
@@ -237,6 +260,6 @@ class FeeTradeF extends Component{
     }
 }
 
-const FeeTrade = Form.create()(FeeTradeF);
+const Investor = Form.create()(InvestorF);
 
-export default FeeTrade;
+export default Investor;

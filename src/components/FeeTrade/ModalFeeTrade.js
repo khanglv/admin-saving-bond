@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {creatItemFeeTrade} from '../../api/api';
+import {createItemFeeTrade} from '../../api/api';
 import { 
     Modal,
     Form,
@@ -28,7 +28,8 @@ class ModalFeeTrade extends Component{
             nameFeeTrade: '',
             ratio: '',
             dateOfApplication: moment(new Date(), dateFormat),
-            note: ''
+            note: '',
+            isShowNotice: false
         };
     }
 
@@ -50,24 +51,28 @@ class ModalFeeTrade extends Component{
 
     onHandleOk = async()=>{
         try {
-            let dataTmp = {
-                "TENPHI": this.state.nameFeeTrade,
-                "TYLETINH": this.state.ratio,
-                "NGAYAPDUNG": this.state.dateOfApplication,
-                "GHICHU": this.state.note
-            }
-            const res = await creatItemFeeTrade(dataTmp);
-            if (res.error) {
-                openNotificationWithIcon('error', 'Thao tác thất bại :( ');
-            } else {
-                this.setState({
-                    nameFeeTrade: '',
-                    ratio: '',
-                    dateOfApplication: moment(new Date(), dateFormat),
-                    note: ''
-                });
-                await this.props.reloadData();
-                await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
+            if(!this.state.nameFeeTrade || !this.state.ratio){
+                this.setState({isShowNotice: true});
+            }else{
+                let dataTmp = {
+                    "TENPHI": this.state.nameFeeTrade,
+                    "TYLETINH": this.state.ratio,
+                    "NGAYAPDUNG": this.state.dateOfApplication,
+                    "GHICHU": this.state.note
+                }
+                const res = await createItemFeeTrade(dataTmp);
+                if (res.error) {
+                    openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
+                } else {
+                    this.setState({
+                        nameFeeTrade: '',
+                        ratio: '',
+                        dateOfApplication: moment(new Date(), dateFormat),
+                        note: ''
+                    });
+                    await this.props.reloadData();
+                    await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
+                }
             }
         } catch (err) {
             openNotificationWithIcon('error', 'Thao tác thất bại :( ');
@@ -96,16 +101,26 @@ class ModalFeeTrade extends Component{
                 size="lg"
             >
                 <Form {...formItemLayout}>
-                    <Form.Item label="* Tên phí">
+                    <Form.Item 
+                        label="* Tên phí"
+                        validateStatus = {(this.state.nameFeeTrade.length === 0 && this.state.isShowNotice)  ? "error" : null}
+                        help = {(this.state.nameFeeTrade.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                    >
                         <Input name="nameFeeTrade" placeholder="Tên phí giao dịch" value={this.state.nameFeeTrade} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
-                    <Form.Item label="* Tỉ lệ tính">
+                    <Form.Item
+                        label="* Tỉ lệ tính"
+                        validateStatus = {(this.state.ratio.length === 0 && this.state.isShowNotice)  ? "error" : null}
+                        help = {(this.state.ratio.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                    >
                         <Input name="ratio" placeholder="Tỉ lệ tính" value={this.state.ratio} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
-                    <Form.Item label="* Ngày áp dụng">
+                    <Form.Item
+                        label="* Ngày áp dụng"
+                    >
                         <DatePicker name="dateOfApplication" placeholder="Chọn ngày" value={this.state.dateOfApplication} format={dateFormat} onChange={this.updateInputDate}/>
                     </Form.Item>
-                    <Form.Item label="* Ghi chú">
+                    <Form.Item label="Ghi chú">
                         <Input name="note" placeholder="Ghi chú" value={this.state.note} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
                 </Form>

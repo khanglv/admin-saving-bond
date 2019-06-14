@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import { Table, Button, Popconfirm, notification, Icon, Tooltip, Form, Tag} from 'antd';
-import ModalFeeTrade from './ModalFeeTrade';
-import {getListFeeTrade, deleteItemFeeTrade, updateItemFeeTrade} from '../../api/api';
+import ModalTradeStatus from './ModalTradeStatus';
+import {getListTradeStatus, updateItemTradeStatus, deleteItemTradeStatus} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
-import * as common from '../Common/Common';
+import {convertDDMMYYYY} from '../Common/Common';
 
 const openNotificationWithIcon = (type, data) => {
     notification[type]({
@@ -12,7 +12,7 @@ const openNotificationWithIcon = (type, data) => {
     });
 };
 
-class FeeTradeF extends Component{
+class TradeStatusF extends Component{
     constructor(props) {
         super(props);
         this.columns = [
@@ -21,24 +21,12 @@ class FeeTradeF extends Component{
                 dataIndex: 'key',
                 width: 30,
                 color: 'red'
-            },
+            }, 
             {
-                title: 'Tên phí', //2
-                dataIndex: 'TENPHI',
-                width: 100,
+                title: 'Tên trạng thái', //3
+                dataIndex: 'TENTRANGTHAI',
                 editable: true,
-            },  
-            {
-                title: 'Tỉ lệ tính', //3
-                dataIndex: 'TYLETINH',
-                editable: true,
-                width: 100
-            },
-            {
-                title: 'Ngày áp dụng', //3
-                dataIndex: 'NGAYAPDUNG',
-                editable: true,
-                width: 100
+                width: 200
             },
             {
                 title: 'Ghi chú', //3
@@ -72,7 +60,7 @@ class FeeTradeF extends Component{
                                 <Tooltip title="Chỉnh sửa">
                                     <Icon type="edit" style={{color: editingKey === '' ? '#096dd9' : '#bfbfbf', fontSize: 16}} onClick={() => editingKey === '' && this.onEdit(record.key)}/>
                                 </Tooltip>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.MSPHI)}>
+                                <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.MSTRANGTHAI)}>
                                     <Tooltip title="Xóa dòng này" className="pointer">
                                         <Icon type="delete" style={{color: editingKey === '' ? '#f5222d' : '#bfbfbf', fontSize: 16}}/>
                                     </Tooltip>
@@ -101,12 +89,11 @@ class FeeTradeF extends Component{
 
     loadData = async()=>{
         try {
-            const res = await getListFeeTrade();
+            const res = await getListTradeStatus();
             const lstTmp = await (res.filter(item => item.FLAG === 1)).map((item, i) => {
                 return {
                     ...item,
-                    "NGAYTAO": common.convertDDMMYYYY(item.NGAYTAO),
-                    "NGAYAPDUNG": common.convertDDMMYYYY(item.NGAYAPDUNG),
+                    "NGAYTAO": convertDDMMYYYY(item.NGAYTAO),
                     "key": i + 1
                 }
             })
@@ -131,7 +118,7 @@ class FeeTradeF extends Component{
 
     handleSaveEdit = async(data)=>{
         try {
-            const res = await updateItemFeeTrade(data);
+            const res = await updateItemTradeStatus(data);
             if(res.error){
                 this.loadData();
                 openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
@@ -147,11 +134,11 @@ class FeeTradeF extends Component{
     handleDelete = async(id) => {
         try{
             let dataTmp = {
-                "MSPHI": id
+                "MSTRANGTHAI": id
             }
-            const res = await deleteItemFeeTrade(dataTmp);
+            const res = await deleteItemTradeStatus(dataTmp);
             if(res.error){
-                openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
+                openNotificationWithIcon('error', 'Thao tác thất bại :( ');
             }else{
                 await this.loadData();
                 await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
@@ -172,7 +159,7 @@ class FeeTradeF extends Component{
                 const item = newData[index];
                 row = {
                     ...row,
-                    "MSPHI": item.MSPHI
+                    "MSTRANGTHAI": item.MSTRANGTHAI
                 }
                 this.handleSaveEdit(row);
             } else {
@@ -204,8 +191,8 @@ class FeeTradeF extends Component{
             return {
                 ...col,
                 onCell: record => ({
-                    record, //setting type input(date, number ...)
-                    inputType: col.dataIndex === 'NGAYAPDUNG' ? 'date' : 'text',
+                    record,  //setting type input (date, number ...)
+                    inputType: col.dataIndex === 'NGAYCAP_GP' ? 'date' : (col.dataIndex === 'TRANGTHAI' ? 'options' : 'text') ,
                     dataIndex: col.dataIndex,
                     title: col.title,
                     editing: this.isEditing(record),
@@ -215,7 +202,7 @@ class FeeTradeF extends Component{
 
         return(
             <div>
-                <ModalFeeTrade isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}/>
+                <ModalTradeStatus isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}/>
                 <div className="p-top10" style={{padding: 10}}>
                     <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
                         <span>Thêm mới</span>
@@ -237,6 +224,6 @@ class FeeTradeF extends Component{
     }
 }
 
-const FeeTrade = Form.create()(FeeTradeF);
+const TradeStatus = Form.create()(TradeStatusF);
 
-export default FeeTrade;
+export default TradeStatus;

@@ -3,7 +3,7 @@ import { Table, Button, Popconfirm, notification, Icon, Tooltip, Form, Tag} from
 import ModalCompany from './ModalCompany';
 import {getListCompany, updateItemCompany, deleteItemCompany} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
-import {convertDDMMYYYY, convertToFormat} from '../Common/Common';
+import {convertDDMMYYYY} from '../Common/Common';
 
 const openNotificationWithIcon = (type, data) => {
     notification[type]({
@@ -167,14 +167,10 @@ class CompanyForm extends Component{
 
     handleSaveEdit = async(data)=>{
         try {
-            data = {
-                ...data,
-               "NGAYCAP_GP" : convertToFormat(data.NGAYCAP_GP)
-            }
             const res = await updateItemCompany(data);
             if(res.error){
                 this.loadData();
-                openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+                openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
             }else{
                 await this.loadData();
                 await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
@@ -191,7 +187,7 @@ class CompanyForm extends Component{
             }
             const res = await deleteItemCompany(dataTmp);
             if(res.error){
-                openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+                openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
             }else{
                 await this.loadData();
                 await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
@@ -244,7 +240,8 @@ class CompanyForm extends Component{
             return {
                 ...col,
                 onCell: record => ({
-                    record,
+                    record,  //setting type input (date, number ...)
+                    inputType: col.dataIndex === 'NGAYCAP_GP' ? 'date' : (col.dataIndex === 'TRANGTHAI' ? 'options' : 'text') ,
                     dataIndex: col.dataIndex,
                     title: col.title,
                     editing: this.isEditing(record),

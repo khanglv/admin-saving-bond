@@ -1,5 +1,9 @@
 import React from 'react';
-import {Form, Input, InputNumber } from 'antd';
+import {Form, Input, InputNumber, DatePicker, Select } from 'antd';
+import * as common from '../Common/Common';
+
+const dateFormat = 'DD/MM/YYYY';
+const { Option } = Select;
 
 export const EditableContext = React.createContext();
 
@@ -7,6 +11,15 @@ export class EditableCell extends React.Component {
     getInput = () => {
         if (this.props.inputType === 'number') {
             return <InputNumber />;
+        }
+        if (this.props.inputType === 'date') {
+            return <DatePicker format={dateFormat}/>;
+        }
+        if (this.props.inputType === 'options') {
+            return <Select >
+                <Option value="1">Hoạt động</Option>
+                <Option value="0">Ngừng hoạt động</Option>
+            </Select>
         }
         return <Input />;
     };
@@ -33,7 +46,7 @@ export class EditableCell extends React.Component {
                                     message: `Please Input ${title}!`,
                                 },
                             ],
-                            initialValue: record[dataIndex],
+                            initialValue: inputType === 'date' ? common.convertDatePicker(common.convertToFormat(record[dataIndex])): record[dataIndex],
                         })(this.getInput())}
                     </Form.Item>
                 ) : (

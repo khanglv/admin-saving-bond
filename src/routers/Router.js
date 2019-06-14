@@ -12,9 +12,15 @@ import {
     FBond,
     FFrefix,
     FCompany,
-    FPaymentPeriod,
+    FPaymentTerm,
     FFeeTrace,
-    FBankInterest
+    FBankInterest,
+    FBondType,
+    FCommandType,
+    FTradeStatus,
+    FBranchVCSC,
+    FInvestor,
+    FInvestorType
 } from './MainGeneral';
 
 const accessTokenAuth = localStorage.getItem('accessTokenAuthKey');
@@ -54,9 +60,15 @@ class RouteURL extends Component{
                         <Route exact path="/asset-bond" component={FBond} />
                         <Route exact path="/frefix" component={FFrefix} />
                         <Route exact path="/company" component={FCompany} />
-                        <Route exact path="/payment-period" component={FPaymentPeriod} />
+                        <Route exact path="/payment-term" component={FPaymentTerm} />
                         <Route exact path="/bank-interest" component={FBankInterest} />
                         <Route exact path="/fee-trade" component={FFeeTrace} />
+                        <Route exact path="/bond-type" component={FBondType} />
+                        <Route exact path="/command-type" component={FCommandType} />
+                        <Route exact path="/trade-status" component={FTradeStatus} />
+                        <Route exact path="/branch-vcsc" component={FBranchVCSC} />
+                        <Route exact path="/investor-type" component={FInvestorType} />
+                        <Route exact path="/investor" component={FInvestor} />
                         {/* nhập sai đường dẫn */}
                         <Route exact path="*" component={Error404} />
                     </Switch>

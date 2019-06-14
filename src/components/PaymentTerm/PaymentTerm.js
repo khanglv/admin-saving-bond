@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Table, Button, Popconfirm, notification, Icon, Tooltip, Form, Tag} from 'antd';
-// import ModalFrefix from './ModalFrefix';
-import {getListFrefix, deleteItemFrefix, updateItemFrefix} from '../../api/api';
+import ModalBankInterest from './ModalPaymentTerm';
+import {getListPaymentTerm, updateItemPaymentTerm, deleteItemPaymentTerm} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
 import {convertDDMMYYYY} from '../Common/Common';
 
@@ -12,7 +12,7 @@ const openNotificationWithIcon = (type, data) => {
     });
 };
 
-class PaymentPeriodF extends Component{
+class PaymentTermF extends Component{
     constructor(props) {
         super(props);
         this.columns = [
@@ -23,11 +23,16 @@ class PaymentPeriodF extends Component{
                 color: 'red'
             },
             {
-                title: 'Ký tự Frefix', //2
-                dataIndex: 'KYTU_PREFIX',
+                title: 'MS kỳ hạn thanh toán', //2
+                dataIndex: 'MSKYHANTT',
                 width: 100,
-                editable: true,
             },  
+            {
+                title: 'Loại thanh toán (tháng)', //3
+                dataIndex: 'LOAI_TT',
+                editable: true,
+                width: 100
+            },
             {
                 title: 'Ghi chú', //3
                 dataIndex: 'GHICHU',
@@ -60,7 +65,7 @@ class PaymentPeriodF extends Component{
                                 <Tooltip title="Chỉnh sửa">
                                     <Icon type="edit" style={{color: editingKey === '' ? '#096dd9' : '#bfbfbf', fontSize: 16}} onClick={() => editingKey === '' && this.onEdit(record.key)}/>
                                 </Tooltip>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.PREFIX_ID)}>
+                                <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.MSKYHANTT)}>
                                     <Tooltip title="Xóa dòng này" className="pointer">
                                         <Icon type="delete" style={{color: editingKey === '' ? '#f5222d' : '#bfbfbf', fontSize: 16}}/>
                                     </Tooltip>
@@ -89,7 +94,7 @@ class PaymentPeriodF extends Component{
 
     loadData = async()=>{
         try {
-            const res = await getListFrefix();
+            const res = await getListPaymentTerm();
             const lstTmp = await (res.filter(item => item.FLAG === 1)).map((item, i) => {
                 return {
                     ...item,
@@ -118,15 +123,10 @@ class PaymentPeriodF extends Component{
 
     handleSaveEdit = async(data)=>{
         try {
-            let dataTmp = {
-                "PREFIX_ID": data.PREFIX_ID,
-                "KYTU_PREFIX": data.KYTU_PREFIX,
-                "GHICHU": data.GHICHU
-            }
-            const res = await updateItemFrefix(dataTmp);
+            const res = await updateItemPaymentTerm(data);
             if(res.error){
                 this.loadData();
-                openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+                openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
             }else{
                 await this.loadData();
                 await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
@@ -136,12 +136,12 @@ class PaymentPeriodF extends Component{
         }
     }
 
-    handleDelete = async(idFrefix) => {
+    handleDelete = async(id) => {
         try{
             let dataTmp = {
-                "PREFIX_ID": idFrefix
+                "MSKYHANTT": id
             }
-            const res = await deleteItemFrefix(dataTmp);
+            const res = await deleteItemPaymentTerm(dataTmp);
             if(res.error){
                 openNotificationWithIcon('error', 'Thao tác thất bại :( ');
             }else{
@@ -164,7 +164,7 @@ class PaymentPeriodF extends Component{
                 const item = newData[index];
                 row = {
                     ...row,
-                    "PREFIX_ID": item.PREFIX_ID
+                    "MSKYHANTT": item.MSKYHANTT
                 }
                 this.handleSaveEdit(row);
             } else {
@@ -206,7 +206,7 @@ class PaymentPeriodF extends Component{
 
         return(
             <div>
-                {/* <ModalFrefix isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}/> */}
+                <ModalBankInterest isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}/>
                 <div className="p-top10" style={{padding: 10}}>
                     <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
                         <span>Thêm mới</span>
@@ -228,6 +228,6 @@ class PaymentPeriodF extends Component{
     }
 }
 
-const PaymentPeriod = Form.create()(PaymentPeriodF);
+const PaymentTerm = Form.create()(PaymentTermF);
 
-export default PaymentPeriod;
+export default PaymentTerm;

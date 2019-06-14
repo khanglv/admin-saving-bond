@@ -8,6 +8,15 @@ const URL_FREFIX = `${BASE_URL}/prefix`;
 const URL_COMPANY = `${BASE_URL}/company`;
 const URL_BANK_INTERSET = `${BASE_URL}/interest`;
 const URL_FEE_TRADE = `${BASE_URL}/feeTrade`;
+const URL_PAYMENT_TERM = `${BASE_URL}/paymentTerm`;
+const URL_BOND_TYPE = `${BASE_URL}/bondType`;
+const URL_COMMAND_TYPE = `${BASE_URL}/commandType`;
+const URL_TRADE_STATUS = `${BASE_URL}/tradeStatus`;
+const URL_BRANCH_VCSC = `${BASE_URL}/branchVCSC`;
+const URL_INVESTOR = `${BASE_URL}/investors`;
+const URL_INVESTOR_TYPE = `${BASE_URL}/nhdtType`;
+const URL_ROOM_TYPE = `${BASE_URL}/roomType`;
+
 const TIME_OUT = 10000;
 
 const openNotificationWithIcon = (type, data) => {
@@ -45,10 +54,11 @@ const doRequest = async (options) => {
                 openNotificationWithIcon('error', 'Request timeout, try again !!!');
             }
             if(err.response.status === 403){
-                openNotificationWithIcon('error', 'Bạn không có quyền truy cập !!!');
+                window.location.href = "/login";
+                openNotificationWithIcon('error', 'Bạn không có quyền truy cập, vui lòng đăng nhập lại !!!');
             }
         
-            return err.response;
+            return err.response.data;
         }else{
             openNotificationWithIcon('error', 'Server không phản hồi, thử lại !!!');
             return;
@@ -97,7 +107,7 @@ export const getListFrefix = ()=>{
     return callApi(options);
 }
 
-export const creatItemFrefix = (data)=>{
+export const createItemFrefix = (data)=>{
     const options = {
         url: URL_FREFIX,
         method: "POST",
@@ -133,7 +143,7 @@ export const getListCompany = ()=>{
     return callApi(options);
 }
 
-export const creatItemCompany = (data)=>{
+export const createItemCompany = (data)=>{
     const options = {
         url: URL_COMPANY,
         method: "POST",
@@ -170,7 +180,7 @@ export const getListBankInterest = ()=>{
     return callApi(options);
 }
 
-export const creatItemBankInterest = (data)=>{
+export const createItemBankInterest = (data)=>{
     const options = {
         url: URL_BANK_INTERSET,
         method: "POST",
@@ -206,7 +216,7 @@ export const getListFeeTrade = ()=>{
     return callApi(options);
 }
 
-export const creatItemFeeTrade = (data)=>{
+export const createItemFeeTrade = (data)=>{
     const options = {
         url: URL_FEE_TRADE,
         method: "POST",
@@ -227,6 +237,258 @@ export const updateItemFeeTrade = (data)=>{
 export const deleteItemFeeTrade = (data)=>{
     const options = {
         url: URL_FEE_TRADE,
+        method: "DELETE",
+        data: data
+    }
+    return callApi(options);
+}
+
+//kỳ hạn thanh toán
+export const getListPaymentTerm = ()=>{
+    const options = {
+        url: URL_PAYMENT_TERM,
+        method: "GET",
+    }
+    return callApi(options);
+}
+
+export const createItemPaymentTerm = (data)=>{
+    const options = {
+        url: URL_PAYMENT_TERM,
+        method: "POST",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const updateItemPaymentTerm = (data)=>{
+    const options = {
+        url: URL_PAYMENT_TERM,
+        method: "PUT",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const deleteItemPaymentTerm = (data)=>{
+    const options = {
+        url: URL_PAYMENT_TERM,
+        method: "DELETE",
+        data: data
+    }
+    return callApi(options);
+}
+
+//Loại trái phiếu
+export const getListBondType = ()=>{
+    const options = {
+        url: URL_BOND_TYPE,
+        method: "GET",
+    }
+    return callApi(options);
+}
+
+export const createItemBondType = (data)=>{
+    const options = {
+        url: URL_BOND_TYPE,
+        method: "POST",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const updateItemBondType = (data)=>{
+    const options = {
+        url: URL_BOND_TYPE,
+        method: "PUT",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const deleteItemBondType = (data)=>{
+    const options = {
+        url: URL_BOND_TYPE,
+        method: "DELETE",
+        data: data
+    }
+    return callApi(options);
+}
+
+//Loại lệnh
+export const getListCommandType = ()=>{
+    const options = {
+        url: URL_COMMAND_TYPE,
+        method: "GET",
+    }
+    return callApi(options);
+}
+
+export const createItemCommandType = (data)=>{
+    const options = {
+        url: URL_COMMAND_TYPE,
+        method: "POST",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const updateItemCommandType = (data)=>{
+    const options = {
+        url: URL_COMMAND_TYPE,
+        method: "PUT",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const deleteItemCommandType = (data)=>{
+    const options = {
+        url: URL_COMMAND_TYPE,
+        method: "DELETE",
+        data: data
+    }
+    return callApi(options);
+}
+
+//Trạng thái giao dich
+export const getListTradeStatus = ()=>{
+    const options = {
+        url: URL_TRADE_STATUS,
+        method: "GET",
+    }
+    return callApi(options);
+}
+
+export const createItemTradeStatus = (data)=>{
+    const options = {
+        url: URL_TRADE_STATUS,
+        method: "POST",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const updateItemTradeStatus = (data)=>{
+    const options = {
+        url: URL_TRADE_STATUS,
+        method: "PUT",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const deleteItemTradeStatus = (data)=>{
+    const options = {
+        url: URL_TRADE_STATUS,
+        method: "DELETE",
+        data: data
+    }
+    return callApi(options);
+}
+
+//Chi nhánh VCSC
+export const getListBranchVCSC = ()=>{
+    const options = {
+        url: URL_BRANCH_VCSC,
+        method: "GET",
+    }
+    return callApi(options);
+}
+
+export const createItemBranchVCSC = (data)=>{
+    const options = {
+        url: URL_BRANCH_VCSC,
+        method: "POST",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const updateItemBranchVCSC = (data)=>{
+    const options = {
+        url: URL_BRANCH_VCSC,
+        method: "PUT",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const deleteItemBranchVCSC = (data)=>{
+    const options = {
+        url: URL_BRANCH_VCSC,
+        method: "DELETE",
+        data: data
+    }
+    return callApi(options);
+}
+
+//Loại nhà đầu tư
+export const getListInvestorType = ()=>{
+    const options = {
+        url: URL_INVESTOR_TYPE,
+        method: "GET",
+    }
+    return callApi(options);
+}
+
+export const createItemInvestorType = (data)=>{
+    const options = {
+        url: URL_INVESTOR_TYPE,
+        method: "POST",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const updateItemInvestorType = (data)=>{
+    const options = {
+        url: URL_INVESTOR_TYPE,
+        method: "PUT",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const deleteItemInvestorType = (data)=>{
+    const options = {
+        url: URL_INVESTOR_TYPE,
+        method: "DELETE",
+        data: data
+    }
+    return callApi(options);
+}
+
+//Nhà đầu tư
+export const getListInvestor = ()=>{
+    const options = {
+        url: URL_INVESTOR,
+        method: "GET",
+    }
+    return callApi(options);
+}
+
+export const createItemInvestor = (data)=>{
+    const options = {
+        url: URL_INVESTOR,
+        method: "POST",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const updateItemInvestor = (data)=>{
+    const options = {
+        url: URL_INVESTOR,
+        method: "PUT",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const deleteItemInvestor = (data)=>{
+    const options = {
+        url: URL_INVESTOR,
         method: "DELETE",
         data: data
     }

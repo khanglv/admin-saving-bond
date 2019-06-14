@@ -20,7 +20,7 @@ const openNotificationWithIcon = (type, data) => {
     });
 };
 
-class ModalCompany extends Component{
+class ModalInvestor extends Component{
 
     constructor(props) {
         super(props);
@@ -111,7 +111,7 @@ class ModalCompany extends Component{
 
         return(
             <Modal
-                title="Công ty"
+                title="Nhà đầu tư"
                 centered
                 visible={this.props.isOpen}
                 onOk={() => this.onHandleOk()}
@@ -120,18 +120,18 @@ class ModalCompany extends Component{
             >
                 <Form {...formItemLayout}>
                     <Form.Item 
-                        label="* Mã số Doanh Nghiệp"
+                        label="* Mã số nhà đầu tư"
                         validateStatus = {(this.state.numberOfCompany.length === 0 && this.state.isShowNotice)  ? "error" : null}
                         help = {(this.state.numberOfCompany.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                     >
-                        <Input type="number" name="numberOfCompany" placeholder="Mã số doanh nghiệp" value={this.state.numberOfCompany} onChange={event => this.updateInputValue(event)}/>
+                        <Input type="number" name="numberOfCompany" placeholder="Mã số nhà đầu tư" value={this.state.numberOfCompany} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
                     <Form.Item 
-                        label="* Tên Doanh Nghiệp"
+                        label="* Mã số loại nhà đầu tư"
                         validateStatus = {(this.state.nameCompany.length === 0 && this.state.isShowNotice)  ? "error" : null}
                         help = {(this.state.nameCompany.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                     >
-                        <Input name="nameCompany" placeholder="Tên doanh nghiệp" value={this.state.nameCompany} onChange={event => this.updateInputValue(event)}/>
+                        <Input name="nameCompany" placeholder="Mã số loại nhà đầu tư" value={this.state.nameCompany} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
                     <Form.Item 
                         label="* Địa chỉ"
@@ -174,4 +174,4 @@ class ModalCompany extends Component{
     }
 }
 
-export default ModalCompany;
+export default ModalInvestor;

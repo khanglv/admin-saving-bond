@@ -33,7 +33,6 @@ const reducer = (state = initialState, action)=>{
                 isFetching: false,
                 isAuthenticated: false,
                 message: action.message,
-                status: action.status
             }
         default: 
             return state;

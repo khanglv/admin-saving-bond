@@ -5,9 +5,15 @@ import Home from '../components/Home/Home';
 import AssetBond from '../components/Asset/AssetBond';
 import Frefix from '../components/Frefix/Frefix';
 import Company from '../components/Company/Company';
-import PaymentPeriod from '../components/PaymentPeriod/PaymentPeriod';
+import PaymentTerm from '../components/PaymentTerm/PaymentTerm';
 import BankInterest from '../components/BankInterest/BankInterest';
 import FeeTrace from '../components/FeeTrade/FeeTrade';
+import BondType from '../components/BondType/BondType';
+import CommandType from '../components/CommandType/CommandType';
+import TradeStatus from '../components/TradeStatus/TradeStatus';
+import BranchVCSC from '../components/BranchVCSC/BranchVCSC';
+import InvestorType from '../components/InvestorType/InvestorType';
+import Investor from '../components/Investor/Investor';
 
 import { Layout, Avatar, Card, Button } from 'antd';
 const { Meta } = Card;
@@ -32,9 +38,15 @@ export const FHome = ()=> withSidebar(Home)
 export const FBond = ()=> withSidebar(AssetBond)
 export const FFrefix = ()=> withSidebar(Frefix)
 export const FCompany = ()=> withSidebar(Company)
-export const FPaymentPeriod = ()=> withSidebar(PaymentPeriod)
+export const FPaymentTerm = ()=> withSidebar(PaymentTerm)
 export const FBankInterest = ()=> withSidebar(BankInterest)
 export const FFeeTrace = ()=> withSidebar(FeeTrace)
+export const FBondType = ()=> withSidebar(BondType)
+export const FCommandType = ()=> withSidebar(CommandType)
+export const FTradeStatus = ()=> withSidebar(TradeStatus)
+export const FBranchVCSC = ()=> withSidebar(BranchVCSC)
+export const FInvestorType = ()=> withSidebar(InvestorType)
+export const FInvestor = ()=> withSidebar(Investor)
 
 class HeaderCom extends Component{
     constructor(props){
@@ -47,11 +59,13 @@ class HeaderCom extends Component{
     onActionAccount = ()=>{
         this.setState((prew)=>({isShowCardAccount: !prew.isShowCardAccount}));
     }
-
+    onHome = ()=>{
+        window.location.href = "/home";   
+    }
     render(){
         return (
             <Header style={{ display: 'flex', alignItems: 'center', color: '#fff' }}>
-                <b style={{ fontFamily: 'initial', fontSize: 18 }}>V-BONDS</b>
+                <div className="pointer" style={{padding: 10}} onClick={this.onHome}><b style={{ fontFamily: 'initial', fontSize: 18 }}>V-BONDS</b></div>
                 <div className="pointer" onClick={this.onActionAccount} style={styles.accountHeader}><Avatar style={{ backgroundColor: '#438599' }} icon="user" />&nbsp;&nbsp;{this.state.accountInfo ? this.state.accountInfo[0].USERNAME : "Admin"}</div>
                 {this.state.isShowCardAccount ? <CardAccount visible={true}/> : null}
             </Header>

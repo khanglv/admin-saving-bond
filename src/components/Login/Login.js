@@ -53,7 +53,7 @@ class Login extends Component{
             localStorage.setItem("keyConfigLogin", JSON.stringify(configLogin));
             try {
                 const res = await this.props.onLogin(this.state.idUserName, this.state.password);
-                if(res.status === 404){
+                if(res.message){
                     openNotificationWithIcon('error', 'Tài khoản hoặc mật khẩu không đúng!!!');
                 }else{
                     this.props.history.push('/home');

@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import { Table, Button, Popconfirm, notification, Icon, Tooltip, Form, Tag} from 'antd';
-import ModalFeeTrade from './ModalFeeTrade';
-import {getListFeeTrade, deleteItemFeeTrade, updateItemFeeTrade} from '../../api/api';
+import ModalInvestorType from './ModalInvestorType';
+import {getListInvestorType, updateItemInvestorType, deleteItemInvestorType} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
-import * as common from '../Common/Common';
+import {convertDDMMYYYY} from '../Common/Common';
 
 const openNotificationWithIcon = (type, data) => {
     notification[type]({
@@ -12,7 +12,7 @@ const openNotificationWithIcon = (type, data) => {
     });
 };
 
-class FeeTradeF extends Component{
+class InvestorTypeF extends Component{
     constructor(props) {
         super(props);
         this.columns = [
@@ -23,31 +23,43 @@ class FeeTradeF extends Component{
                 color: 'red'
             },
             {
-                title: 'Tên phí', //2
-                dataIndex: 'TENPHI',
+                title: 'MS loại nhà đầu tư', //2
+                dataIndex: 'MSLOAINDT',
                 width: 100,
-                editable: true,
             },  
             {
-                title: 'Tỉ lệ tính', //3
-                dataIndex: 'TYLETINH',
+                title: 'Tên loại nhà đầu tư', //3
+                dataIndex: 'TENLOAI_NDT',
                 editable: true,
                 width: 100
             },
             {
-                title: 'Ngày áp dụng', //3
-                dataIndex: 'NGAYAPDUNG',
-                editable: true,
-                width: 100
-            },
-            {
-                title: 'Ghi chú', //3
+                title: 'Ghi chú',
                 dataIndex: 'GHICHU',
                 editable: true,
-                width: 200
+                width: 100
             },
             {
-                title: 'Ngày tạo', //4
+                title: 'Trạng thái', //3
+                dataIndex: 'TRANGTHAI',
+                editable: true,
+                width: 50,
+                render: TRANGTHAI =>{
+                    let type = "check-circle";
+                    let color = "green";
+                    if(TRANGTHAI === 0){
+                        type="stop";
+                        color="#faad14"
+                    }
+                    return(
+                        <div>
+                            <Icon type={type} style={{color: color}} theme="filled" />
+                        </div>
+                    )
+                }
+            },
+            {
+                title: 'Ngày tạo',
                 dataIndex: 'NGAYTAO',
                 width: 100
             },
@@ -72,7 +84,7 @@ class FeeTradeF extends Component{
                                 <Tooltip title="Chỉnh sửa">
                                     <Icon type="edit" style={{color: editingKey === '' ? '#096dd9' : '#bfbfbf', fontSize: 16}} onClick={() => editingKey === '' && this.onEdit(record.key)}/>
                                 </Tooltip>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.MSPHI)}>
+                                <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.MSLOAINDT)}>
                                     <Tooltip title="Xóa dòng này" className="pointer">
                                         <Icon type="delete" style={{color: editingKey === '' ? '#f5222d' : '#bfbfbf', fontSize: 16}}/>
                                     </Tooltip>
@@ -101,12 +113,11 @@ class FeeTradeF extends Component{
 
     loadData = async()=>{
         try {
-            const res = await getListFeeTrade();
+            const res = await getListInvestorType();
             const lstTmp = await (res.filter(item => item.FLAG === 1)).map((item, i) => {
                 return {
                     ...item,
-                    "NGAYTAO": common.convertDDMMYYYY(item.NGAYTAO),
-                    "NGAYAPDUNG": common.convertDDMMYYYY(item.NGAYAPDUNG),
+                    "NGAYTAO": convertDDMMYYYY(item.NGAYTAO),
                     "key": i + 1
                 }
             })
@@ -131,7 +142,7 @@ class FeeTradeF extends Component{
 
     handleSaveEdit = async(data)=>{
         try {
-            const res = await updateItemFeeTrade(data);
+            const res = await updateItemInvestorType(data);
             if(res.error){
                 this.loadData();
                 openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
@@ -147,11 +158,11 @@ class FeeTradeF extends Component{
     handleDelete = async(id) => {
         try{
             let dataTmp = {
-                "MSPHI": id
+                "MSLOAINDT": id
             }
-            const res = await deleteItemFeeTrade(dataTmp);
+            const res = await deleteItemInvestorType(dataTmp);
             if(res.error){
-                openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
+                openNotificationWithIcon('error', 'Thao tác thất bại :( ');
             }else{
                 await this.loadData();
                 await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
@@ -172,7 +183,7 @@ class FeeTradeF extends Component{
                 const item = newData[index];
                 row = {
                     ...row,
-                    "MSPHI": item.MSPHI
+                    "MSLOAINDT": item.MSLOAINDT
                 }
                 this.handleSaveEdit(row);
             } else {
@@ -204,8 +215,8 @@ class FeeTradeF extends Component{
             return {
                 ...col,
                 onCell: record => ({
-                    record, //setting type input(date, number ...)
-                    inputType: col.dataIndex === 'NGAYAPDUNG' ? 'date' : 'text',
+                    record,  //setting type input (date, number ...)
+                    inputType: col.dataIndex === 'NGAYCAP_GP' ? 'date' : (col.dataIndex === 'TRANGTHAI' ? 'options' : 'text') ,
                     dataIndex: col.dataIndex,
                     title: col.title,
                     editing: this.isEditing(record),
@@ -215,7 +226,7 @@ class FeeTradeF extends Component{
 
         return(
             <div>
-                <ModalFeeTrade isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}/>
+                <ModalInvestorType isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}/>
                 <div className="p-top10" style={{padding: 10}}>
                     <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
                         <span>Thêm mới</span>
@@ -237,6 +248,6 @@ class FeeTradeF extends Component{
     }
 }
 
-const FeeTrade = Form.create()(FeeTradeF);
+const InvestorType = Form.create()(InvestorTypeF);
 
-export default FeeTrade;
+export default InvestorType;

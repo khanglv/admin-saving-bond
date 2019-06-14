@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {createItemBankInterest} from '../../api/api';
+import {createItemPaymentTerm} from '../../api/api';
 import { 
     Modal,
     Form,
@@ -21,8 +21,9 @@ class ModalBankInterest extends Component{
         const value = props.value || {};
         this.state = {
             currency: value.currency || 'Open',
-            nameBank: '',
-            interest: '',
+            codeExpiredPayment: '',
+            typePayment: '',
+            note: '',
             isShowNotice: false
         };
     }
@@ -41,21 +42,23 @@ class ModalBankInterest extends Component{
 
     onHandleOk = async()=>{
         try {
-            if(!this.state.nameBank|| !this.state.interest){
+            if(!this.state.codeExpiredPayment|| !this.state.typePayment){
                 this.setState({isShowNotice: true});
             }else{
                 let dataTmp = {
-                    "TEN_NH": this.state.nameBank,
-                    "LAISUAT_HH": this.state.interest
+                    "MSKYHANTT": this.state.codeExpiredPayment,
+                    "LOAI_TT": this.state.typePayment,
+                    "GHICHU": this.state.note
                 }
-                const res = await createItemBankInterest(dataTmp);
+                const res = await createItemPaymentTerm(dataTmp);
                 if (res.error) {
                     openNotificationWithIcon('error', 'Thao tác thất bại :( ');
                 } else {
                     await this.props.reloadData();
                     this.setState({
-                        nameBank: '',
-                        interest: ''
+                        codeExpiredPayment: '',
+                        typePayment: '',
+                        note: ''
                     });
                     await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
                 }
@@ -79,7 +82,7 @@ class ModalBankInterest extends Component{
 
         return(
             <Modal
-                title="Lãi suất ngân hàng"
+                title="Kỳ hạn thanh toán"
                 centered
                 visible={this.props.isOpen}
                 onOk={() => this.onHandleOk()}
@@ -88,18 +91,21 @@ class ModalBankInterest extends Component{
             >
                 <Form {...formItemLayout}>
                     <Form.Item 
-                        label="* Tên ngân hàng"
-                        validateStatus = {(this.state.nameBank.length === 0 && this.state.isShowNotice)  ? "error" : null}
-                        help = {(this.state.nameBank.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                        label="* MS K.Hạn T.Toán"
+                        validateStatus = {(this.state.codeExpiredPayment.length === 0 && this.state.isShowNotice)  ? "error" : null}
+                        help = {(this.state.codeExpiredPayment.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                     >
-                        <Input name="nameBank" placeholder="Tên ngân hàng" value={this.state.nameBank} onChange={event => this.updateInputValue(event)}/>
+                        <Input name="codeExpiredPayment" placeholder="Mã số kỳ hạn thanh toán" value={this.state.codeExpiredPayment} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
                     <Form.Item 
-                        label="* Lãi suất (%)"
-                        validateStatus = {(this.state.interest.length === 0 && this.state.isShowNotice)  ? "error" : null}
-                        help = {(this.state.interest.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                        label="* Loại thanh toán (tháng)"
+                        validateStatus = {(this.state.typePayment.length === 0 && this.state.isShowNotice)  ? "error" : null}
+                        help = {(this.state.typePayment.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                     >
-                        <Input name="interest" placeholder="Lãi suất" value={this.state.interest} onChange={event => this.updateInputValue(event)}/>
+                        <Input name="typePayment" type="number" placeholder="Loại thanh toán" value={this.state.typePayment} onChange={event => this.updateInputValue(event)}/>
+                    </Form.Item>
+                    <Form.Item label="Ghi chú">
+                        <Input name="note" placeholder="Ghi chú" value={this.state.note} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
                 </Form>
             </Modal>
