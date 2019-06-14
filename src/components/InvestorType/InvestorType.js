@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import { Table, Button, Popconfirm, notification, Icon, Tooltip, Form, Tag} from 'antd';
 import ModalInvestorType from './ModalInvestorType';
-import { updateItemInvestorType, deleteItemInvestorType} from '../../api/api';
+import { getListInvestorType, updateItemInvestorType, deleteItemInvestorType} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
 import {convertDDMMYYYY} from '../Common/Common';
 
 import {connect} from 'react-redux';
-import {getListInvestorType} from '../../stores/actions/investorTypeAction';
 
 const openNotificationWithIcon = (type, data) => {
     notification[type]({
