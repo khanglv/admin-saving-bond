@@ -9,6 +9,8 @@ import {
     Select
 } from 'antd';
 import moment from 'moment';
+import {connect} from 'react-redux';
+import {getListInvestorType} from '../../stores/actions/investorTypeAction';
 
 const { Option } = Select;
 const dateFormat = 'DD/MM/YYYY';
@@ -27,6 +29,7 @@ class ModalInvestor extends Component{
         const value = props.value || {};
         this.state = {
             currency: value.currency || 'Open',
+            lstInvestorType: [],
             numberOfCompany: '',
             nameCompany: '',
             address: '',
@@ -37,6 +40,11 @@ class ModalInvestor extends Component{
             status: 1,
             isShowNotice: false
         };
+    }
+
+    componentDidMount(){
+        const lstInvestorType = this.props.lstInvestorType;
+        this.setState({lstInvestorType: lstInvestorType});
     }
 
     setModal2Visible =()=> {
@@ -126,12 +134,16 @@ class ModalInvestor extends Component{
                     >
                         <Input type="number" name="numberOfCompany" placeholder="Mã số nhà đầu tư" value={this.state.numberOfCompany} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
-                    <Form.Item 
-                        label="* Mã số loại nhà đầu tư"
-                        validateStatus = {(this.state.nameCompany.length === 0 && this.state.isShowNotice)  ? "error" : null}
-                        help = {(this.state.nameCompany.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
-                    >
-                        <Input name="nameCompany" placeholder="Mã số loại nhà đầu tư" value={this.state.nameCompany} onChange={event => this.updateInputValue(event)}/>
+                    <Form.Item label="MS Loại nhà đầu tư">
+                        <Select showSearch placeholder="Mã số loại nhà đầu tư">
+                            {
+                                this.state.lstInvestorType.map((item)=>{
+                                    return(
+                                        <Option key={item.MSLOAINDT} value={item.MSLOAINDT}>{item.MSLOAINDT}</Option>
+                                    )
+                                })
+                            }
+                        </Select>
                     </Form.Item>
                     <Form.Item 
                         label="* Địa chỉ"
@@ -174,4 +186,10 @@ class ModalInvestor extends Component{
     }
 }
 
-export default ModalInvestor;
+const mapStateToProps = state =>{
+    return{
+        lstInvestorType: state.investorType.data
+    }
+}
+
+export default connect(mapStateToProps) (ModalInvestor);

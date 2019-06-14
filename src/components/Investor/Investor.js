@@ -5,6 +5,9 @@ import {getListInvestor, updateItemInvestor, deleteItemInvestor} from '../../api
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
 import {convertDDMMYYYY} from '../Common/Common';
 
+import {connect} from 'react-redux';
+import {getListInvestorType} from '../../stores/actions/investorTypeAction';
+
 const openNotificationWithIcon = (type, data) => {
     notification[type]({
         message: 'Thông báo',
@@ -112,14 +115,17 @@ class InvestorF extends Component{
             dataSource: [],
             count: 2,
             openModal: false,
+            lstInvestorType: [],
             editingKey: ''
         };
     }
 
     isEditing = record => record.key === this.state.editingKey;
 
-    componentDidMount(){
-        this.loadData();
+    async componentDidMount(){
+        const lstInvestorType = await this.props.getLstInvestorType();
+        await this.setState({lstInvestorType: lstInvestorType});
+        await this.loadData();
     }
 
     loadData = async()=>{
@@ -262,4 +268,16 @@ class InvestorF extends Component{
 
 const Investor = Form.create()(InvestorF);
 
-export default Investor;
+const mapStateToProps = state =>{
+    return{
+        lstInvestorType: state.investorType.data
+    }
+}
+
+const mapDispatchToProps = dispatch =>{
+    return{
+        getLstInvestorType: ()=> dispatch(getListInvestorType()),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (Investor);
