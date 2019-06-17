@@ -5,6 +5,22 @@ import { withRouter } from "react-router";
 
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
+const LIST_ROUTE_CONFIG = ['/frefix', '/company', '/payment-term', '/bank-interest', '/fee-trade', '/bond-type', '/command-type', 
+                           '/trade-status', '/branch-vcsc', '/investor-type', '/investor'];
+const LIST_ROUTE_GENERAL = ['/asset-bond', '/ensure-asset'];
+
+const checkRouteOpenDefaultKey = ()=> {
+    for(let i = 0; i < LIST_ROUTE_CONFIG.length; i++){
+        if(LIST_ROUTE_CONFIG[i] === window.location.pathname){
+            return 'configs';
+        }
+    }
+    for(let i = 0; i < LIST_ROUTE_GENERAL.length; i++){
+        if(LIST_ROUTE_GENERAL[i] === window.location.pathname){
+            return 'general';
+        }
+    }
+}
 
 class SiderBarMenu extends Component {
 
@@ -15,6 +31,7 @@ class SiderBarMenu extends Component {
             isOpen: false,
             dataSendLogout: "",
             current: window.location.pathname,
+            openDefaultKey: checkRouteOpenDefaultKey()
         };
     }
     
@@ -36,6 +53,9 @@ class SiderBarMenu extends Component {
             case "/asset-bond":
                 this.props.history.push('/asset-bond');
                 break;
+            case "/ensure-asset":
+                this.props.history.push('/ensure-asset');
+                break;    
             case "/frefix":
                 this.props.history.push('/frefix');
                 break;
@@ -76,15 +96,21 @@ class SiderBarMenu extends Component {
 
     render() {
         return (
-                <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
+                <Sider trigger={null} collapsible collapsed={this.state.collapsed} 
+                    style={{
+                        overflow: 'auto',
+                        height: '93vh',
+                    }}
+                >
                     <Icon
                         className="trigger"
                         type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
                         onClick={this.toggle}
                     />
-                    <Menu theme="dark" mode="inline" defaultOpenKeys={['sub1']} selectedKeys={[this.state.current]} onClick={this.handleClick}>
+                    <Menu theme="dark" mode="inline"
+                     defaultOpenKeys={[this.state.openDefaultKey]} selectedKeys={[this.state.current]} onClick={this.handleClick}>
                         <SubMenu
-                            key="sub1"
+                            key="configs"
                             title={
                                 <span>
                                     <Icon type="tool" />
@@ -127,7 +153,7 @@ class SiderBarMenu extends Component {
                             </Menu.Item>
                         </SubMenu>
                         <SubMenu
-                            key="sub2"
+                            key="general"
                             title={
                                 <span>
                                     <Icon type="control" />
@@ -137,6 +163,9 @@ class SiderBarMenu extends Component {
                         >
                             <Menu.Item key="/asset-bond">
                                 <span className="middle-text">Trái phiếu</span>
+                            </Menu.Item>
+                            <Menu.Item key="/ensure-asset">
+                                <span className="middle-text">Tài sản đảm bảo</span>
                             </Menu.Item>
                         </SubMenu>
                     </Menu>

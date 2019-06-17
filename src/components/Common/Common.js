@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { notification } from 'antd';
 
 export const convertDDMMYYYY = (date)=>{
     return moment(new Date(date)).format('DD/MM/YYYY');
@@ -12,3 +13,10 @@ export const convertToFormat = (date)=>{
 export const convertDatePicker = (date)=>{
     return moment(new Date(date));
 }
+
+export const notify = (type, data) => {
+    notification[type]({
+        message: 'Thông báo',
+        description: data,
+    });
+};

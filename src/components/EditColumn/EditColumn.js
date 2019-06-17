@@ -16,10 +16,26 @@ export class EditableCell extends React.Component {
             return <DatePicker format={dateFormat}/>;
         }
         if (this.props.inputType === 'options') {
-            return <Select >
+            return <Select style={{width: '100%'}}>
                 <Option value="1">Hoạt động</Option>
                 <Option value="0">Ngừng hoạt động</Option>
             </Select>
+        }
+        if (this.props.inputType === 'select') {
+            switch(this.props.dataIndex){
+                case 'TENLOAI_NDT':
+                    return <Select style={{ width: '100%' }}>
+                        {
+                            this.props.record.lstInvestorType.map((item) => {
+                                return (
+                                    <Option key={item.MSLOAINDT} value={item.MSLOAINDT}>{item.TENLOAI_NDT}</Option>
+                                )
+                            })
+                        }
+                    </Select>
+                default:
+                    return;
+            }
         }
         return <Input />;
     };

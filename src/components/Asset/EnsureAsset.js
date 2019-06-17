@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
 import { Table, Button, Popconfirm, notification, Icon, Tooltip, Form, Tag} from 'antd';
-import ModalInvestorType from './ModalInvestorType';
-import { getListInvestorType, updateItemInvestorType, deleteItemInvestorType} from '../../api/api';
+import ModalEnsureAsset from './ModalEnsureAsset';
+import {getListBondType, updateItemBondType, deleteItemBondType} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
 import {convertDDMMYYYY} from '../Common/Common';
-
-import {connect} from 'react-redux';
 
 const openNotificationWithIcon = (type, data) => {
     notification[type]({
@@ -14,7 +12,7 @@ const openNotificationWithIcon = (type, data) => {
     });
 };
 
-class InvestorTypeF extends Component{
+class EnsureAssetF extends Component{
     constructor(props) {
         super(props);
         this.columns = [
@@ -25,43 +23,24 @@ class InvestorTypeF extends Component{
                 color: 'red'
             },
             {
-                title: 'MS loại nhà đầu tư', //2
-                dataIndex: 'MSLOAINDT',
+                title: 'MS loại trái phiếu', //2
+                dataIndex: 'MSLTP',
                 width: 100,
             },  
             {
-                title: 'Tên loại nhà đầu tư', //3
-                dataIndex: 'TENLOAI_NDT',
+                title: 'Tên loại trái phiếu', //3
+                dataIndex: 'TENLOAI_TP',
                 editable: true,
                 width: 100
             },
             {
-                title: 'Ghi chú',
+                title: 'Ghi chú', //3
                 dataIndex: 'GHICHU',
                 editable: true,
-                width: 100
+                width: 200
             },
             {
-                title: 'Trạng thái', //3
-                dataIndex: 'TRANGTHAI',
-                editable: true,
-                width: 50,
-                render: TRANGTHAI =>{
-                    let type = "check-circle";
-                    let color = "green";
-                    if(TRANGTHAI === 0){
-                        type="stop";
-                        color="#faad14"
-                    }
-                    return(
-                        <div>
-                            <Icon type={type} style={{color: color}} theme="filled" />
-                        </div>
-                    )
-                }
-            },
-            {
-                title: 'Ngày tạo',
+                title: 'Ngày tạo', //4
                 dataIndex: 'NGAYTAO',
                 width: 100
             },
@@ -86,7 +65,7 @@ class InvestorTypeF extends Component{
                                 <Tooltip title="Chỉnh sửa">
                                     <Icon type="edit" style={{color: editingKey === '' ? '#096dd9' : '#bfbfbf', fontSize: 16}} onClick={() => editingKey === '' && this.onEdit(record.key)}/>
                                 </Tooltip>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.MSLOAINDT)}>
+                                <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.MSLTP)}>
                                     <Tooltip title="Xóa dòng này" className="pointer">
                                         <Icon type="delete" style={{color: editingKey === '' ? '#f5222d' : '#bfbfbf', fontSize: 16}}/>
                                     </Tooltip>
@@ -101,6 +80,7 @@ class InvestorTypeF extends Component{
         
         this.state = {
             dataSource: [],
+            count: 2,
             openModal: false,
             editingKey: ''
         };
@@ -114,7 +94,7 @@ class InvestorTypeF extends Component{
 
     loadData = async()=>{
         try {
-            const res = await getListInvestorType();
+            const res = await getListBondType();
             const lstTmp = await (res.filter(item => item.FLAG === 1)).map((item, i) => {
                 return {
                     ...item,
@@ -143,7 +123,7 @@ class InvestorTypeF extends Component{
 
     handleSaveEdit = async(data)=>{
         try {
-            const res = await updateItemInvestorType(data);
+            const res = await updateItemBondType(data);
             if(res.error){
                 this.loadData();
                 openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
@@ -159,11 +139,11 @@ class InvestorTypeF extends Component{
     handleDelete = async(id) => {
         try{
             let dataTmp = {
-                "MSLOAINDT": id
+                "MSLTP": id
             }
-            const res = await deleteItemInvestorType(dataTmp);
+            const res = await deleteItemBondType(dataTmp);
             if(res.error){
-                openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+                openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
             }else{
                 await this.loadData();
                 await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
@@ -184,7 +164,7 @@ class InvestorTypeF extends Component{
                 const item = newData[index];
                 row = {
                     ...row,
-                    "MSLOAINDT": item.MSLOAINDT
+                    "MSLTP": item.MSLTP
                 }
                 this.handleSaveEdit(row);
             } else {
@@ -216,8 +196,7 @@ class InvestorTypeF extends Component{
             return {
                 ...col,
                 onCell: record => ({
-                    record,  //setting type input (date, number ...)
-                    inputType: col.dataIndex === 'NGAYCAP_GP' ? 'date' : (col.dataIndex === 'TRANGTHAI' ? 'options' : 'text') ,
+                    record,
                     dataIndex: col.dataIndex,
                     title: col.title,
                     editing: this.isEditing(record),
@@ -227,7 +206,7 @@ class InvestorTypeF extends Component{
 
         return(
             <div>
-                <ModalInvestorType isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}/>
+                <ModalEnsureAsset isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}/>
                 <div className="p-top10" style={{padding: 10}}>
                     <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
                         <span>Thêm mới</span>
@@ -249,18 +228,6 @@ class InvestorTypeF extends Component{
     }
 }
 
-const InvestorType = Form.create()(InvestorTypeF);
+const EnsureAsset = Form.create()(EnsureAssetF);
 
-const mapStateToProps = state =>{
-    return{
-        lstInvestorType: state.investorType.data
-    }
-}
-
-const mapDispatchToProps = dispatch =>{
-    return{
-        getLstInvestorType: ()=> dispatch(getListInvestorType()),
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps) (InvestorType);
+export default EnsureAsset;

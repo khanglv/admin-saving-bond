@@ -3,7 +3,7 @@ import { Table, Button, Popconfirm, notification, Icon, Tooltip, Form, Tag} from
 import ModalInvestor from './ModalInvestor';
 import {getListInvestor, updateItemInvestor, deleteItemInvestor} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
-import {convertDDMMYYYY} from '../Common/Common';
+import {convertDDMMYYYY, notify} from '../Common/Common';
 
 import {connect} from 'react-redux';
 import {getListInvestorType} from '../../stores/actions/investorTypeAction';
@@ -31,8 +31,8 @@ class InvestorF extends Component{
                 width: 100,
             },  
             {
-                title: 'MS loại nhà đầu tư', //3
-                dataIndex: 'MS_LOAINDT',
+                title: 'Loại nhà đầu tư', //3
+                dataIndex: 'TENLOAI_NDT',
                 editable: true,
                 width: 100
             },
@@ -113,7 +113,6 @@ class InvestorF extends Component{
         
         this.state = {
             dataSource: [],
-            count: 2,
             openModal: false,
             lstInvestorType: [],
             editingKey: ''
@@ -124,7 +123,12 @@ class InvestorF extends Component{
 
     async componentDidMount(){
         const lstInvestorType = await this.props.getLstInvestorType();
-        await this.setState({lstInvestorType: lstInvestorType});
+        if(lstInvestorType.message){
+            notify('error', 'Thao tác thất bại :( ' + lstInvestorType.message);
+        }
+        if(lstInvestorType.type === 'INVESTOR_TYPE_SUCCESS'){
+            this.setState({lstInvestorType: lstInvestorType.data});
+        }
         await this.loadData();
     }
 
@@ -135,7 +139,8 @@ class InvestorF extends Component{
                 return {
                     ...item,
                     "NGAYTAO": convertDDMMYYYY(item.NGAYTAO),
-                    "NGAYCAP_GP": convertDDMMYYYY(item.NGAYCAP_GP),
+                    "NGAYCAP": convertDDMMYYYY(item.NGAYCAP),
+                    "lstInvestorType": this.props.lstInvestorType,
                     "key": i + 1
                 }
             })
@@ -202,6 +207,7 @@ class InvestorF extends Component{
                 row = {
                     ...row,
                     "MSNDT": item.MSNDT,
+                    "MS_LOAINDT": row.TENLOAI_NDT
                 }
                 this.handleSaveEdit(row);
             } else {
@@ -234,7 +240,7 @@ class InvestorF extends Component{
                 ...col,
                 onCell: record => ({
                     record,  //setting type input (date, number ...)
-                    inputType: col.dataIndex === 'NGAYCAP_GP' ? 'date' : (col.dataIndex === 'TRANGTHAI' ? 'options' : 'text') ,
+                    inputType: col.dataIndex === 'NGAYCAP' ? 'date' : (col.dataIndex === ('TENLOAI_NDT' || 'MS_NGUOIGIOITHIEU') ? 'select' : 'text') ,
                     dataIndex: col.dataIndex,
                     title: col.title,
                     editing: this.isEditing(record),
@@ -244,7 +250,7 @@ class InvestorF extends Component{
 
         return(
             <div>
-                <ModalInvestor isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}/>
+                <ModalInvestor isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData} investorTypeData={this.state.lstInvestorType}/>
                 <div className="p-top10" style={{padding: 10}}>
                     <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
                         <span>Thêm mới</span>

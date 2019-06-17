@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {createItemCompany} from '../../api/api';
+import {createItemInvestor} from '../../api/api';
 import { 
     Modal,
     Form,
@@ -9,8 +9,6 @@ import {
     Select
 } from 'antd';
 import moment from 'moment';
-import {connect} from 'react-redux';
-import {getListInvestorType} from '../../stores/actions/investorTypeAction';
 
 const { Option } = Select;
 const dateFormat = 'DD/MM/YYYY';
@@ -29,22 +27,16 @@ class ModalInvestor extends Component{
         const value = props.value || {};
         this.state = {
             currency: value.currency || 'Open',
-            lstInvestorType: [],
-            numberOfCompany: '',
-            nameCompany: '',
-            address: '',
-            phoneNumber: '',
-            email: '',
+            codeInvestor: '',
+            codeInvestorType: '',
+            nameOfInvestor: '',
+            papers: '',
             dateRange: moment(new Date(), dateFormat),
-            surrogate: '',
-            status: 1,
+            issuedBy: '',
+            numberSecurities: '',
+            codeOfPresenter: '',
             isShowNotice: false
         };
-    }
-
-    componentDidMount(){
-        const lstInvestorType = this.props.lstInvestorType;
-        this.setState({lstInvestorType: lstInvestorType});
     }
 
     setModal2Visible =()=> {
@@ -64,38 +56,41 @@ class ModalInvestor extends Component{
     }
 
     updateSelectValue = (event)=>{
-        this.setState({status: event});
+        this.setState({codeInvestorType: event});
     }
 
+    updateSelectcodeOfPresenter = (event)=>{
+        this.setState({codeOfPresenter: event});
+    }
+    
     onHandleOk = async()=>{
         try{
-            if(!this.state.numberOfCompany || !this.state.nameCompany || !this.state.address || !this.state.surrogate){
+            if(!this.state.codeInvestor || !this.state.codeInvestorType || !this.state.nameOfInvestor || !this.state.papers || !this.state.numberSecurities || !this.state.codeOfPresenter){
                 this.setState({isShowNotice: true});
             }else{
                 let dataTmp = {
-                    "MSDN": this.state.numberOfCompany,
-                    "TEN_DN": this.state.nameCompany,
-                    "DIACHI": this.state.address,
-                    "DIENTHOAI": this.state.phoneNumber,
-                    "EMAIL": this.state.email,
-                    "NGAYCAP_GP": this.state.dateRange,
-                    "NGUOI_DDPL": this.state.surrogate,
-                    "TRANGTHAI": this.state.status
+                    "MSNDT": this.state.codeInvestor,
+                    "MS_LOAINDT": this.state.codeInvestorType,
+                    "TENNDT": this.state.nameOfInvestor,
+                    "CMND_GPKD": this.state.papers,
+                    "NGAYCAP": this.state.dateRange,
+                    "NOICAP": this.state.issuedBy,
+                    "SO_TKCK": this.state.numberSecurities,
+                    "MS_NGUOIGIOITHIEU": this.state.codeOfPresenter
                 }
-                const res = await createItemCompany(dataTmp);
+                const res = await createItemInvestor(dataTmp);
                 if(res.error){
                     openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
                 }else{
                     await this.props.reloadData();
                     this.setState({
-                        numberOfCompany: '',
-                        nameCompany: '',
-                        address: '',
-                        phoneNumber: '',
-                        email: '',
+                        codeInvestor: '',
+                        codeInvestorType: '',
+                        nameOfInvestor: '',
+                        papers: '',
                         dateRange: moment(new Date(), dateFormat),
-                        surrogate: '',
-                        status: 1
+                        issuedBy: '',
+                        numberSecurities: '',
                     });
                     await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
                 }
@@ -129,55 +124,63 @@ class ModalInvestor extends Component{
                 <Form {...formItemLayout}>
                     <Form.Item 
                         label="* Mã số nhà đầu tư"
-                        validateStatus = {(this.state.numberOfCompany.length === 0 && this.state.isShowNotice)  ? "error" : null}
-                        help = {(this.state.numberOfCompany.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                        validateStatus = {(this.state.codeInvestor.length === 0 && this.state.isShowNotice)  ? "error" : null}
+                        help = {(this.state.codeInvestor.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                     >
-                        <Input type="number" name="numberOfCompany" placeholder="Mã số nhà đầu tư" value={this.state.numberOfCompany} onChange={event => this.updateInputValue(event)}/>
+                        <Input name="codeInvestor" placeholder="Mã số nhà đầu tư" value={this.state.codeInvestor} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
-                    <Form.Item label="MS Loại nhà đầu tư">
-                        <Select showSearch placeholder="Mã số loại nhà đầu tư">
+                    <Form.Item 
+                        label="* Loại nhà đầu tư"
+                        validateStatus = {(this.state.codeInvestorType.length === 0 && this.state.isShowNotice)  ? "error" : null}
+                        help = {(this.state.codeInvestorType.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                    >
+                        <Select showSearch placeholder="chọn Loại nhà đầu tư" onChange={event => this.updateSelectValue(event)}>
                             {
-                                this.state.lstInvestorType.map((item)=>{
+                                this.props.investorTypeData.map((item)=>{
                                     return(
-                                        <Option key={item.MSLOAINDT} value={item.MSLOAINDT}>{item.MSLOAINDT}</Option>
+                                        <Option key={item.MSLOAINDT} value={item.MSLOAINDT}>{item.TENLOAI_NDT}</Option>
                                     )
                                 })
                             }
                         </Select>
                     </Form.Item>
                     <Form.Item 
-                        label="* Địa chỉ"
-                        validateStatus = {(this.state.address.length === 0 && this.state.isShowNotice)  ? "error" : null}
-                        help = {(this.state.address.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                        label="* Tên nhà đầu tư"
+                        validateStatus = {(this.state.nameOfInvestor.length === 0 && this.state.isShowNotice)  ? "error" : null}
+                        help = {(this.state.nameOfInvestor.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                     >
-                        <Input name="address" placeholder="Địa chỉ" value={this.state.address} onChange={event => this.updateInputValue(event)}/>
+                        <Input name="nameOfInvestor" placeholder="Địa chỉ" value={this.state.nameOfInvestor} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
-                    <Form.Item label="Điện thoại">
-                        <Input name="phoneNumber" placeholder="Số điện thoại" value={this.state.phoneNumber} onChange={event => this.updateInputValue(event)}/>
-                    </Form.Item>
-                    <Form.Item label="Email">
-                        <Input type="email" name="email" placeholder="Email" value={this.state.email} onChange={event => this.updateInputValue(event)}/>
+                    <Form.Item label="* CMND, G.P K.Doanh"
+                        validateStatus = {(this.state.papers.length === 0 && this.state.isShowNotice)  ? "error" : null}
+                        help = {(this.state.papers.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                    >
+                        <Input name="papers" placeholder="CMND, Giấy phép kinh doanh" value={this.state.papers} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
                     <Form.Item 
-                        label="* Ngày cấp giấy phép"
+                        label="* Ngày cấp"
                     >
                         <DatePicker name="dateRange" value={this.state.dateRange} format={dateFormat} onChange={this.updateInputDate}/>
                     </Form.Item>
-                    <Form.Item 
-                        label="* Người đ.diện pháp lý"
-                        validateStatus = {(this.state.surrogate.length === 0 && this.state.isShowNotice)  ? "error" : null}
-                        help = {(this.state.surrogate.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
-                    >
-                        <Input name="surrogate" placeholder="Người đại diện pháp lý" value={this.state.surrogate} onChange={event => this.updateInputValue(event)}/>
+                    <Form.Item label="Nơi cấp">
+                        <Input name="issuedBy" placeholder="Nơi cấp" value={this.state.issuedBy} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
-                    <Form.Item label="* Trạng thái" hasFeedback validateStatus={this.state.status === 1 ? "success" : "warning"}>
-                        <Select
-                            defaultValue="1"
-                            placeholder="Chọn trạng thái"
-                            onChange={event => this.updateSelectValue(event)}
-                            >
-                            <Option value="1">Hoạt động</Option>
-                            <Option value="0">Ngừng hoạt động</Option>
+                    <Form.Item 
+                        label="* Số Tk chứng khoán"
+                        validateStatus = {(this.state.numberSecurities.length === 0 && this.state.isShowNotice)  ? "error" : null}
+                        help = {(this.state.numberSecurities.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                    >
+                        <Input name="numberSecurities" placeholder="Số tài khoản chứng khoán" value={this.state.numberSecurities} onChange={event => this.updateInputValue(event)}/>
+                    </Form.Item>
+                    <Form.Item label="* MS người giới thiệu">
+                        <Select showSearch placeholder="Mã số người giới thiệu" onChange={event => this.updateSelectcodeOfPresenter(event)}>
+                            {
+                                this.props.investorTypeData.map((item)=>{
+                                    return(
+                                        <Option key={item.MSLOAINDT} value={item.MSLOAINDT}>{item.MSLOAINDT}</Option>
+                                    )
+                                })
+                            }
                         </Select>
                     </Form.Item>
                 </Form>
@@ -186,10 +189,4 @@ class ModalInvestor extends Component{
     }
 }
 
-const mapStateToProps = state =>{
-    return{
-        lstInvestorType: state.investorType.data
-    }
-}
-
-export default connect(mapStateToProps) (ModalInvestor);
+export default ModalInvestor;

@@ -20,7 +20,8 @@ import {
     FTradeStatus,
     FBranchVCSC,
     FInvestor,
-    FInvestorType
+    FInvestorType,
+    FEnsureAsset
 } from './MainGeneral';
 
 const accessTokenAuth = localStorage.getItem('accessTokenAuthKey');
@@ -58,6 +59,7 @@ class RouteURL extends Component{
                         <Route exact path="/" component={FHome} />
                         <Route exact path="/home" component={FHome} />
                         <Route exact path="/asset-bond" component={FBond} />
+                        <Route exact path="/ensure-asset" component={FEnsureAsset} />
                         <Route exact path="/frefix" component={FFrefix} />
                         <Route exact path="/company" component={FCompany} />
                         <Route exact path="/payment-term" component={FPaymentTerm} />

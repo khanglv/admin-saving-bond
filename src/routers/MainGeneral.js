@@ -3,6 +3,7 @@ import SiderBarMenu from '../components/SiderBarMenu/SiderBarMenu';
 import {removeStorageToken} from '../api/storage';
 import Home from '../components/Home/Home';
 import AssetBond from '../components/Asset/AssetBond';
+import EnsureAsset from '../components/Asset/EnsureAsset';
 import Frefix from '../components/Frefix/Frefix';
 import Company from '../components/Company/Company';
 import PaymentTerm from '../components/PaymentTerm/PaymentTerm';
@@ -47,6 +48,7 @@ export const FTradeStatus = ()=> withSidebar(TradeStatus)
 export const FBranchVCSC = ()=> withSidebar(BranchVCSC)
 export const FInvestorType = ()=> withSidebar(InvestorType)
 export const FInvestor = ()=> withSidebar(Investor)
+export const FEnsureAsset = ()=> withSidebar(EnsureAsset)
 
 class HeaderCom extends Component{
     constructor(props){

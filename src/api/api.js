@@ -6,7 +6,7 @@ import { notification } from 'antd';
 const BASE_URL = "http://10.11.0.113:3001";
 const URL_FREFIX = `${BASE_URL}/prefix`;
 const URL_COMPANY = `${BASE_URL}/company`;
-const URL_BANK_INTERSET = `${BASE_URL}/interest`;
+const URL_BANK_INTERSET = `${BASE_URL}/interestRateBank`;
 const URL_FEE_TRADE = `${BASE_URL}/feeTrade`;
 const URL_PAYMENT_TERM = `${BASE_URL}/paymentTerm`;
 const URL_BOND_TYPE = `${BASE_URL}/bondType`;

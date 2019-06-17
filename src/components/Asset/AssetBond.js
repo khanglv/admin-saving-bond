@@ -1,93 +1,13 @@
 import React, {Component} from 'react';
-import { Table, Input, Button, Popconfirm, Form, Alert } from 'antd';
+import { Table, Button, Popconfirm, Icon, Tooltip, Form, Tag} from 'antd';
 import ModalAssetBond from './ModalAssetBond';
-const EditableContext = React.createContext();
+import {getListInvestor, updateItemInvestor, deleteItemInvestor} from '../../api/api';
+import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
+import {convertDDMMYYYY} from '../Common/Common';
 
-const EditableRow = ({ form, index, ...props }) => (
-    <EditableContext.Provider value={form}>
-        <tr {...props} />
-    </EditableContext.Provider>
-);
+import {connect} from 'react-redux';
 
-const EditableFormRow = Form.create()(EditableRow);
-
-class EditableCell extends React.Component {
-    state = {
-        editing: false,
-    };
-
-    toggleEdit = () => {
-        const editing = !this.state.editing;
-        this.setState({ editing }, () => {
-            if (editing) {
-                this.input.focus();
-            }
-        });
-    };
-
-    save = e => {
-        const { record, handleSave } = this.props;
-        this.form.validateFields((error, values) => {
-            if (error && error[e.currentTarget.id]) {
-                return;
-            }
-            this.toggleEdit();
-            handleSave({ ...record, ...values });
-        });
-    };
-
-    renderCell = form => {
-        this.form = form;
-        const { children, dataIndex, record, title } = this.props;
-        const { editing } = this.state;
-        return editing ? (
-            <Form.Item style={{ margin: 0 }}>
-                {form.getFieldDecorator(dataIndex, {
-                    rules: [
-                        {
-                            required: true,
-                            message: `${title} is required.`,
-                        },
-                    ],
-                    initialValue: record[dataIndex],
-                })(<Input ref={node => (this.input = node)} onPressEnter={this.save} onBlur={this.save} />)}
-            </Form.Item>
-        ) : (
-                <div
-                    className="editable-cell-value-wrap"
-                    style={{ paddingRight: 24 }}
-                    onClick={this.toggleEdit}
-                >
-                    {children}
-                </div>
-            );
-    };
-
-    render() {
-        const {
-            editable,
-            dataIndex,
-            title,
-            record,
-            index,
-            handleSave,
-            children,
-            ...restProps
-        } = this.props;
-        return (
-            <td {...restProps}>
-                {editable ? (
-                    <EditableContext.Consumer>{this.renderCell}</EditableContext.Consumer>
-                ) : (
-                        children
-                    )}
-            </td>
-        );
-    }
-}
-
-
-class AssetBond extends Component{
+class AssetBondF extends Component{
     constructor(props) {
         super(props);
         this.columns = [
@@ -95,212 +15,279 @@ class AssetBond extends Component{
                 title: 'STT',
                 dataIndex: 'id',
                 editable: true,
-                width: 30
+                width: 30,
+                fixed: 'left',
             },
             {
                 title: 'MS T.Phiếu', //1
                 dataIndex: 'code_bond',
                 editable: true,
-                width: 100
+                width: 150
             },
             {
                 title: 'Số H.Đồng', //2
                 dataIndex: 'code_contract',
-                width: 100
+                width: 250
             },
             {
-                title: 'MS D.Nghiệp', //3
+                title: 'D.Nghiệp', //3
                 dataIndex: 'code_enterprise',
-                width: 100
+                width: 150
             },
             {
                 title: 'K.Han Vay', //4
                 dataIndex: 'code_term_borrow',
-                width: 100
+                width: 150
             },
             {
                 title: 'K.Han T.Toán', //5
                 dataIndex: 'code_term_pay',
-                width: 100
+                width: 150
             },
             {
                 title: 'Loại T.Phiếu', //6
                 dataIndex: 'type_bond',
-                width: 100
+                width: 150
             },
             {
                 title: 'SN tính lãi năm', //7
                 dataIndex: 'total_day_interest',
-                width: 100
+                width: 150
             },
             {
                 title: 'L.Suất H.Hành', //8
                 dataIndex: 'current_interest',
-                width: 50
+                width: 150
             },
             {
                 title: 'Mã viết tắt', //9
                 dataIndex: 'sort_name',
-                width: 100
+                width: 150
             },
             {
                 title: 'TT Trái phiếu', //10
                 dataIndex: 'info_bond',
-                width: 300
+                width: 350
             },
             {
                 title: 'Mệnh giá', //11
                 dataIndex: 'denomination',
-                width: 100
+                width: 150
             },
             {
                 title: 'SL P.Hành (max)', //12
                 dataIndex: 'max_release',
-                width: 100
+                width: 150
             },
             {
                 title: 'SL đã P.hành', //13
                 dataIndex: 'released',
-                width: 100
+                width: 150
             },
             {
                 title: 'SL Lưu hành', //14
                 dataIndex: 'totalOfCirculate',
-                width: 100
+                width: 150
             },
             {
                 title: 'SL Thu hồi', //15
                 dataIndex: 'totalRecall',
-                width: 100
+                width: 150
             },
             {
                 title: 'Ngày phát hành', //16
                 dataIndex: 'day_release',
-                width: 100
+                width: 150
             },
             {
                 title: 'Ngày đáo hạn', //17
                 dataIndex: 'day_expire',
-                width: 100
+                width: 150
             },
             {
-                title: 'Ngày KT phát hành', //18
+                title: 'KT p.Hành', //18
                 dataIndex: 'day_break',
-                width: 100
+                width: 150
             },
             {
                 title: 'Tổng hạn mức huy động', //19
                 dataIndex: 'level_mobilize',
-                width: 150
+                width: 200
             },
             {
                 title: 'Hạn mức cho', //20
                 dataIndex: 'level_loan',
-                width: 150
+                width: 200
             },
             {
                 title: 'Kỳ hạn còn lại', //21
                 dataIndex: 'period_remain',
-                width: 150
+                width: 200
             },
             {
-                title: 'T.Thái niêm yết', //22
+                title: 'T.T N.Yết', //22
                 dataIndex: 'status_listed',
-                width: 50
+                width: 100
             },
             {
                 title: 'Tài sản đảm bảo', //23
                 dataIndex: 'asset_cover',
-                width: 150
+                width: 200
             },
             {
                 title: 'S.Lượng Lưu ký', //24
                 dataIndex: 'total_depository',
+                width: 200
+            },
+            {
+                title: 'Ngày tạo', //4
+                dataIndex: 'NGAYTAO',
                 width: 150
             },
             {
-                title: 'Flag', //25
-                dataIndex: 'flag',
-                width: 50
-            },
-            {
-                title: 'operation',
+                title: 'Action',
                 dataIndex: 'operation',
                 fixed: 'right',
-                render: (text, record) =>
-                    this.state.dataSource.length >= 1 ? (
-                        <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.key)}>
-                            <a href="/">Delete</a>
-                        </Popconfirm>
-                    ) : null,
-                width: 100
+                width: 150,
+                render: (text, record) =>{
+                    const { editingKey } = this.state;
+                    const editable = this.isEditing(record);
+                    return editable ? (
+                        <div>
+                            <EditableContext.Consumer>
+                                {form => (
+                                    <Tag color="green" className="customTag" onClick={() => this.save(form, record)}>Lưu</Tag>                                
+                                )}
+                            </EditableContext.Consumer>
+                            <Tag color="volcano" className="customTag" onClick={() => this.cancel(record.key)}>Hủy bỏ</Tag>
+                        </div>
+                    ): (
+                        this.state.dataSource.length >= 1 ?
+                            <div>
+                                <Tooltip title="Chỉnh sửa">
+                                    <Icon type="edit" style={{color: editingKey === '' ? '#096dd9' : '#bfbfbf', fontSize: 16}} onClick={() => editingKey === '' && this.onEdit(record.key)}/>
+                                </Tooltip>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.MSLOAINDT)}>
+                                    <Tooltip title="Xóa dòng này" className="pointer">
+                                        <Icon type="delete" style={{color: editingKey === '' ? '#f5222d' : '#bfbfbf', fontSize: 16}}/>
+                                    </Tooltip>
+                                </Popconfirm>
+                            </div>
+                         : null
+                    )
+                }
             },
         ];
 
         this.state = {
-            dataSource: [
-                {
-                    key: '0',
-                    name: 'Edward King 0',
-                    age: '32',
-                    address: 'London, Park Lane no. 0',
-                    key1: '0',
-                    name1: 'Edward King 0',
-                    age1: '32',
-                    address1: 'London, Park Lane no. 0',
-                    key2: '0',
-                    name2: 'Edward King 0',
-                    age2: '32',
-                    address2: 'London, Park Lane no. 0',
-                    key3: '0',
-                    name3: 'Edward King 0',
-                    age3: '32',
-                    address3: 'London, Park Lane no. 0',
-                },
-                {
-                    key: '1',
-                    name: 'Edward King 1',
-                    age: '32',
-                    address: 'London, Park Lane no. 1',
-                },
-            ],
-            count: 2,
-            openModalAssetBond: false
+            dataSource: [],
+            openModal: false,
+            lstInvestorType: [],
+            editingKey: ''
         };
     }
 
-    handleDelete = key => {
-        const dataSource = [...this.state.dataSource];
-        this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
-    };
+    isEditing = record => record.key === this.state.editingKey;
 
-    handleAdd = () => {
-        this.setState({openModalAssetBond: true});
-    };
-
-    handleCloseModal = ()=>{
-        this.setState({openModalAssetBond: false});
+    loadData = async()=>{
+        try {
+            const res = await getListInvestor();
+            const lstTmp = await (res.filter(item => item.FLAG === 1)).map((item, i) => {
+                return {
+                    ...item,
+                    "NGAYTAO": convertDDMMYYYY(item.NGAYTAO),
+                    "NGAYCAP": convertDDMMYYYY(item.NGAYCAP),
+                    "lstData": this.props.lstInvestorType,
+                    "key": i + 1
+                }
+            })
+            await this.setState({dataSource: lstTmp, editingKey: '' });
+        } catch (error) {
+            console.log("err load data " + error);
+        }
     }
 
-    handleSave = row => {
-        const newData = [...this.state.dataSource];
-        const index = newData.findIndex(item => row.key === item.key);
-        const item = newData[index];
-        newData.splice(index, 1, {
-            ...item,
-            ...row,
-        });
-        this.setState({ dataSource: newData });
+    handleOpenModal = ()=>{
+        this.setState({openModal: true});
+    }
+
+    handleCloseModal = ()=>{
+        this.setState({openModal: false});
+    }
+
+    handleReloadData = ()=>{
+        this.setState({openModal: false});
+        this.loadData();
+    }
+
+    handleSaveEdit = async(data)=>{
+        // try {
+        //     const res = await updateItemInvestor(data);
+        //     if(res.error){
+        //         this.loadData();
+        //         openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
+        //     }else{
+        //         await this.loadData();
+        //         await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
+        //     }
+        // } catch (error) {
+        //     openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+        // }
+    }
+
+    handleDelete = async(id) => {
+        // try{
+        //     let dataTmp = {
+        //         "MSNDT": id
+        //     }
+        //     const res = await deleteItemInvestor(dataTmp);
+        //     if(res.error){
+        //         openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
+        //     }else{
+        //         await this.loadData();
+        //         await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
+        //     }
+        // }catch(err){
+        //     openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+        // }
     };
-    
+
+    save = (form, record)=> {
+        form.validateFields((error, row) => {
+            if (error) {
+                return;
+            }
+            const newData = [...this.state.dataSource];
+            const index = newData.findIndex(item => record.key === item.key);
+            if (index > -1) {
+                const item = newData[index];
+                row = {
+                    ...row,
+                    "MSNDT": item.MSNDT,
+                }
+                this.handleSaveEdit(row);
+            } else {
+                newData.push(row);
+                this.setState({ dataSource: newData, editingKey: '' });
+            }
+        });
+    }
+
+    cancel = () => {
+        this.setState({ editingKey: '' });
+    };
+
+    onEdit(key) {
+        this.setState({ editingKey: key });
+    }
+
     render() {
-        const { dataSource } = this.state;
         const components = {
             body: {
-                row: EditableFormRow,
                 cell: EditableCell,
             },
         };
+
         const columns = this.columns.map(col => {
             if (!col.editable) {
                 return col;
@@ -308,34 +295,47 @@ class AssetBond extends Component{
             return {
                 ...col,
                 onCell: record => ({
-                    record,
-                    editable: col.editable,
+                    record,  //setting type input (date, number ...)
+                    inputType: col.dataIndex === 'NGAYCAP' ? 'date' : (col.dataIndex === ('MS_LOAINDT' || 'MS_NGUOIGIOITHIEU') ? 'select' : 'text') ,
                     dataIndex: col.dataIndex,
                     title: col.title,
-                    handleSave: this.handleSave,
+                    editing: this.isEditing(record),
                 }),
             };
         });
+
         return(
             <div>
-                <ModalAssetBond isOpen={this.state.openModalAssetBond} isCloseModal={this.handleCloseModal}/>
-                <Alert style={{fontSize: 18, display: 'flex', alignContent: 'center', justifyContent: 'center'}} message="Trái phiếu" type="success" />
+                <ModalAssetBond isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData} investorTypeData={this.state.lstInvestorType}/>
                 <div className="p-top10" style={{padding: 10}}>
-                    <Button onClick={this.handleAdd} type="primary" style={{ marginBottom: 16 }}>
-                        Add a row
+                    <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
+                        <span>Thêm mới</span>
                     </Button>
-                    <Table
-                        components={components}
-                        rowClassName={() => 'editable-row'}
-                        bordered
-                        dataSource={dataSource}
-                        columns={columns}
-                        scroll={{x: '280%' }}
-                    />
+                    <EditableContext.Provider value={this.props.form}>
+                        <Table
+                            components={components}
+                            bordered
+                            dataSource={this.state.dataSource}
+                            columns={columns}
+                            size="small"
+                            pagination={{ pageSize: 15 }}
+                            rowClassName="editable-row"
+                            scroll={{x: '250%' }}
+                        />
+                    </EditableContext.Provider>
                 </div>
             </div>
         )
     }
 }
 
-export default AssetBond;
+const AssetBond = Form.create()(AssetBondF);
+
+const mapStateToProps = state =>{
+    return{
+        lstInvestorType: state.investorType.data
+    }
+}
+
+
+export default connect(mapStateToProps) (AssetBond);
