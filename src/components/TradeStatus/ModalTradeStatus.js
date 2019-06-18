@@ -29,6 +29,7 @@ class ModalTradeStatus extends Component{
 
     setModal2Visible =()=> {
         this.props.isCloseModal();
+        this.setState({isShowNotice: false});
     }
 
     handleCurrencyChange = currency => {
@@ -58,6 +59,7 @@ class ModalTradeStatus extends Component{
                         codeTradeStatus: '',
                         nameTradeStatus: '',
                         note: '',
+                        isShowNotice: false
                     });
                     await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
                 }

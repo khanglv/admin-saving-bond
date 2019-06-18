@@ -35,6 +35,7 @@ class ModalFeeTrade extends Component{
 
     setModal2Visible =()=> {
         this.props.isCloseModal();
+        this.setState({isShowNotice: false});
     }
 
     handleCurrencyChange = currency => {
@@ -62,13 +63,14 @@ class ModalFeeTrade extends Component{
                 }
                 const res = await createItemFeeTrade(dataTmp);
                 if (res.error) {
-                    openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
+                    openNotificationWithIcon('error', 'Thao tác thất bại :( ');
                 } else {
                     this.setState({
                         nameFeeTrade: '',
                         ratio: '',
                         dateOfApplication: moment(new Date(), dateFormat),
-                        note: ''
+                        note: '',
+                        isShowNotice: false
                     });
                     await this.props.reloadData();
                     await openNotificationWithIcon('success', 'Thao tác thành công ^^!');

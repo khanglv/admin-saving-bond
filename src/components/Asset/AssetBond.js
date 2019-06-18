@@ -1,11 +1,19 @@
 import React, {Component} from 'react';
 import { Table, Button, Popconfirm, Icon, Tooltip, Form, Tag} from 'antd';
 import ModalAssetBond from './ModalAssetBond';
-import {getListInvestor, updateItemInvestor, deleteItemInvestor} from '../../api/api';
+import {updateItemBondsAsset, deleteItemBondsAsset} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
-import {convertDDMMYYYY} from '../Common/Common';
+import * as common from '../Common/Common';
 
 import {connect} from 'react-redux';
+import {getListBondsAsset} from '../../stores/actions/bondsAssetAction';
+import {getListFrefix} from '../../stores/actions/prefixAction';
+import {getListContractVCSC} from '../../stores/actions/contractVCSCAction';
+import {getListCompany} from '../../stores/actions/companyAction';
+import {getListEnsureAsset} from '../../stores/actions/ensureAssetAction';
+import {getListPaymentTerm} from '../../stores/actions/paymentTermAction';
+import {getListDayInterestYear} from '../../stores/actions/dayInterestYearAction';
+import {getListBondType} from '../../stores/actions/bondTypeAction';
 
 class AssetBondF extends Component{
     constructor(props) {
@@ -50,7 +58,7 @@ class AssetBondF extends Component{
                 width: 150
             },
             {
-                title: 'SN tính lãi năm', //7
+                title: 'Ngày tính lãi năm', //7
                 dataIndex: 'total_day_interest',
                 width: 150
             },
@@ -167,7 +175,7 @@ class AssetBondF extends Component{
                                 <Tooltip title="Chỉnh sửa">
                                     <Icon type="edit" style={{color: editingKey === '' ? '#096dd9' : '#bfbfbf', fontSize: 16}} onClick={() => editingKey === '' && this.onEdit(record.key)}/>
                                 </Tooltip>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.MSLOAINDT)}>
+                                <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.BONDID)}>
                                     <Tooltip title="Xóa dòng này" className="pointer">
                                         <Icon type="delete" style={{color: editingKey === '' ? '#f5222d' : '#bfbfbf', fontSize: 16}}/>
                                     </Tooltip>
@@ -182,26 +190,65 @@ class AssetBondF extends Component{
         this.state = {
             dataSource: [],
             openModal: false,
-            lstInvestorType: [],
-            editingKey: ''
+            editingKey: '',
+            lstPrefix: [],
+            lstContractVCSC: [],
+            lstCompany: [],
+            lstEnsureAsset: [],
+            lstPaymentTerm: [],
+            lstBondType: [],
+            lstDayInterestYear: [],
         };
     }
 
     isEditing = record => record.key === this.state.editingKey;
 
+    async componentDidMount(){
+        try {
+            const lstPrefix = await this.props.getListPrefix();
+            const lstContractVCSC = await this.props.getListContractVCSC();
+            const lstCompany = await this.props.getListCompany();
+            const lstEnsureAsset = await this.props.getListEnsureAsset();
+            const lstPaymentTerm = await this.props.getListPaymentTerm();
+            const lstBondType = await this.props.getListBondType();
+            const lstDayInterestYear = await this.props.getListDayInterestYear();
+            this.setState(
+                {
+                    lstPrefix: lstPrefix.data,
+                    lstContractVCSC: lstContractVCSC.data,
+                    lstCompany: lstCompany.data,
+                    lstEnsureAsset: lstEnsureAsset.data,
+                    lstPaymentTerm: lstPaymentTerm.data,
+                    lstBondType: lstBondType.data,
+                    lstDayInterestYear: lstDayInterestYear.data,
+                }
+            );
+        } catch (error) {
+            common.notify('warning', 'Không thể load danh sách data :( ');
+        }
+        await this.loadData();
+    }
+
     loadData = async()=>{
         try {
-            const res = await getListInvestor();
-            const lstTmp = await (res.filter(item => item.FLAG === 1)).map((item, i) => {
-                return {
-                    ...item,
-                    "NGAYTAO": convertDDMMYYYY(item.NGAYTAO),
-                    "NGAYCAP": convertDDMMYYYY(item.NGAYCAP),
-                    "lstData": this.props.lstInvestorType,
-                    "key": i + 1
-                }
-            })
-            await this.setState({dataSource: lstTmp, editingKey: '' });
+            const res = await this.props.getListBondsAsset();
+            if(res.error){
+                common.notify('error', 'Thao tác thất bại :( ');
+            }else{
+                const lstTmp = await (res.data.filter(item => item.FLAG === 1)).map((item, i) => {
+                    return {
+                        ...item,
+                        "NGAYTAO": common.convertDDMMYYYY(item.NGAYTAO),
+                        "NGAYPH": common.convertDDMMYYYY(item.NGAYPH),
+                        "NGAY_DH": common.convertDDMMYYYY(item.NGAY_DH),
+                        "NGAY_KTPH": common.convertDDMMYYYY(item.NGAY_KTPH),
+                        "lstCompanyData": this.props.lstCompany,
+                        "lstBranchVCSCData": this.props.lstBranchVCSC,
+                        "key": i + 1
+                    }
+                })
+                this.setState({dataSource: lstTmp, editingKey: '' });
+            }
         } catch (error) {
             console.log("err load data " + error);
         }
@@ -221,35 +268,35 @@ class AssetBondF extends Component{
     }
 
     handleSaveEdit = async(data)=>{
-        // try {
-        //     const res = await updateItemInvestor(data);
-        //     if(res.error){
-        //         this.loadData();
-        //         openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
-        //     }else{
-        //         await this.loadData();
-        //         await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
-        //     }
-        // } catch (error) {
-        //     openNotificationWithIcon('error', 'Thao tác thất bại :( ');
-        // }
+        try {
+            const res = await updateItemBondsAsset(data);
+            if(res.error){
+                this.loadData();
+                common.notify('error', 'Thao tác thất bại :( ');
+            }else{
+                await this.loadData();
+                await common.notify('success', 'Thao tác thành công ^^!');
+            }
+        } catch (error) {
+            common.notify('error', 'Thao tác thất bại :( ');
+        }
     }
 
     handleDelete = async(id) => {
-        // try{
-        //     let dataTmp = {
-        //         "MSNDT": id
-        //     }
-        //     const res = await deleteItemInvestor(dataTmp);
-        //     if(res.error){
-        //         openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
-        //     }else{
-        //         await this.loadData();
-        //         await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
-        //     }
-        // }catch(err){
-        //     openNotificationWithIcon('error', 'Thao tác thất bại :( ');
-        // }
+        try{
+            let dataTmp = {
+                "BONDID": id
+            }
+            const res = await deleteItemBondsAsset(dataTmp);
+            if(res.error){
+                common.notify('error', 'Thao tác thất bại :( ' + res.error);
+            }else{
+                await this.loadData();
+                await common.notify('success', 'Thao tác thành công ^^!');
+            }
+        }catch(err){
+            common.notify('error', 'Thao tác thất bại :( ');
+        }
     };
 
     save = (form, record)=> {
@@ -263,7 +310,7 @@ class AssetBondF extends Component{
                 const item = newData[index];
                 row = {
                     ...row,
-                    "MSNDT": item.MSNDT,
+                    "BONDID": item.BONDID,
                 }
                 this.handleSaveEdit(row);
             } else {
@@ -306,7 +353,15 @@ class AssetBondF extends Component{
 
         return(
             <div>
-                <ModalAssetBond isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData} investorTypeData={this.state.lstInvestorType}/>
+                <ModalAssetBond isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}
+                    lstPrefixData={this.state.lstPrefix}
+                    lstContractVCSCData={this.state.lstContractVCSC}
+                    lstCompanyData={this.state.lstCompany}
+                    lstEnsureAssetData={this.state.lstEnsureAsset}
+                    lstPaymentTermData={this.state.lstPaymentTerm}
+                    lstBondTypeData={this.state.lstBondType}
+                    lstDayInterestYearData={this.state.lstDayInterestYear}
+                />
                 <div className="p-top10" style={{padding: 10}}>
                     <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
                         <span>Thêm mới</span>
@@ -333,9 +388,22 @@ const AssetBond = Form.create()(AssetBondF);
 
 const mapStateToProps = state =>{
     return{
-        lstInvestorType: state.investorType.data
+        lstCompany: state.company.data,
+        lstBranchVCSC: state.branchVCSC.data
     }
 }
 
+const mapDispatchToProps = dispatch =>{
+    return{
+        getListBondsAsset: ()=> dispatch(getListBondsAsset()),
+        getListPrefix: ()=> dispatch(getListFrefix()),
+        getListContractVCSC: ()=> dispatch(getListContractVCSC()),
+        getListCompany: ()=> dispatch(getListCompany()),
+        getListEnsureAsset: ()=> dispatch(getListEnsureAsset()),
+        getListPaymentTerm: ()=> dispatch(getListPaymentTerm()),
+        getListBondType: ()=> dispatch(getListBondType()),
+        getListDayInterestYear: ()=> dispatch(getListDayInterestYear()),
+    }
+}
 
-export default connect(mapStateToProps) (AssetBond);
+export default connect(mapStateToProps, mapDispatchToProps) (AssetBond);

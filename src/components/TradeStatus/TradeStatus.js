@@ -121,7 +121,7 @@ class TradeStatusF extends Component{
             const res = await updateItemTradeStatus(data);
             if(res.error){
                 this.loadData();
-                openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
+                openNotificationWithIcon('error', 'Thao tác thất bại :( ');
             }else{
                 await this.loadData();
                 await openNotificationWithIcon('success', 'Thao tác thành công ^^!');

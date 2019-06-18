@@ -15,6 +15,9 @@ import TradeStatus from '../components/TradeStatus/TradeStatus';
 import BranchVCSC from '../components/BranchVCSC/BranchVCSC';
 import InvestorType from '../components/InvestorType/InvestorType';
 import Investor from '../components/Investor/Investor';
+import InterestRate from '../components/InterestRate/InterestRate';
+import ContractVCSC from '../components/ContractVCSC/ContractVCSC';
+import DayInterestYear from '../components/DayInterestYear/DayInterestYear';
 
 import { Layout, Avatar, Card, Button } from 'antd';
 const { Meta } = Card;
@@ -49,6 +52,9 @@ export const FBranchVCSC = ()=> withSidebar(BranchVCSC)
 export const FInvestorType = ()=> withSidebar(InvestorType)
 export const FInvestor = ()=> withSidebar(Investor)
 export const FEnsureAsset = ()=> withSidebar(EnsureAsset)
+export const FInterestRate = ()=> withSidebar(InterestRate)
+export const FContractVCSC = ()=> withSidebar(ContractVCSC)
+export const FDayInterestYear = ()=> withSidebar(DayInterestYear)
 
 class HeaderCom extends Component{
     constructor(props){

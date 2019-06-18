@@ -21,7 +21,10 @@ import {
     FBranchVCSC,
     FInvestor,
     FInvestorType,
-    FEnsureAsset
+    FEnsureAsset,
+    FInterestRate,
+    FContractVCSC,
+    FDayInterestYear
 } from './MainGeneral';
 
 const accessTokenAuth = localStorage.getItem('accessTokenAuthKey');
@@ -71,6 +74,9 @@ class RouteURL extends Component{
                         <Route exact path="/branch-vcsc" component={FBranchVCSC} />
                         <Route exact path="/investor-type" component={FInvestorType} />
                         <Route exact path="/investor" component={FInvestor} />
+                        <Route exact path="/interest-rate" component={FInterestRate} />
+                        <Route exact path="/contract-vcsc" component={FContractVCSC} />
+                        <Route exact path="/day-interest-year" component={FDayInterestYear} />
                         {/* nhập sai đường dẫn */}
                         <Route exact path="*" component={Error404} />
                     </Switch>

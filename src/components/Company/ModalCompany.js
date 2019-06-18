@@ -41,6 +41,7 @@ class ModalCompany extends Component{
 
     setModal2Visible =()=> {
         this.props.isCloseModal();
+        this.setState({isShowNotice: false});
     }
 
     handleCurrencyChange = currency => {
@@ -76,7 +77,7 @@ class ModalCompany extends Component{
                 }
                 const res = await createItemCompany(dataTmp);
                 if(res.error){
-                    openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
+                    openNotificationWithIcon('error', 'Thao tác thất bại :( ');
                 }else{
                     await this.props.reloadData();
                     this.setState({
@@ -87,7 +88,8 @@ class ModalCompany extends Component{
                         email: '',
                         dateRange: moment(new Date(), dateFormat),
                         surrogate: '',
-                        status: 1
+                        status: 1,
+                        isShowNotice: false
                     });
                     await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
                 }

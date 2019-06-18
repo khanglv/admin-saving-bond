@@ -15,7 +15,13 @@ const URL_TRADE_STATUS = `${BASE_URL}/tradeStatus`;
 const URL_BRANCH_VCSC = `${BASE_URL}/branchVCSC`;
 const URL_INVESTOR = `${BASE_URL}/investors`;
 const URL_INVESTOR_TYPE = `${BASE_URL}/nhdtType`;
+const URL_ENSURE_ASSETS = `${BASE_URL}/ensureAssets`;
+const URL_DAY_INTEREST_YEAR = `${BASE_URL}/dateInterestYear`;
+const URL_BOND_ASSET = `${BASE_URL}/bonds`;
 const URL_ROOM_TYPE = `${BASE_URL}/roomType`;
+const URL_CONTRACT_VCSC = `${BASE_URL}/contractVCSC`;
+const URL_INTEREST_RATE = `${BASE_URL}/interestRate`;
+const URL_BOND_PRICE = `${BASE_URL}/bondPrice`;
 
 const TIME_OUT = 10000;
 
@@ -489,6 +495,150 @@ export const updateItemInvestor = (data)=>{
 export const deleteItemInvestor = (data)=>{
     const options = {
         url: URL_INVESTOR,
+        method: "DELETE",
+        data: data
+    }
+    return callApi(options);
+}
+
+//Tài sản đảm bảo
+export const getListEnsureAsset = ()=>{
+    const options = {
+        url: URL_ENSURE_ASSETS,
+        method: "GET",
+    }
+    return callApi(options);
+}
+
+export const createItemEnsureAsset = (data)=>{
+    const options = {
+        url: URL_ENSURE_ASSETS,
+        method: "POST",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const updateItemEnsureAsset = (data)=>{
+    const options = {
+        url: URL_ENSURE_ASSETS,
+        method: "PUT",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const deleteItemEnsureAsset = (data)=>{
+    const options = {
+        url: URL_ENSURE_ASSETS,
+        method: "DELETE",
+        data: data
+    }
+    return callApi(options);
+}
+
+//Hợp đồng mua VCSC
+export const getListContractVCSC = ()=>{
+    const options = {
+        url: URL_CONTRACT_VCSC,
+        method: "GET",
+    }
+    return callApi(options);
+}
+
+export const createItemContractVCSC = (data)=>{
+    const options = {
+        url: URL_CONTRACT_VCSC,
+        method: "POST",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const updateItemContractVCSC = (data)=>{
+    const options = {
+        url: URL_CONTRACT_VCSC,
+        method: "PUT",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const deleteItemContractVCSC = (data)=>{
+    const options = {
+        url: URL_CONTRACT_VCSC,
+        method: "DELETE",
+        data: data
+    }
+    return callApi(options);
+}
+
+//Ngày tính lãi trong năm
+export const getListDayInterestYear = ()=>{
+    const options = {
+        url: URL_DAY_INTEREST_YEAR,
+        method: "GET",
+    }
+    return callApi(options);
+}
+
+export const createItemDayInterestYear = (data)=>{
+    const options = {
+        url: URL_DAY_INTEREST_YEAR,
+        method: "POST",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const updateItemDayInterestYear = (data)=>{
+    const options = {
+        url: URL_DAY_INTEREST_YEAR,
+        method: "PUT",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const deleteItemDayInterestYear = (data)=>{
+    const options = {
+        url: URL_DAY_INTEREST_YEAR,
+        method: "DELETE",
+        data: data
+    }
+    return callApi(options);
+}
+
+//Trái phiếu
+export const getListBondsAsset = ()=>{
+    const options = {
+        url: URL_BOND_ASSET,
+        method: "GET",
+    }
+    return callApi(options);
+}
+
+export const createItemBondsAsset = (data)=>{
+    const options = {
+        url: URL_BOND_ASSET,
+        method: "POST",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const updateItemBondsAsset = (data)=>{
+    const options = {
+        url: URL_BOND_ASSET,
+        method: "PUT",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const deleteItemBondsAsset = (data)=>{
+    const options = {
+        url: URL_BOND_ASSET,
         method: "DELETE",
         data: data
     }

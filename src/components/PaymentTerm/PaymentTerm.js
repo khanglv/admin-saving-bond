@@ -21,11 +21,6 @@ class PaymentTermF extends Component{
                 dataIndex: 'key',
                 width: 30,
                 color: 'red'
-            },
-            {
-                title: 'MS kỳ hạn thanh toán', //2
-                dataIndex: 'MSKYHANTT',
-                width: 100,
             },  
             {
                 title: 'Loại thanh toán (tháng)', //3

@@ -41,6 +41,7 @@ class ModalInvestor extends Component{
 
     setModal2Visible =()=> {
         this.props.isCloseModal();
+        this.setState({isShowNotice: false});
     }
 
     handleCurrencyChange = currency => {
@@ -80,7 +81,7 @@ class ModalInvestor extends Component{
                 }
                 const res = await createItemInvestor(dataTmp);
                 if(res.error){
-                    openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
+                    openNotificationWithIcon('error', 'Thao tác thất bại :( ');
                 }else{
                     await this.props.reloadData();
                     this.setState({
@@ -91,6 +92,7 @@ class ModalInvestor extends Component{
                         dateRange: moment(new Date(), dateFormat),
                         issuedBy: '',
                         numberSecurities: '',
+                        isShowNotice: false
                     });
                     await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
                 }
@@ -134,11 +136,11 @@ class ModalInvestor extends Component{
                         validateStatus = {(this.state.codeInvestorType.length === 0 && this.state.isShowNotice)  ? "error" : null}
                         help = {(this.state.codeInvestorType.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                     >
-                        <Select showSearch placeholder="chọn Loại nhà đầu tư" onChange={event => this.updateSelectValue(event)}>
+                        <Select showSearch placeholder="Chọn loại nhà đầu tư" onChange={event => this.updateSelectValue(event)}>
                             {
                                 this.props.investorTypeData.map((item)=>{
                                     return(
-                                        <Option key={item.MSLOAINDT} value={item.MSLOAINDT}>{item.TENLOAI_NDT}</Option>
+                                        item.FLAG === 1 ? <Option key={item.MSLOAINDT} value={item.MSLOAINDT}>{item.TENLOAI_NDT}</Option> : null
                                     )
                                 })
                             }
@@ -177,7 +179,7 @@ class ModalInvestor extends Component{
                             {
                                 this.props.investorTypeData.map((item)=>{
                                     return(
-                                        <Option key={item.MSLOAINDT} value={item.MSLOAINDT}>{item.MSLOAINDT}</Option>
+                                        item.FLAG === 1 ? <Option key={item.MSLOAINDT} value={item.MSLOAINDT}>{item.MSLOAINDT}</Option> : null
                                     )
                                 })
                             }

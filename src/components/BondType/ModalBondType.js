@@ -30,6 +30,7 @@ class ModalBondType extends Component{
 
     setModal2Visible =()=> {
         this.props.isCloseModal();
+        this.setState({isShowNotice: false});
     }
 
     handleCurrencyChange = currency => {
@@ -52,13 +53,14 @@ class ModalBondType extends Component{
                 }
                 const res = await createItemBondType(dataTmp);
                 if (res.error) {
-                    openNotificationWithIcon('error', 'Thao tác thất bại - ' + res.error);
+                    openNotificationWithIcon('error', 'Thao tác thất bại ');
                 } else {
                     await this.props.reloadData();
                     this.setState({
                         codeBondType: '',
                         nameBondType: '',
-                        note: ''
+                        note: '',
+                        isShowNotice: false
                     });
                     await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
                 }

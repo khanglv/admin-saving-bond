@@ -29,6 +29,7 @@ class ModalBankInterest extends Component{
 
     setModal2Visible =()=> {
         this.props.isCloseModal();
+        this.setState({isShowNotice: false});
     }
 
     handleCurrencyChange = currency => {
@@ -55,7 +56,8 @@ class ModalBankInterest extends Component{
                     await this.props.reloadData();
                     this.setState({
                         nameBank: '',
-                        interest: ''
+                        interest: '',
+                        isShowNotice: false
                     });
                     await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
                 }

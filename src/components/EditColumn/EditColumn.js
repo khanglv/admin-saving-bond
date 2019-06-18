@@ -24,11 +24,31 @@ export class EditableCell extends React.Component {
         if (this.props.inputType === 'select') {
             switch(this.props.dataIndex){
                 case 'TENLOAI_NDT':
-                    return <Select style={{ width: '100%' }}>
+                    return <Select showSearch style={{ width: '100%' }}>
                         {
                             this.props.record.lstInvestorType.map((item) => {
                                 return (
-                                    <Option key={item.MSLOAINDT} value={item.MSLOAINDT}>{item.TENLOAI_NDT}</Option>
+                                    item.FLAG === 1 ? <Option key={item.MSLOAINDT} value={item.MSLOAINDT}>{item.TENLOAI_NDT}</Option> : null
+                                )
+                            })
+                        }
+                    </Select>
+                case 'MS_DN':
+                        return <Select showSearch style={{ width: '100%' }}>
+                        {
+                            this.props.record.lstCompanyData.map((item)=>{
+                                return(
+                                    item.FLAG === 1 ? <Option key={item.MSDN} value={item.MSDN}>{item.TEN_DN}</Option> : null
+                                )
+                            })
+                        }
+                    </Select>
+                case 'MS_CNVCSC':
+                        return <Select showSearch style={{ width: '100%' }}>
+                        {
+                            this.props.record.lstBranchVCSCData.map((item)=>{
+                                return(
+                                    item.FLAG === 1 ? <Option key={item.MSCNVCSC} value={item.MSCNVCSC}>{item.TENCHINHANH}</Option> : null
                                 )
                             })
                         }

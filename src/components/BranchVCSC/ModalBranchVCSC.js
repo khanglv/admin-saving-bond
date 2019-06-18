@@ -34,6 +34,7 @@ class ModalBranchVCSC extends Component{
 
     setModal2Visible =()=> {
         this.props.isCloseModal();
+        this.setState({isShowNotice: false});
     }
 
     handleCurrencyChange = currency => {
@@ -76,7 +77,8 @@ class ModalBranchVCSC extends Component{
                         email: '',
                         numberGPTL: '',
                         accountBank: '',
-                        nameBank: '' 
+                        nameBank: '',
+                        isShowNotice: false
                     });
                     await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
                 }

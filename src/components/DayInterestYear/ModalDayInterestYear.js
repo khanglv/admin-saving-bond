@@ -1,28 +1,21 @@
 import React, {Component} from 'react';
-import {createItemFrefix} from '../../api/api';
+import {createItemDayInterestYear} from '../../api/api';
 import { 
     Modal,
     Form,
-    Input,
-    notification
+    Input
 } from 'antd';
+import {notify} from '../Common/Common';
 
-const openNotificationWithIcon = (type, data) => {
-    notification[type]({
-        message: 'Thông báo',
-        description: data,
-    });
-};
-
-class ModalFrefix extends Component{
+class ModalDayInterestYear extends Component{
 
     constructor(props) {
         super(props);
         const value = props.value || {};
         this.state = {
             currency: value.currency || 'Open',
-            codeFrefix: '',
-            noteFrefix: '',
+            totalDayInterest: null,
+            note: '',
             isShowNotice: false
         };
     }
@@ -41,25 +34,29 @@ class ModalFrefix extends Component{
     }
 
     onHandleOk = async()=>{
-        try{
-            if(this.state.codeFrefix.length === 0){
+        try {
+            if(!this.state.totalDayInterest){
                 this.setState({isShowNotice: true});
             }else{
                 let dataTmp = {
-                    "KYTU_PREFIX": this.state.codeFrefix,
-                    "GHICHU": this.state.noteFrefix
+                    "SONGAYTINHLAI": this.state.totalDayInterest,
+                    "GHICHU": this.state.note
                 }
-                const res = await createItemFrefix(dataTmp);
+                const res = await createItemDayInterestYear(dataTmp);
                 if (res.error) {
-                    openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+                    notify('error', 'Thao tác thất bại :( ');
                 } else {
+                    this.setState({
+                        totalDayInterest: null,
+                        note: '',
+                        isShowNotice: false
+                    });
                     await this.props.reloadData();
-                    this.setState({codeFrefix: '', noteFrefix: '', isShowNotice: false});
-                    await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
+                    await notify('success', 'Thao tác thành công ^^!');
                 }
             }
-        }catch(err){
-            openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+        } catch (err) {
+            notify('error', 'Thao tác thất bại :( ');
         }
     }
 
@@ -77,7 +74,7 @@ class ModalFrefix extends Component{
 
         return(
             <Modal
-                title="Frefix"
+                title="Phí giao dịch"
                 centered
                 visible={this.props.isOpen}
                 onOk={() => this.onHandleOk()}
@@ -85,14 +82,15 @@ class ModalFrefix extends Component{
                 size="lg"
             >
                 <Form {...formItemLayout}>
-                    <Form.Item label="* Ký tự" 
-                        validateStatus = {(this.state.codeFrefix.length === 0 && this.state.isShowNotice)  ? "error" : null}
-                        help = {(this.state.codeFrefix.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                    <Form.Item 
+                        label="* Số ngày tính lãi"
+                        validateStatus = {(this.state.totalDayInterest === null && this.state.isShowNotice)  ? "error" : null}
+                        help = {(this.state.totalDayInterest === null && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                     >
-                        <Input name="codeFrefix" placeholder="Ký tự frefix" value={this.state.codeFrefix} onChange={event => this.updateInputValue(event)}/>
+                        <Input name="totalDayInterest" type="number" placeholder="Số ngày tính lãi" value={this.state.totalDayInterest} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
                     <Form.Item label="Ghi chú">
-                        <Input name="noteFrefix" placeholder="Ghi chú" value={this.state.noteFrefix} onChange={event => this.updateInputValue(event)}/>
+                        <Input name="note" placeholder="Ghi chú" value={this.state.note} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
                 </Form>
             </Modal>
@@ -100,4 +98,4 @@ class ModalFrefix extends Component{
     }
 }
 
-export default ModalFrefix;
+export default ModalDayInterestYear;

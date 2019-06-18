@@ -6,8 +6,8 @@ import { withRouter } from "react-router";
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 const LIST_ROUTE_CONFIG = ['/frefix', '/company', '/payment-term', '/bank-interest', '/fee-trade', '/bond-type', '/command-type', 
-                           '/trade-status', '/branch-vcsc', '/investor-type', '/investor'];
-const LIST_ROUTE_GENERAL = ['/asset-bond', '/ensure-asset'];
+                           '/trade-status', '/branch-vcsc', '/investor-type', '/investor', '/interest-rate'];
+const LIST_ROUTE_GENERAL = ['/asset-bond', '/ensure-asset', '/contract-vcsc', '/day-interest-year'];
 
 const checkRouteOpenDefaultKey = ()=> {
     for(let i = 0; i < LIST_ROUTE_CONFIG.length; i++){
@@ -55,7 +55,13 @@ class SiderBarMenu extends Component {
                 break;
             case "/ensure-asset":
                 this.props.history.push('/ensure-asset');
-                break;    
+                break;
+            case "/contract-vcsc":
+                this.props.history.push('/contract-vcsc');
+                break;
+            case "/day-interest-year":
+                this.props.history.push('/day-interest-year');
+                break;
             case "/frefix":
                 this.props.history.push('/frefix');
                 break;
@@ -89,6 +95,9 @@ class SiderBarMenu extends Component {
             case "/investor":
                 this.props.history.push('/investor');
                 break;
+            case "/interest-rate":
+                this.props.history.push('/interest-rate');
+                break;    
             default:
                 break;
         }
@@ -119,7 +128,7 @@ class SiderBarMenu extends Component {
                             }
                         >
                             <Menu.Item key="/frefix">
-                                <span className="middle-text">Frefix</span>
+                                <span className="middle-text">Prefix</span>
                             </Menu.Item>
                             <Menu.Item key="/company">
                                 <span className="middle-text">Công ty</span>
@@ -151,6 +160,9 @@ class SiderBarMenu extends Component {
                             <Menu.Item key="/investor">
                                 <span className="middle-text">Nhà đầu tư</span>
                             </Menu.Item>
+                            <Menu.Item key="/interest-rate">
+                                <span className="middle-text">Lãi suất</span>
+                            </Menu.Item>
                         </SubMenu>
                         <SubMenu
                             key="general"
@@ -166,6 +178,12 @@ class SiderBarMenu extends Component {
                             </Menu.Item>
                             <Menu.Item key="/ensure-asset">
                                 <span className="middle-text">Tài sản đảm bảo</span>
+                            </Menu.Item>
+                            <Menu.Item key="/contract-vcsc">
+                                <span className="middle-text">Hợp đồng mua VCSC</span>
+                            </Menu.Item>
+                            <Menu.Item key="/day-interest-year">
+                                <span className="middle-text">Ngày tính lãi trong năm</span>
                             </Menu.Item>
                         </SubMenu>
                     </Menu>

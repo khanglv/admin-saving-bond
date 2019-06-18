@@ -1,18 +1,11 @@
 import React, {Component} from 'react';
-import {createItemBondType} from '../../api/api';
+import {createItemEnsureAsset} from '../../api/api';
+import {notify} from '../Common/Common';
 import { 
     Modal,
     Form,
     Input,
-    notification,
 } from 'antd';
-
-const openNotificationWithIcon = (type, data) => {
-    notification[type]({
-        message: 'Thông báo',
-        description: data,
-    });
-};
 
 class ModalEnsureAsset extends Component{
 
@@ -21,8 +14,7 @@ class ModalEnsureAsset extends Component{
         const value = props.value || {};
         this.state = {
             currency: value.currency || 'Open',
-            codeBondType: '',
-            nameBondType: '',
+            nameEnsureAsset: '',
             note: '',
             isShowNotice: false
         };
@@ -30,6 +22,7 @@ class ModalEnsureAsset extends Component{
 
     setModal2Visible =()=> {
         this.props.isCloseModal();
+        this.setState({isShowNotice: false});
     }
 
     handleCurrencyChange = currency => {
@@ -42,29 +35,28 @@ class ModalEnsureAsset extends Component{
 
     onHandleOk = async()=>{
         try {
-            if(!this.state.codeBondType|| !this.state.nameBondType){
+            if(!this.state.nameEnsureAsset){
                 this.setState({isShowNotice: true});
             }else{
                 let dataTmp = {
-                    "MSLTP": this.state.codeBondType,
-                    "TENLOAI_TP": this.state.nameBondType,
+                    "TENTAISANDAMBAO": this.state.nameEnsureAsset,
                     "GHICHU": this.state.note
                 }
-                const res = await createItemBondType(dataTmp);
+                const res = await createItemEnsureAsset(dataTmp);
                 if (res.error) {
-                    openNotificationWithIcon('error', 'Thao tác thất bại - ' + res.error);
+                    notify('error', 'Thao tác thất bại - ' + res.error);
                 } else {
                     await this.props.reloadData();
                     this.setState({
-                        codeBondType: '',
-                        nameBondType: '',
-                        note: ''
+                        nameEnsureAsset: '',
+                        note: '',
+                        isShowNotice: false
                     });
-                    await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
+                    await notify('success', 'Thao tác thành công ^^!');
                 }
             }
         } catch (err) {
-            openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+            notify('error', 'Thao tác thất bại :( ');
         }
     }
 
@@ -91,18 +83,11 @@ class ModalEnsureAsset extends Component{
             >
                 <Form {...formItemLayout}>
                     <Form.Item 
-                        label="* MS loại trái phiếu"
-                        validateStatus = {(this.state.codeBondType.length === 0 && this.state.isShowNotice)  ? "error" : null}
-                        help = {(this.state.codeBondType.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                        label="* Tên tài sản đảm bảo"
+                        validateStatus = {(this.state.nameEnsureAsset.length === 0 && this.state.isShowNotice)  ? "error" : null}
+                        help = {(this.state.nameEnsureAsset.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                     >
-                        <Input name="codeBondType" placeholder="Mã số loại trái phiếu" value={this.state.codeBondType} onChange={event => this.updateInputValue(event)}/>
-                    </Form.Item>
-                    <Form.Item 
-                        label="* Tên loại trái phiếu"
-                        validateStatus = {(this.state.nameBondType.length === 0 && this.state.isShowNotice)  ? "error" : null}
-                        help = {(this.state.nameBondType.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
-                    >
-                        <Input name="nameBondType" placeholder="Tên loại trái phiếu" value={this.state.nameBondType} onChange={event => this.updateInputValue(event)}/>
+                        <Input name="nameEnsureAsset" placeholder="Tên tài sản đảm bảo" value={this.state.nameEnsureAsset} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
                     <Form.Item label="Ghi chú">
                         <Input name="note" placeholder="Ghi chú" value={this.state.note} onChange={event => this.updateInputValue(event)}/>

@@ -28,6 +28,12 @@ class TradeStatusF extends Component{
                 width: 100
             },
             {
+                title: 'Tên chi nhánh', //3
+                dataIndex: 'TENCHINHANH',
+                editable: true,
+                width: 100
+            },
+            {
                 title: 'Người đại diện', //3
                 dataIndex: 'NGUOIDAIDIEN',
                 editable: true,
@@ -150,7 +156,7 @@ class TradeStatusF extends Component{
             const res = await updateItemBranchVCSC(data);
             if(res.error){
                 this.loadData();
-                openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
+                openNotificationWithIcon('error', 'Thao tác thất bại :( ');
             }else{
                 await this.loadData();
                 await openNotificationWithIcon('success', 'Thao tác thành công ^^!');

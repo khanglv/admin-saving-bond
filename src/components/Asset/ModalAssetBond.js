@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {createItemInvestor} from '../../api/api';
+import {createItemBondsAsset} from '../../api/api';
 import { 
     Modal,
     Form,
@@ -30,7 +30,8 @@ class ModalAssetBond extends Component{
         const value = props.value || {};
         this.state = {
             currency: value.currency || 'Open',
-            codeInvestor: '',
+            isTypePrefix: true,
+            codeBond: '',
             codeInvestorType: '',
             nameOfInvestor: '',
             papers: '',
@@ -44,11 +45,18 @@ class ModalAssetBond extends Component{
 
     setModal2Visible =()=> {
         this.props.isCloseModal();
+        this.setState({isShowNotice: false});
     }
 
     handleCurrencyChange = currency => {
         this.setState({ currency });
     };
+
+    onChangeCheckbox = ()=>{
+        this.setState((prew) => ({
+            isTypePrefix: !prew.isTypePrefix
+        }))
+    }
 
     updateInputValue = (event)=>{
         this.setState({[event.target.name]: event.target.value});
@@ -81,7 +89,7 @@ class ModalAssetBond extends Component{
                     "SO_TKCK": this.state.numberSecurities,
                     "MS_NGUOIGIOITHIEU": this.state.codeOfPresenter
                 }
-                const res = await createItemInvestor(dataTmp);
+                const res = await createItemBondsAsset(dataTmp);
                 if(res.error){
                     openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
                 }else{
@@ -94,6 +102,7 @@ class ModalAssetBond extends Component{
                         dateRange: moment(new Date(), dateFormat),
                         issuedBy: '',
                         numberSecurities: '',
+                        isShowNotice: false
                     });
                     await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
                 }
@@ -129,83 +138,116 @@ class ModalAssetBond extends Component{
                         <Form {...formItemLayout}>
                             <Form.Item
                                 label="* Mã số trái phiếu"
-                                validateStatus={(this.state.codeInvestor.length === 0 && this.state.isShowNotice) ? "error" : null}
-                                help={(this.state.codeInvestor.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                                // validateStatus={(this.state.codeInvestor.length === 0 && this.state.isShowNotice) ? "error" : null}
+                                // help={(this.state.codeInvestor.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                             >
-                                <Input name="codeInvestor" placeholder="Típ đầu ngữ mã số trái phiếu" value={this.state.codeInvestor} onChange={event => this.updateInputValue(event)} />
+                                <Select showSearch placeholder="Típ đầu ngữ mã số trái phiếu" onChange={event => this.updateSelectValue(event)}>
+                                    {
+                                        this.props.lstPrefixData.map((item) => {
+                                            return (
+                                                <Option key={item.PREFIX_ID} value={item.PREFIX_ID}>{item.KYTU_PREFIX}</Option>
+                                            )
+                                        })
+                                    }
+                                </Select>
                             </Form.Item>
                             <Form.Item
                                 label="Prefix"
                                 validateStatus="warning"
                             >
-                                <Input name="codeInvestor" disabled placeholder="Mã Prefix nhập khi muốn tạo mới" value={this.state.codeInvestor} onChange={event => this.updateInputValue(event)} />
-                                <Checkbox>Tạo mới prefix</Checkbox>
+                                <Input name="codeInvestor" disabled={this.state.isTypePrefix} placeholder="Mã Prefix nhập khi muốn tạo mới" value={this.state.codeInvestor} onChange={event => this.updateInputValue(event)} />
+                                <Checkbox onChange={this.onChangeCheckbox}>Tạo mới prefix</Checkbox>
                             </Form.Item>
                             <Form.Item
                                 label="* Số Hợp đồng"
-                                validateStatus={(this.state.codeInvestorType.length === 0 && this.state.isShowNotice) ? "error" : null}
-                                help={(this.state.codeInvestorType.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                                // validateStatus={(this.state.codeInvestorType.length === 0 && this.state.isShowNotice) ? "error" : null}
+                                // help={(this.state.codeInvestorType.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                             >
                                 <Select showSearch placeholder="Số hợp đồng" onChange={event => this.updateSelectValue(event)}>
                                     {
-                                        this.props.investorTypeData.map((item) => {
+                                        this.props.lstContractVCSCData.map((item) => {
                                             return (
-                                                <Option key={item.MSLOAINDT} value={item.MSLOAINDT}>{item.MSLOAINDT}</Option>
+                                                <Option key={item.SOHD} value={item.SOHD}>{item.SOHD}</Option>
                                             )
                                         })
                                     }
                                 </Select>
                             </Form.Item>
                             <Form.Item
-                                label="* MS Doanh Nghiệp"
-                                validateStatus={(this.state.nameOfInvestor.length === 0 && this.state.isShowNotice) ? "error" : null}
-                                help={(this.state.nameOfInvestor.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                                label="* Doanh Nghiệp"
+                                // validateStatus={(this.state.nameOfInvestor.length === 0 && this.state.isShowNotice) ? "error" : null}
+                                // help={(this.state.nameOfInvestor.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                             >
-                                <Input name="nameOfInvestor" placeholder="Mã số doanh nghiệp" value={this.state.nameOfInvestor} onChange={event => this.updateInputValue(event)} />
-                            </Form.Item>
-                            <Form.Item
-                                label="* MS Kì hạn vay"
-                            >
-                                <DatePicker name="dateRange" value={this.state.dateRange} format={dateFormat} onChange={this.updateInputDate} />
-                            </Form.Item>
-                            <Form.Item
-                                label="* MS Kì hạn thanh toán"
-                                validateStatus={(this.state.numberSecurities.length === 0 && this.state.isShowNotice) ? "error" : null}
-                                help={(this.state.numberSecurities.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
-                            >
-                                <Input name="numberSecurities" placeholder="Số tài khoản chứng khoán" value={this.state.numberSecurities} onChange={event => this.updateInputValue(event)} />
-                            </Form.Item>
-                            <Form.Item label="* MS Loại trái phiếu">
-                                <Select showSearch placeholder="Mã số loại trái phiếu" onChange={event => this.updateSelectcodeOfPresenter(event)}>
+                                <Select showSearch placeholder="Số hợp đồng" onChange={event => this.updateSelectValue(event)}>
                                     {
-                                        this.props.investorTypeData.map((item) => {
+                                        this.props.lstCompanyData.map((item) => {
                                             return (
-                                                <Option key={item.MSLOAINDT} value={item.MSLOAINDT}>{item.MSLOAINDT}</Option>
+                                                <Option key={item.MSDN} value={item.MSDN}>{item.TEN_DN}</Option>
                                             )
                                         })
                                     }
                                 </Select>
                             </Form.Item>
                             <Form.Item
-                                label="* MS Kì hạn thanh toán"
-                                validateStatus={(this.state.numberSecurities.length === 0 && this.state.isShowNotice) ? "error" : null}
-                                help={(this.state.numberSecurities.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                                label="* Tài sản đảm bảo"
                             >
-                                <Input name="numberSecurities" placeholder="Số tài khoản chứng khoán" value={this.state.numberSecurities} onChange={event => this.updateInputValue(event)} />
+                                <Select showSearch placeholder="Tài sản đảm bảo" onChange={event => this.updateSelectValue(event)}>
+                                    {
+                                        this.props.lstEnsureAssetData.map((item) => {
+                                            return (
+                                                <Option key={item.MSTSDB} value={item.MSTSDB}>{item.TENTAISANDAMBAO}</Option>
+                                            )
+                                        })
+                                    }
+                                </Select>
                             </Form.Item>
                             <Form.Item
-                                label="* MS Ngày tính lãi/năm"
-                                validateStatus={(this.state.numberSecurities.length === 0 && this.state.isShowNotice) ? "error" : null}
-                                help={(this.state.numberSecurities.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                                label="* Kì hạn thanh toán"
+                                // validateStatus={(this.state.numberSecurities.length === 0 && this.state.isShowNotice) ? "error" : null}
+                                // help={(this.state.numberSecurities.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                             >
-                                <Input name="numberSecurities" placeholder="Mã số ngày tính lãi trong năm" value={this.state.numberSecurities} onChange={event => this.updateInputValue(event)} />
+                                <Select showSearch placeholder="Kỳ hạn thanh toán" onChange={event => this.updateSelectValue(event)}>
+                                    {
+                                        this.props.lstPaymentTermData.map((item) => {
+                                            return (
+                                                <Option key={item.MSKYHANTT} value={item.MSKYHANTT}>{item.LOAI_TT}</Option>
+                                            )
+                                        })
+                                    }
+                                </Select>
+                            </Form.Item>
+                            <Form.Item label="* Loại trái phiếu">
+                                <Select showSearch placeholder="Loại trái phiếu" onChange={event => this.updateSelectcodeOfPresenter(event)}>
+                                    {
+                                        this.props.lstBondTypeData.map((item) => {
+                                            return (
+                                                <Option key={item.MSLTP} value={item.MSLTP}>{item.TENLOAI_TP}</Option>
+                                            )
+                                        })
+                                    }
+                                </Select>
                             </Form.Item>
                             <Form.Item
-                                label="* Lãi suất, hoa hồng"
+                                label="* Ngày tính lãi/năm"
+                                // validateStatus={(this.state.numberSecurities.length === 0 && this.state.isShowNotice) ? "error" : null}
+                                // help={(this.state.numberSecurities.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                            >
+                                <Select showSearch placeholder="Ngày tính lãi trong năm" onChange={event => this.updateSelectcodeOfPresenter(event)}>
+                                    {
+                                        this.props.lstDayInterestYearData.map((item) => {
+                                            return (
+                                                <Option key={item.MSNTLTN} value={item.MSNTLTN}>{item.SONGAYTINHLAI}</Option>
+                                            )
+                                        })
+                                    }
+                                </Select>
+                            </Form.Item>
+                            <Form.Item
+                                label="* Lãi suất hợp đồng"
                                 validateStatus={(this.state.numberSecurities.length === 0 && this.state.isShowNotice) ? "error" : null}
                                 help={(this.state.numberSecurities.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                             >
-                                <Input name="numberSecurities" placeholder="Lãi suất, hoa hồng" value={this.state.numberSecurities} onChange={event => this.updateInputValue(event)} />
+                                <Input name="numberSecurities" placeholder="Lãi suất theo hợp đồng" value={this.state.numberSecurities} onChange={event => this.updateInputValue(event)} />
                             </Form.Item>
                             <Form.Item
                                 label="Mã viết tắt"

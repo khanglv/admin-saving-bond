@@ -1,20 +1,15 @@
 import React, {Component} from 'react';
-import { Table, Button, Popconfirm, notification, Icon, Tooltip, Form, Tag} from 'antd';
-import ModalInvestorType from './ModalInvestorType';
-import { getListInvestorType, updateItemInvestorType, deleteItemInvestorType} from '../../api/api';
+import { Table, Button, Popconfirm, Icon, Tooltip, Form, Tag} from 'antd';
+import ModalContractVCSC from './ModalContractVCSC';
+import {updateItemContractVCSC, deleteItemContractVCSC} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
-import {convertDDMMYYYY} from '../Common/Common';
-
+import * as common from '../Common/Common';
 import {connect} from 'react-redux';
+import {getListContractVCSC} from '../../stores/actions/contractVCSCAction';
+import {getListCompany} from '../../stores/actions/companyAction';
+import {getListBranchVCSC} from '../../stores/actions/branchVCSCAction';
 
-const openNotificationWithIcon = (type, data) => {
-    notification[type]({
-        message: 'Thông báo',
-        description: data,
-    });
-};
-
-class InvestorTypeF extends Component{
+class ContractVCSCF extends Component{
     constructor(props) {
         super(props);
         this.columns = [
@@ -22,46 +17,70 @@ class InvestorTypeF extends Component{
                 title: 'STT',
                 dataIndex: 'key',
                 width: 30,
-                color: 'red'
+                color: 'red',
             },
             {
-                title: 'MS loại nhà đầu tư', //2
-                dataIndex: 'MSLOAINDT',
-                width: 100,
-            },  
+                title: 'Số hợp đồng', //3
+                dataIndex: 'SOHD',
+                editable: true,
+                width: 150
+            },
             {
-                title: 'Tên loại nhà đầu tư', //3
-                dataIndex: 'TENLOAI_NDT',
+                title: 'Doanh nghiệp', //3
+                dataIndex: 'TEN_DN',
+                editable: true,
+                width: 200
+            },
+            {
+                title: 'Chi nhánh VCSC', //3
+                dataIndex: 'TENCHINHANH',
+                editable: true,
+                width: 150
+            },
+            {
+                title: 'Ngày ký', //3
+                dataIndex: 'NGAYKY',
+                editable: true,
+                width: 150
+            },
+            {
+                title: 'Lãi suất', //3
+                dataIndex: 'LAISUAT',
                 editable: true,
                 width: 100
             },
             {
-                title: 'Ghi chú',
-                dataIndex: 'GHICHU',
+                title: 'Kỳ hạn (tháng)', //3
+                dataIndex: 'KYHAN',
                 editable: true,
                 width: 100
             },
             {
-                title: 'Trạng thái', //3
-                dataIndex: 'TRANGTHAI',
+                title: 'Ngày phát hành', //3
+                dataIndex: 'NGAY_PH',
                 editable: true,
-                width: 50,
-                render: TRANGTHAI =>{
-                    let type = "check-circle";
-                    let color = "green";
-                    if(TRANGTHAI === 0){
-                        type="stop";
-                        color="#faad14"
-                    }
-                    return(
-                        <div>
-                            <Icon type={type} style={{color: color}} theme="filled" />
-                        </div>
-                    )
-                }
+                width: 150
             },
             {
-                title: 'Ngày tạo',
+                title: 'Ngày đáo hạn', //3
+                dataIndex: 'NGAY_DH',
+                editable: true,
+                width: 150
+            },
+            {
+                title: 'M.Giá T.Phiếu', //3
+                dataIndex: 'MENHGIA_TP',
+                editable: true,
+                width: 150
+            },
+            {
+                title: 'S.Lượng P.Hành', //3
+                dataIndex: 'SOLUONG_PH',
+                editable: true,
+                width: 150
+            },
+            {
+                title: 'Ngày tạo', //4
                 dataIndex: 'NGAYTAO',
                 width: 100
             },
@@ -86,7 +105,7 @@ class InvestorTypeF extends Component{
                                 <Tooltip title="Chỉnh sửa">
                                     <Icon type="edit" style={{color: editingKey === '' ? '#096dd9' : '#bfbfbf', fontSize: 16}} onClick={() => editingKey === '' && this.onEdit(record.key)}/>
                                 </Tooltip>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.MSLOAINDT)}>
+                                <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.SOHD)}>
                                     <Tooltip title="Xóa dòng này" className="pointer">
                                         <Icon type="delete" style={{color: editingKey === '' ? '#f5222d' : '#bfbfbf', fontSize: 16}}/>
                                     </Tooltip>
@@ -95,34 +114,53 @@ class InvestorTypeF extends Component{
                          : null
                     )
                 },
-                width: 100
+                width: 150
             },
         ];
         
         this.state = {
             dataSource: [],
             openModal: false,
-            editingKey: ''
+            editingKey: '',
+            lstCompany: [],
+            lstBranchVCSC: []
         };
     }
 
     isEditing = record => record.key === this.state.editingKey;
 
-    componentDidMount(){
-        this.loadData();
+    async componentDidMount(){
+        try {
+            const lstCompany = await this.props.getListCompany();
+            const lstBranchVCSC = await this.props.getListBranchVCSC();
+            this.setState({lstCompany: lstCompany.data, lstBranchVCSC: lstBranchVCSC.data});
+        } catch (error) {
+            common.notify('warning', 'Không thể load danh sách doanh nghiệp hoặc chi nhánh VCSC :( ');
+        }
+        await this.loadData();
     }
 
     loadData = async()=>{
         try {
-            const res = await getListInvestorType();
-            const lstTmp = await (res.filter(item => item.FLAG === 1)).map((item, i) => {
-                return {
-                    ...item,
-                    "NGAYTAO": convertDDMMYYYY(item.NGAYTAO),
-                    "key": i + 1
-                }
-            })
-            await this.setState({dataSource: lstTmp, editingKey: '' });
+            const res = await this.props.getListContractVCSC();
+            if(res.error){
+                common.notify('error', 'Thao tác thất bại :( ');
+            }else{
+                const lstTmp = await (res.data.filter(item => item.FLAG === 1)).map((item, i) => {
+                    return {
+                        ...item,
+                        "NGAYTAO": common.convertDDMMYYYY(item.NGAYTAO),
+                        "NGAYKY": common.convertDDMMYYYY(item.NGAYKY),
+                        "NGAY_PH": common.convertDDMMYYYY(item.NGAY_PH),
+                        "NGAY_DH": common.convertDDMMYYYY(item.NGAY_DH),
+                        "lstCompanyData": this.props.lstCompany,
+                        "lstBranchVCSCData": this.props.lstBranchVCSC,
+                        "key": i + 1
+                    }
+                })
+                this.setState({dataSource: lstTmp, editingKey: '' });
+            }
+            
         } catch (error) {
             console.log("err load data " + error);
         }
@@ -143,33 +181,33 @@ class InvestorTypeF extends Component{
 
     handleSaveEdit = async(data)=>{
         try {
-            const res = await updateItemInvestorType(data);
+            const res = await updateItemContractVCSC(data);
             if(res.error){
                 this.loadData();
-                openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+                common.notify('error', 'Thao tác thất bại :( ');
             }else{
                 await this.loadData();
-                await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
+                await common.notify('success', 'Thao tác thành công ^^!');
             }
         } catch (error) {
-            openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+            common.notify('error', 'Thao tác thất bại :( ');
         }
     }
 
     handleDelete = async(id) => {
         try{
             let dataTmp = {
-                "MSLOAINDT": id
+                "SOHD": id
             }
-            const res = await deleteItemInvestorType(dataTmp);
+            const res = await deleteItemContractVCSC(dataTmp);
             if(res.error){
-                openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+                common.notify('error', 'Thao tác thất bại :( ');
             }else{
                 await this.loadData();
-                await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
+                await common.notify('success', 'Thao tác thành công ^^!');
             }
         }catch(err){
-            openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+            common.notify('error', 'Thao tác thất bại :( ');
         }
     };
 
@@ -184,7 +222,7 @@ class InvestorTypeF extends Component{
                 const item = newData[index];
                 row = {
                     ...row,
-                    "MSLOAINDT": item.MSLOAINDT
+                    "SOHD": item.SOHD
                 }
                 this.handleSaveEdit(row);
             } else {
@@ -216,8 +254,8 @@ class InvestorTypeF extends Component{
             return {
                 ...col,
                 onCell: record => ({
-                    record,  //setting type input (date, number ...)
-                    inputType: col.dataIndex === 'NGAYCAP_GP' ? 'date' : (col.dataIndex === 'TRANGTHAI' ? 'options' : 'text') ,
+                    record,
+                    inputType: ['NGAYKY', 'NGAY_PH', 'NGAY_DH'].indexOf(col.dataIndex) > -1 ? 'date' : ['MS_DN', 'MS_CNVCSC'].indexOf(col.dataIndex) > -1 ? 'select' : 'text' ,
                     dataIndex: col.dataIndex,
                     title: col.title,
                     editing: this.isEditing(record),
@@ -227,7 +265,10 @@ class InvestorTypeF extends Component{
 
         return(
             <div>
-                <ModalInvestorType isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}/>
+                <ModalContractVCSC 
+                    isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}
+                    lstCompanyData={this.state.lstCompany} lstBranchVCSCData={this.state.lstBranchVCSC}
+                />
                 <div className="p-top10" style={{padding: 10}}>
                     <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
                         <span>Thêm mới</span>
@@ -249,18 +290,21 @@ class InvestorTypeF extends Component{
     }
 }
 
-const InvestorType = Form.create()(InvestorTypeF);
+const ContractVCSC = Form.create()(ContractVCSCF);
 
 const mapStateToProps = state =>{
     return{
-        lstInvestorType: state.investorType.data
+        lstCompany: state.company.data,
+        lstBranchVCSC: state.branchVCSC.data
     }
 }
 
 const mapDispatchToProps = dispatch =>{
     return{
-        getLstInvestorType: ()=> dispatch(getListInvestorType()),
+        getListContractVCSC: ()=> dispatch(getListContractVCSC()),
+        getListCompany: ()=> dispatch(getListCompany()),
+        getListBranchVCSC: ()=> dispatch(getListBranchVCSC()),
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps) (InvestorType);
+export default connect(mapStateToProps, mapDispatchToProps) (ContractVCSC);

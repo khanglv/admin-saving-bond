@@ -1,16 +1,11 @@
 import React, {Component} from 'react';
-import { Table, Button, Popconfirm, notification, Icon, Tooltip, Form, Tag} from 'antd';
+import { Table, Button, Popconfirm, Icon, Tooltip, Form, Tag} from 'antd';
 import ModalEnsureAsset from './ModalEnsureAsset';
-import {getListBondType, updateItemBondType, deleteItemBondType} from '../../api/api';
+import {updateItemEnsureAsset, deleteItemEnsureAsset} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
-import {convertDDMMYYYY} from '../Common/Common';
-
-const openNotificationWithIcon = (type, data) => {
-    notification[type]({
-        message: 'Thông báo',
-        description: data,
-    });
-};
+import * as common from '../Common/Common';
+import {connect} from 'react-redux';
+import {getListEnsureAsset} from '../../stores/actions/ensureAssetAction';
 
 class EnsureAssetF extends Component{
     constructor(props) {
@@ -23,13 +18,8 @@ class EnsureAssetF extends Component{
                 color: 'red'
             },
             {
-                title: 'MS loại trái phiếu', //2
-                dataIndex: 'MSLTP',
-                width: 100,
-            },  
-            {
-                title: 'Tên loại trái phiếu', //3
-                dataIndex: 'TENLOAI_TP',
+                title: 'Tên tài sản đảm bảo', //3
+                dataIndex: 'TENTAISANDAMBAO',
                 editable: true,
                 width: 100
             },
@@ -65,7 +55,7 @@ class EnsureAssetF extends Component{
                                 <Tooltip title="Chỉnh sửa">
                                     <Icon type="edit" style={{color: editingKey === '' ? '#096dd9' : '#bfbfbf', fontSize: 16}} onClick={() => editingKey === '' && this.onEdit(record.key)}/>
                                 </Tooltip>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.MSLTP)}>
+                                <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.MSTSDB)}>
                                     <Tooltip title="Xóa dòng này" className="pointer">
                                         <Icon type="delete" style={{color: editingKey === '' ? '#f5222d' : '#bfbfbf', fontSize: 16}}/>
                                     </Tooltip>
@@ -94,15 +84,20 @@ class EnsureAssetF extends Component{
 
     loadData = async()=>{
         try {
-            const res = await getListBondType();
-            const lstTmp = await (res.filter(item => item.FLAG === 1)).map((item, i) => {
-                return {
-                    ...item,
-                    "NGAYTAO": convertDDMMYYYY(item.NGAYTAO),
-                    "key": i + 1
-                }
-            })
-            await this.setState({dataSource: lstTmp, editingKey: '' });
+            const res = await this.props.getLstEnsureAsset();
+            if(res.error){
+                common.notify('error', 'Thao tác thất bại :( ');
+            }else{
+                const lstTmp = await (res.data.filter(item => item.FLAG === 1)).map((item, i) => {
+                    return {
+                        ...item,
+                        "NGAYTAO": common.convertDDMMYYYY(item.NGAYTAO),
+                        "key": i + 1
+                    }
+                })
+                this.setState({dataSource: lstTmp, editingKey: '' });
+            }
+            
         } catch (error) {
             console.log("err load data " + error);
         }
@@ -123,33 +118,33 @@ class EnsureAssetF extends Component{
 
     handleSaveEdit = async(data)=>{
         try {
-            const res = await updateItemBondType(data);
+            const res = await updateItemEnsureAsset(data);
             if(res.error){
                 this.loadData();
-                openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
+                common.notify('error', 'Thao tác thất bại :( ');
             }else{
                 await this.loadData();
-                await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
+                await common.notify('success', 'Thao tác thành công ^^!');
             }
         } catch (error) {
-            openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+            common.notify('error', 'Thao tác thất bại :( ');
         }
     }
 
     handleDelete = async(id) => {
         try{
             let dataTmp = {
-                "MSLTP": id
+                "MSTSDB": id
             }
-            const res = await deleteItemBondType(dataTmp);
+            const res = await deleteItemEnsureAsset(dataTmp);
             if(res.error){
-                openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
+                common.notify('error', 'Thao tác thất bại :( ');
             }else{
                 await this.loadData();
-                await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
+                await common.notify('success', 'Thao tác thành công ^^!');
             }
         }catch(err){
-            openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+            common.notify('error', 'Thao tác thất bại :( ');
         }
     };
 
@@ -164,7 +159,7 @@ class EnsureAssetF extends Component{
                 const item = newData[index];
                 row = {
                     ...row,
-                    "MSLTP": item.MSLTP
+                    "MSTSDB": item.MSTSDB
                 }
                 this.handleSaveEdit(row);
             } else {
@@ -230,4 +225,10 @@ class EnsureAssetF extends Component{
 
 const EnsureAsset = Form.create()(EnsureAssetF);
 
-export default EnsureAsset;
+const mapDispatchToProps = dispatch =>{
+    return{
+        getLstEnsureAsset: ()=> dispatch(getListEnsureAsset()),
+    }
+}
+
+export default connect(null, mapDispatchToProps) (EnsureAsset);

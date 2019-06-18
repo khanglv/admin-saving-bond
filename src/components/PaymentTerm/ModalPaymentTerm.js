@@ -21,7 +21,6 @@ class ModalBankInterest extends Component{
         const value = props.value || {};
         this.state = {
             currency: value.currency || 'Open',
-            codeExpiredPayment: '',
             typePayment: '',
             note: '',
             isShowNotice: false
@@ -30,6 +29,7 @@ class ModalBankInterest extends Component{
 
     setModal2Visible =()=> {
         this.props.isCloseModal();
+        this.setState({isShowNotice: false});
     }
 
     handleCurrencyChange = currency => {
@@ -42,11 +42,10 @@ class ModalBankInterest extends Component{
 
     onHandleOk = async()=>{
         try {
-            if(!this.state.codeExpiredPayment|| !this.state.typePayment){
+            if(!this.state.typePayment){
                 this.setState({isShowNotice: true});
             }else{
                 let dataTmp = {
-                    "MSKYHANTT": this.state.codeExpiredPayment,
                     "LOAI_TT": this.state.typePayment,
                     "GHICHU": this.state.note
                 }
@@ -58,7 +57,8 @@ class ModalBankInterest extends Component{
                     this.setState({
                         codeExpiredPayment: '',
                         typePayment: '',
-                        note: ''
+                        note: '',
+                        isShowNotice: false
                     });
                     await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
                 }
@@ -90,13 +90,6 @@ class ModalBankInterest extends Component{
                 size="lg"
             >
                 <Form {...formItemLayout}>
-                    <Form.Item 
-                        label="* MS K.Hạn T.Toán"
-                        validateStatus = {(this.state.codeExpiredPayment.length === 0 && this.state.isShowNotice)  ? "error" : null}
-                        help = {(this.state.codeExpiredPayment.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
-                    >
-                        <Input name="codeExpiredPayment" placeholder="Mã số kỳ hạn thanh toán" value={this.state.codeExpiredPayment} onChange={event => this.updateInputValue(event)}/>
-                    </Form.Item>
                     <Form.Item 
                         label="* Loại thanh toán (tháng)"
                         validateStatus = {(this.state.typePayment.length === 0 && this.state.isShowNotice)  ? "error" : null}
