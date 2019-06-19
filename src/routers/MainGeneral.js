@@ -74,7 +74,7 @@ class HeaderCom extends Component{
         return (
             <Header style={{ display: 'flex', alignItems: 'center', color: '#fff' }}>
                 <div className="pointer" style={{padding: 10}} onClick={this.onHome}><b style={{ fontFamily: 'initial', fontSize: 18 }}>V-BONDS</b></div>
-                <div className="pointer" onClick={this.onActionAccount} style={styles.accountHeader}><Avatar style={{ backgroundColor: '#438599' }} icon="user" />&nbsp;&nbsp;{this.state.accountInfo ? this.state.accountInfo[0].USERNAME : "Admin"}</div>
+                <div className="pointer" onClick={this.onActionAccount} style={styles.accountHeader}><Avatar style={{ backgroundColor: '#438599' }} icon="user" />&nbsp;&nbsp;{this.state.accountInfo ? this.state.accountInfo.USERNAME : "Admin"}</div>
                 {this.state.isShowCardAccount ? <CardAccount visible={true}/> : null}
             </Header>
         )

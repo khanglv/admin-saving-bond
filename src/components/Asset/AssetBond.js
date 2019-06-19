@@ -21,130 +21,170 @@ class AssetBondF extends Component{
         this.columns = [
             {
                 title: 'STT',
-                dataIndex: 'id',
-                editable: true,
+                dataIndex: 'key',
                 width: 30,
                 fixed: 'left',
             },
             {
                 title: 'MS T.Phiếu', //1
-                dataIndex: 'code_bond',
-                editable: true,
+                dataIndex: 'MSTP',
                 width: 150
             },
             {
                 title: 'Số H.Đồng', //2
-                dataIndex: 'code_contract',
+                dataIndex: 'SO_HD',
+                tmpData: 'SO_HD',
+                editable: true,
                 width: 250
             },
             {
                 title: 'D.Nghiệp', //3
-                dataIndex: 'code_enterprise',
+                dataIndex: 'TEN_DN',
+                tmpData: 'MS_DN',
+                editable: true,
+                width: 250
+            },
+            {
+                title: 'TS đảm bảo', //4
+                dataIndex: 'TENTAISANDAMBAO',
+                tmpData: 'MS_TSDB',
+                editable: true,
                 width: 150
             },
             {
-                title: 'K.Han Vay', //4
-                dataIndex: 'code_term_borrow',
-                width: 150
-            },
-            {
-                title: 'K.Han T.Toán', //5
-                dataIndex: 'code_term_pay',
+                title: 'K.Hạn T.Toán', //5
+                dataIndex: 'MS_KYHANTT',
+                tmpData: 'MS_KYHANTT',
+                editable: true,
                 width: 150
             },
             {
                 title: 'Loại T.Phiếu', //6
-                dataIndex: 'type_bond',
+                dataIndex: 'TENLOAI_TP',
+                tmpData: 'MS_LTP',
+                editable: true,
                 width: 150
             },
             {
                 title: 'Ngày tính lãi năm', //7
-                dataIndex: 'total_day_interest',
+                dataIndex: 'SONGAYTINHLAI',
+                tmpData: 'MS_NTLTN',
+                editable: true,
                 width: 150
             },
             {
                 title: 'L.Suất H.Hành', //8
-                dataIndex: 'current_interest',
+                dataIndex: 'LAISUAT_HH',
+                editable: true,
                 width: 150
             },
             {
                 title: 'Mã viết tắt', //9
-                dataIndex: 'sort_name',
+                dataIndex: 'MAVIETTAT',
+                editable: true,
                 width: 150
             },
             {
                 title: 'TT Trái phiếu', //10
-                dataIndex: 'info_bond',
+                dataIndex: 'TT_TRAIPHIEU',
+                editable: true,
                 width: 350
             },
             {
                 title: 'Mệnh giá', //11
-                dataIndex: 'denomination',
+                dataIndex: 'MENHGIA',
+                editable: true,
                 width: 150
             },
             {
                 title: 'SL P.Hành (max)', //12
-                dataIndex: 'max_release',
+                dataIndex: 'SL_PHTD',
+                editable: true,
                 width: 150
             },
             {
                 title: 'SL đã P.hành', //13
-                dataIndex: 'released',
+                dataIndex: 'SL_DPH',
+                editable: true,
                 width: 150
             },
             {
                 title: 'SL Lưu hành', //14
-                dataIndex: 'totalOfCirculate',
+                dataIndex: 'SL_LH',
+                editable: true,
                 width: 150
             },
             {
                 title: 'SL Thu hồi', //15
-                dataIndex: 'totalRecall',
+                dataIndex: 'SL_TH',
+                editable: true,
                 width: 150
             },
             {
                 title: 'Ngày phát hành', //16
-                dataIndex: 'day_release',
+                dataIndex: 'NGAYPH',
+                editable: true,
                 width: 150
             },
             {
                 title: 'Ngày đáo hạn', //17
-                dataIndex: 'day_expire',
+                dataIndex: 'NGAYDH',
+                editable: true,
                 width: 150
             },
             {
-                title: 'KT p.Hành', //18
-                dataIndex: 'day_break',
+                title: 'KT P.Hành', //18
+                dataIndex: 'NGAY_KTPH',
+                editable: true,
                 width: 150
             },
             {
                 title: 'Tổng hạn mức huy động', //19
-                dataIndex: 'level_mobilize',
+                dataIndex: 'TONGHANMUC_HUYDONG',
+                editable: true,
                 width: 200
             },
             {
                 title: 'Hạn mức cho', //20
-                dataIndex: 'level_loan',
+                dataIndex: 'HANMUC_CHO',
+                editable: true,
                 width: 200
             },
             {
                 title: 'Kỳ hạn còn lại', //21
-                dataIndex: 'period_remain',
+                dataIndex: 'KYHAN_CONLAI',
+                editable: true,
                 width: 200
             },
             {
                 title: 'T.T N.Yết', //22
-                dataIndex: 'status_listed',
-                width: 100
+                dataIndex: 'TT_NIEMYET',
+                editable: true,
+                width: 100,
+                render: TT_NIEMYET =>{
+                    let type = "check-circle";
+                    let color = "green";
+                    if(TT_NIEMYET === 0){
+                        type="stop";
+                        color="#faad14"
+                    }
+                    return(
+                        <div className="text-center">
+                            <Icon type={type} style={{color: color}} theme="filled" />
+                        </div>
+                    )
+                }
             },
             {
                 title: 'Tài sản đảm bảo', //23
-                dataIndex: 'asset_cover',
+                dataIndex: 'TS_DAMBAO',
+                editable: true,
                 width: 200
             },
             {
                 title: 'S.Lượng Lưu ký', //24
-                dataIndex: 'total_depository',
+                dataIndex: 'SL_LUUKY',
+                editable: true,
                 width: 200
             },
             {
@@ -240,10 +280,14 @@ class AssetBondF extends Component{
                         ...item,
                         "NGAYTAO": common.convertDDMMYYYY(item.NGAYTAO),
                         "NGAYPH": common.convertDDMMYYYY(item.NGAYPH),
-                        "NGAY_DH": common.convertDDMMYYYY(item.NGAY_DH),
+                        "NGAYDH": common.convertDDMMYYYY(item.NGAYDH),
                         "NGAY_KTPH": common.convertDDMMYYYY(item.NGAY_KTPH),
+                        "lstContractVCSCData": this.props.lstContractVCSC,
                         "lstCompanyData": this.props.lstCompany,
-                        "lstBranchVCSCData": this.props.lstBranchVCSC,
+                        "lstEnsureAssetData": this.props.lstEnsureAsset,
+                        "lstPaymentTermData": this.props.lstPaymentTerm,
+                        "lstBondTypeData": this.props.lstBondType,
+                        "lstDayInterestYearData": this.props.lstDayInterestYear,
                         "key": i + 1
                     }
                 })
@@ -311,6 +355,13 @@ class AssetBondF extends Component{
                 row = {
                     ...row,
                     "BONDID": item.BONDID,
+                    "MSTP": item.MSTP,
+                    "SO_HD": row.SO_HD,
+                    "MS_DN": row.TEN_DN,
+                    "MS_TSDB": row.TENTAISANDAMBAO,
+                    "MS_KYHANTT": row.MS_KYHANTT,
+                    "MS_LTP": row.TENLOAI_TP,
+                    "MS_NTLTN": row.SONGAYTINHLAI
                 }
                 this.handleSaveEdit(row);
             } else {
@@ -343,9 +394,10 @@ class AssetBondF extends Component{
                 ...col,
                 onCell: record => ({
                     record,  //setting type input (date, number ...)
-                    inputType: col.dataIndex === 'NGAYCAP' ? 'date' : (col.dataIndex === ('MS_LOAINDT' || 'MS_NGUOIGIOITHIEU') ? 'select' : 'text') ,
+                    inputType: ['NGAYPH', 'NGAYDH', 'NGAY_KTPH'].indexOf(col.dataIndex) > -1 ? 'date' : ['TEN_DN', 'TENTAISANDAMBAO', 'MS_KYHANTT', 'TENLOAI_TP', 'SONGAYTINHLAI', 'SO_HD'].indexOf(col.dataIndex) > -1 ? 'select' : (col.dataIndex === 'TT_NIEMYET' ? 'options' : 'text') ,
                     dataIndex: col.dataIndex,
                     title: col.title,
+                    tmpData: col.tmpData,
                     editing: this.isEditing(record),
                 }),
             };
@@ -388,8 +440,12 @@ const AssetBond = Form.create()(AssetBondF);
 
 const mapStateToProps = state =>{
     return{
+        lstContractVCSC: state.contractVCSC.data,
         lstCompany: state.company.data,
-        lstBranchVCSC: state.branchVCSC.data
+        lstEnsureAsset: state.ensureAsset.data,
+        lstPaymentTerm: state.paymentTerm.data,
+        lstBondType: state.bondType.data,
+        lstDayInterestYear: state.dayInterestYear.data,
     }
 }
 

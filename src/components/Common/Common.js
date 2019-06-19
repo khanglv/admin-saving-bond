@@ -20,3 +20,7 @@ export const notify = (type, data) => {
         description: data,
     });
 };
+
+export const convertStringDate = (date)=>{
+    return moment(new Date(date)).format('DD/MM/YYYY').split('/').join('');
+}

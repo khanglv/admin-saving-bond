@@ -34,7 +34,7 @@ export class EditableCell extends React.Component {
                         }
                     </Select>
                 case 'MS_DN':
-                        return <Select showSearch style={{ width: '100%' }}>
+                        return <Select showSearch style={{ width: '100%' }} >
                         {
                             this.props.record.lstCompanyData.map((item)=>{
                                 return(
@@ -53,6 +53,66 @@ export class EditableCell extends React.Component {
                             })
                         }
                     </Select>
+                case 'TEN_DN':
+                    return <Select showSearch style={{ width: '100%' }}>
+                    {
+                        this.props.record.lstCompanyData.map((item)=>{
+                            return(
+                                item.FLAG === 1 ? <Option key={item.MSDN} value={item.MSDN}>{item.TEN_DN}</Option> : null
+                            )
+                        })
+                    }
+                </Select>    
+                case 'TENTAISANDAMBAO':
+                    return <Select showSearch style={{ width: '100%' }}>
+                    {
+                        this.props.record.lstEnsureAssetData.map((item) => {
+                            return (
+                                item.FLAG === 1 ? <Option key={item.MSTSDB} value={item.MSTSDB}>{item.TENTAISANDAMBAO}</Option> : null
+                            )
+                        })
+                    }
+                </Select>
+                case 'MS_KYHANTT':
+                    return <Select showSearch style={{ width: '100%' }}>
+                    {
+                        this.props.record.lstPaymentTermData.map((item) => {
+                            return (
+                                item.FLAG === 1 ? <Option key={item.MSKYHANTT} value={item.MSKYHANTT}>{item.MSKYHANTT}</Option> : null
+                            )
+                        })
+                    }
+                </Select>
+                case 'TENLOAI_TP':
+                    return <Select showSearch style={{ width: '100%' }}>
+                    {
+                        this.props.record.lstBondTypeData.map((item) => {
+                            return (
+                                item.FLAG === 1 ? <Option key={item.MSLTP} value={item.MSLTP}>{item.TENLOAI_TP}</Option> : null
+                            )
+                        })
+                    }
+                </Select>
+                case 'SONGAYTINHLAI':
+                    return <Select showSearch style={{ width: '100%' }}>
+                    {
+                        this.props.record.lstDayInterestYearData.map((item) => {
+                            return (
+                                item.FLAG === 1 ? <Option key={item.MSNTLTN} value={item.MSNTLTN}>{item.SONGAYTINHLAI}</Option> : null
+                            )
+                        })
+                    }
+                </Select>
+                case 'SO_HD':
+                    return <Select showSearch style={{ width: '100%' }}>
+                    {
+                         this.props.record.lstContractVCSCData.map((item) => {
+                            return (
+                                item.FLAG === 1 ? <Option key={item.SOHD} value={item.SOHD}>{item.SOHD}</Option> : null
+                            )
+                        })
+                    }
+                </Select>
                 default:
                     return;
             }
@@ -68,6 +128,7 @@ export class EditableCell extends React.Component {
             inputType,
             record,
             index,
+            tmpData,
             children,
             ...restProps
         } = this.props;
@@ -82,7 +143,7 @@ export class EditableCell extends React.Component {
                                     message: `Please Input ${title}!`,
                                 },
                             ],
-                            initialValue: inputType === 'date' ? common.convertDatePicker(common.convertToFormat(record[dataIndex])): record[dataIndex],
+                            initialValue: inputType === 'date' ? common.convertDatePicker(common.convertToFormat(record[dataIndex])): inputType === 'select' ? record[tmpData] : record[dataIndex],
                         })(this.getInput())}
                     </Form.Item>
                 ) : (
