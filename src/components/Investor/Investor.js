@@ -3,10 +3,7 @@ import { Table, Button, Popconfirm, notification, Icon, Tooltip, Form, Tag} from
 import ModalInvestor from './ModalInvestor';
 import {getListInvestor, updateItemInvestor, deleteItemInvestor} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
-import {convertDDMMYYYY, notify} from '../Common/Common';
-
-import {connect} from 'react-redux';
-import {getListInvestorType} from '../../stores/actions/investorTypeAction';
+import {convertDDMMYYYY} from '../Common/Common';
 
 const openNotificationWithIcon = (type, data) => {
     notification[type]({
@@ -32,7 +29,7 @@ class InvestorF extends Component{
             },  
             {
                 title: 'Loại nhà đầu tư', //3
-                dataIndex: 'TENLOAI_NDT',
+                dataIndex: 'LOAINDT',
                 editable: true,
                 width: 100
             },
@@ -122,13 +119,6 @@ class InvestorF extends Component{
     isEditing = record => record.key === this.state.editingKey;
 
     async componentDidMount(){
-        const lstInvestorType = await this.props.getLstInvestorType();
-        if(lstInvestorType.message){
-            notify('error', 'Thao tác thất bại :( ' + lstInvestorType.message);
-        }
-        if(lstInvestorType.type === 'INVESTOR_TYPE_SUCCESS'){
-            this.setState({lstInvestorType: lstInvestorType.data});
-        }
         await this.loadData();
     }
 
@@ -207,7 +197,7 @@ class InvestorF extends Component{
                 row = {
                     ...row,
                     "MSNDT": item.MSNDT,
-                    "MS_LOAINDT": row.TENLOAI_NDT
+                    "LOAINDT": row.LOAINDT
                 }
                 this.handleSaveEdit(row);
             } else {
@@ -240,7 +230,7 @@ class InvestorF extends Component{
                 ...col,
                 onCell: record => ({
                     record,  //setting type input (date, number ...)
-                    inputType: col.dataIndex === 'NGAYCAP' ? 'date' : (col.dataIndex === ('TENLOAI_NDT' || 'MS_NGUOIGIOITHIEU') ? 'select' : 'text') ,
+                    inputType: col.dataIndex === 'NGAYCAP' ? 'date' : 'text' ,
                     dataIndex: col.dataIndex,
                     title: col.title,
                     editing: this.isEditing(record),
@@ -250,7 +240,7 @@ class InvestorF extends Component{
 
         return(
             <div>
-                <ModalInvestor isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData} investorTypeData={this.state.lstInvestorType}/>
+                <ModalInvestor isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}/>
                 <div className="p-top10" style={{padding: 10}}>
                     <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
                         <span>Thêm mới</span>
@@ -274,16 +264,4 @@ class InvestorF extends Component{
 
 const Investor = Form.create()(InvestorF);
 
-const mapStateToProps = state =>{
-    return{
-        lstInvestorType: state.investorType.data
-    }
-}
-
-const mapDispatchToProps = dispatch =>{
-    return{
-        getLstInvestorType: ()=> dispatch(getListInvestorType()),
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps) (Investor);
+export default Investor;

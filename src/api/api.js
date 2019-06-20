@@ -104,7 +104,7 @@ export const loginApi = (userName, password)=>{
     return callApi(options, false);
 }
 
-//frefix
+//Prefix
 export const getListFrefix = ()=>{
     const options = {
         url: URL_FREFIX,

@@ -3,8 +3,8 @@
     font-size: 18px;
     padding: 0 24px;
     transition: color 0.3s;
-    position: absolute;
-    top: -4.3vh;
+    position: fixed;
+    top: 2.5vh;
     left: 9rem;
     color: #fff;
 }

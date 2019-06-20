@@ -23,16 +23,6 @@ export class EditableCell extends React.Component {
         }
         if (this.props.inputType === 'select') {
             switch(this.props.dataIndex){
-                case 'TENLOAI_NDT':
-                    return <Select showSearch style={{ width: '100%' }}>
-                        {
-                            this.props.record.lstInvestorType.map((item) => {
-                                return (
-                                    item.FLAG === 1 ? <Option key={item.MSLOAINDT} value={item.MSLOAINDT}>{item.TENLOAI_NDT}</Option> : null
-                                )
-                            })
-                        }
-                    </Select>
                 case 'MS_DN':
                         return <Select showSearch style={{ width: '100%' }} >
                         {

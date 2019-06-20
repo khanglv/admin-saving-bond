@@ -59,10 +59,6 @@ class ModalInvestor extends Component{
     updateSelectValue = (event)=>{
         this.setState({codeInvestorType: event});
     }
-
-    updateSelectcodeOfPresenter = (event)=>{
-        this.setState({codeOfPresenter: event});
-    }
     
     onHandleOk = async()=>{
         try{
@@ -71,7 +67,7 @@ class ModalInvestor extends Component{
             }else{
                 let dataTmp = {
                     "MSNDT": this.state.codeInvestor,
-                    "MS_LOAINDT": this.state.codeInvestorType,
+                    "LOAINDT": this.state.codeInvestorType,
                     "TENNDT": this.state.nameOfInvestor,
                     "CMND_GPKD": this.state.papers,
                     "NGAYCAP": this.state.dateRange,
@@ -136,22 +132,14 @@ class ModalInvestor extends Component{
                         validateStatus = {(this.state.codeInvestorType.length === 0 && this.state.isShowNotice)  ? "error" : null}
                         help = {(this.state.codeInvestorType.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                     >
-                        <Select showSearch placeholder="Chọn loại nhà đầu tư" onChange={event => this.updateSelectValue(event)}>
-                            {
-                                this.props.investorTypeData.map((item)=>{
-                                    return(
-                                        item.FLAG === 1 ? <Option key={item.MSLOAINDT} value={item.MSLOAINDT}>{item.TENLOAI_NDT}</Option> : null
-                                    )
-                                })
-                            }
-                        </Select>
+                        <Input name="codeInvestorType" placeholder="Loại nhà đầu tư" value={this.state.codeInvestorType} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
                     <Form.Item 
                         label="* Tên nhà đầu tư"
                         validateStatus = {(this.state.nameOfInvestor.length === 0 && this.state.isShowNotice)  ? "error" : null}
                         help = {(this.state.nameOfInvestor.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                     >
-                        <Input name="nameOfInvestor" placeholder="Địa chỉ" value={this.state.nameOfInvestor} onChange={event => this.updateInputValue(event)}/>
+                        <Input name="nameOfInvestor" placeholder="Tên nhà đầu tư" value={this.state.nameOfInvestor} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
                     <Form.Item label="* CMND, G.P K.Doanh"
                         validateStatus = {(this.state.papers.length === 0 && this.state.isShowNotice)  ? "error" : null}
@@ -174,16 +162,12 @@ class ModalInvestor extends Component{
                     >
                         <Input name="numberSecurities" placeholder="Số tài khoản chứng khoán" value={this.state.numberSecurities} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
-                    <Form.Item label="* MS người giới thiệu">
-                        <Select showSearch placeholder="Mã số người giới thiệu" onChange={event => this.updateSelectcodeOfPresenter(event)}>
-                            {
-                                this.props.investorTypeData.map((item)=>{
-                                    return(
-                                        item.FLAG === 1 ? <Option key={item.MSLOAINDT} value={item.MSLOAINDT}>{item.MSLOAINDT}</Option> : null
-                                    )
-                                })
-                            }
-                        </Select>
+                    <Form.Item 
+                        label="* MS người giới thiệu"
+                        validateStatus = {(this.state.codeOfPresenter.length === 0 && this.state.isShowNotice)  ? "error" : null}
+                        help = {(this.state.codeOfPresenter.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                    >
+                        <Input name="codeOfPresenter" placeholder="Mã số người giới thiệu" value={this.state.codeOfPresenter} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
                 </Form>
             </Modal>

@@ -5,9 +5,10 @@ import { withRouter } from "react-router";
 
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
-const LIST_ROUTE_CONFIG = ['/frefix', '/company', '/payment-term', '/bank-interest', '/fee-trade', '/bond-type', '/command-type', 
-                           '/trade-status', '/branch-vcsc', '/investor-type', '/investor', '/interest-rate'];
-const LIST_ROUTE_GENERAL = ['/asset-bond', '/ensure-asset', '/contract-vcsc', '/day-interest-year'];
+const LIST_ROUTE_CONFIG = ['/frefix', '/command-type', '/trade-status', '/branch-vcsc'];
+const LIST_ROUTE_DATABASE = ['/frefix', '/company', '/payment-term', '/bank-interest', '/fee-trade', '/bond-type', '/command-type', 
+                           '/trade-status', '/branch-vcsc', '/investor-type', '/investor', '/interest-rate', '/contract-vcsc', '/day-interest-year'];
+const LIST_ROUTE_GENERAL = ['/asset-bond', '/ensure-asset'];
 
 const checkRouteOpenDefaultKey = ()=> {
     for(let i = 0; i < LIST_ROUTE_CONFIG.length; i++){
@@ -18,6 +19,11 @@ const checkRouteOpenDefaultKey = ()=> {
     for(let i = 0; i < LIST_ROUTE_GENERAL.length; i++){
         if(LIST_ROUTE_GENERAL[i] === window.location.pathname){
             return 'general';
+        }
+    }
+    for(let i = 0; i < LIST_ROUTE_DATABASE.length; i++){
+        if(LIST_ROUTE_DATABASE[i] === window.location.pathname){
+            return 'database';
         }
     }
 }
@@ -89,9 +95,6 @@ class SiderBarMenu extends Component {
             case "/branch-vcsc":
                 this.props.history.push('/branch-vcsc');
                 break;
-            case "/investor-type":
-                this.props.history.push('/investor-type');
-                break;
             case "/investor":
                 this.props.history.push('/investor');
                 break;
@@ -118,20 +121,17 @@ class SiderBarMenu extends Component {
                     />
                     <Menu theme="dark" mode="inline"
                      defaultOpenKeys={[this.state.openDefaultKey]} selectedKeys={[this.state.current]} onClick={this.handleClick}>
-                        <SubMenu
-                            key="configs"
+                         <SubMenu
+                            key="database"
                             title={
                                 <span>
-                                    <Icon type="tool" />
-                                    <span className="middle-text">Configs</span>
+                                    <Icon type="database" />
+                                    <span className="middle-text">Database</span>
                                 </span>
                             }
                         >
-                            <Menu.Item key="/frefix">
-                                <span className="middle-text">Prefix</span>
-                            </Menu.Item>
                             <Menu.Item key="/company">
-                                <span className="middle-text">Công ty</span>
+                                <span className="middle-text">Tổ chức phát hành</span>
                             </Menu.Item>
                             <Menu.Item key="/bank-interest">
                                 <span className="middle-text">Lãi suất ngân hàng</span>
@@ -145,23 +145,17 @@ class SiderBarMenu extends Component {
                             <Menu.Item key="/bond-type">
                                 <span className="middle-text">Loại trái phiếu</span>
                             </Menu.Item>
-                            <Menu.Item key="/command-type">
-                                <span className="middle-text">Loại Lệnh</span>
-                            </Menu.Item>
-                            <Menu.Item key="/trade-status">
-                                <span className="middle-text">Trạng thái giao dịch</span>
-                            </Menu.Item>
-                            <Menu.Item key="/branch-vcsc">
-                                <span className="middle-text">Chi nhánh VCSC</span>
-                            </Menu.Item>
-                            <Menu.Item key="/investor-type">
-                                <span className="middle-text">Loại nhà đầu tư</span>
-                            </Menu.Item>
                             <Menu.Item key="/investor">
                                 <span className="middle-text">Nhà đầu tư</span>
                             </Menu.Item>
-                            <Menu.Item key="/interest-rate">
+                            {/* <Menu.Item key="/interest-rate">
                                 <span className="middle-text">Lãi suất</span>
+                            </Menu.Item> */}
+                            <Menu.Item key="/contract-vcsc">
+                                <span className="middle-text">Hợp đồng mua VCSC</span>
+                            </Menu.Item>
+                            <Menu.Item key="/day-interest-year">
+                                <span className="middle-text">Ngày tính lãi trong năm</span>
                             </Menu.Item>
                         </SubMenu>
                         <SubMenu
@@ -179,11 +173,27 @@ class SiderBarMenu extends Component {
                             <Menu.Item key="/ensure-asset">
                                 <span className="middle-text">Tài sản đảm bảo</span>
                             </Menu.Item>
-                            <Menu.Item key="/contract-vcsc">
-                                <span className="middle-text">Hợp đồng mua VCSC</span>
+                        </SubMenu>
+                        <SubMenu
+                            key="configs"
+                            title={
+                                <span>
+                                    <Icon type="tool" />
+                                    <span className="middle-text">Configs</span>
+                                </span>
+                            }
+                        >
+                            <Menu.Item key="/frefix">
+                                <span className="middle-text">Prefix</span>
                             </Menu.Item>
-                            <Menu.Item key="/day-interest-year">
-                                <span className="middle-text">Ngày tính lãi trong năm</span>
+                            <Menu.Item key="/command-type">
+                                <span className="middle-text">Loại Lệnh</span>
+                            </Menu.Item>
+                            <Menu.Item key="/trade-status">
+                                <span className="middle-text">Trạng thái giao dịch</span>
+                            </Menu.Item>
+                            <Menu.Item key="/branch-vcsc">
+                                <span className="middle-text">Chi nhánh VCSC</span>
                             </Menu.Item>
                         </SubMenu>
                     </Menu>
