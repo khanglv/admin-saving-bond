@@ -6,11 +6,8 @@ import {
     Input,
     notification,
     DatePicker,
-    Select
 } from 'antd';
 import moment from 'moment';
-
-const { Option } = Select;
 const dateFormat = 'DD/MM/YYYY';
 
 const openNotificationWithIcon = (type, data) => {

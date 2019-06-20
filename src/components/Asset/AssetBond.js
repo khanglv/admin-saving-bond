@@ -10,7 +10,6 @@ import {getListBondsAsset} from '../../stores/actions/bondsAssetAction';
 import {getListFrefix} from '../../stores/actions/prefixAction';
 import {getListContractVCSC} from '../../stores/actions/contractVCSCAction';
 import {getListCompany} from '../../stores/actions/companyAction';
-import {getListEnsureAsset} from '../../stores/actions/ensureAssetAction';
 import {getListPaymentTerm} from '../../stores/actions/paymentTermAction';
 import {getListDayInterestYear} from '../../stores/actions/dayInterestYearAction';
 import {getListBondType} from '../../stores/actions/bondTypeAction';
@@ -43,13 +42,6 @@ class AssetBondF extends Component{
                 tmpData: 'MS_DN',
                 editable: true,
                 width: 250
-            },
-            {
-                title: 'TS đảm bảo', //4
-                dataIndex: 'TENTAISANDAMBAO',
-                tmpData: 'MS_TSDB',
-                editable: true,
-                width: 150
             },
             {
                 title: 'K.Hạn T.Toán', //5
@@ -123,7 +115,6 @@ class AssetBondF extends Component{
             {
                 title: 'Ngày phát hành', //16
                 dataIndex: 'NGAYPH',
-                editable: true,
                 width: 150
             },
             {
@@ -248,7 +239,6 @@ class AssetBondF extends Component{
             const lstPrefix = await this.props.getListPrefix();
             const lstContractVCSC = await this.props.getListContractVCSC();
             const lstCompany = await this.props.getListCompany();
-            const lstEnsureAsset = await this.props.getListEnsureAsset();
             const lstPaymentTerm = await this.props.getListPaymentTerm();
             const lstBondType = await this.props.getListBondType();
             const lstDayInterestYear = await this.props.getListDayInterestYear();
@@ -257,7 +247,6 @@ class AssetBondF extends Component{
                     lstPrefix: lstPrefix.data,
                     lstContractVCSC: lstContractVCSC.data,
                     lstCompany: lstCompany.data,
-                    lstEnsureAsset: lstEnsureAsset.data,
                     lstPaymentTerm: lstPaymentTerm.data,
                     lstBondType: lstBondType.data,
                     lstDayInterestYear: lstDayInterestYear.data,
@@ -284,7 +273,6 @@ class AssetBondF extends Component{
                         "NGAY_KTPH": common.convertDDMMYYYY(item.NGAY_KTPH),
                         "lstContractVCSCData": this.props.lstContractVCSC,
                         "lstCompanyData": this.props.lstCompany,
-                        "lstEnsureAssetData": this.props.lstEnsureAsset,
                         "lstPaymentTermData": this.props.lstPaymentTerm,
                         "lstBondTypeData": this.props.lstBondType,
                         "lstDayInterestYearData": this.props.lstDayInterestYear,
@@ -358,7 +346,6 @@ class AssetBondF extends Component{
                     "MSTP": item.MSTP,
                     "SO_HD": row.SO_HD,
                     "MS_DN": row.TEN_DN,
-                    "MS_TSDB": row.TENTAISANDAMBAO,
                     "MS_KYHANTT": row.MS_KYHANTT,
                     "MS_LTP": row.TENLOAI_TP,
                     "MS_NTLTN": row.SONGAYTINHLAI
@@ -394,7 +381,7 @@ class AssetBondF extends Component{
                 ...col,
                 onCell: record => ({
                     record,  //setting type input (date, number ...)
-                    inputType: ['NGAYPH', 'NGAYDH', 'NGAY_KTPH'].indexOf(col.dataIndex) > -1 ? 'date' : ['TEN_DN', 'TENTAISANDAMBAO', 'MS_KYHANTT', 'TENLOAI_TP', 'SONGAYTINHLAI', 'SO_HD'].indexOf(col.dataIndex) > -1 ? 'select' : (col.dataIndex === 'TT_NIEMYET' ? 'options' : 'text') ,
+                    inputType: ['NGAYDH', 'NGAY_KTPH'].indexOf(col.dataIndex) > -1 ? 'date' : ['TEN_DN', 'TENTAISANDAMBAO', 'MS_KYHANTT', 'TENLOAI_TP', 'SONGAYTINHLAI', 'SO_HD'].indexOf(col.dataIndex) > -1 ? 'select' : (col.dataIndex === 'TT_NIEMYET' ? 'options' : 'text') ,
                     dataIndex: col.dataIndex,
                     title: col.title,
                     tmpData: col.tmpData,
@@ -455,7 +442,6 @@ const mapDispatchToProps = dispatch =>{
         getListPrefix: ()=> dispatch(getListFrefix()),
         getListContractVCSC: ()=> dispatch(getListContractVCSC()),
         getListCompany: ()=> dispatch(getListCompany()),
-        getListEnsureAsset: ()=> dispatch(getListEnsureAsset()),
         getListPaymentTerm: ()=> dispatch(getListPaymentTerm()),
         getListBondType: ()=> dispatch(getListBondType()),
         getListDayInterestYear: ()=> dispatch(getListDayInterestYear()),

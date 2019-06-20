@@ -30,7 +30,6 @@ class ModalAssetBond extends Component{
             codeBondNewPrefix: '',
             contractVCSC: '',
             company: '',
-            codeEnsureAsset: null,
             paymentTerm: null,
             typeBond: '',
             dayInterestYear: null,
@@ -88,7 +87,7 @@ class ModalAssetBond extends Component{
     
     onHandleOk = async()=>{
         try{
-            if(!this.state.codeBond || !this.state.contractVCSC || !this.state.company || !this.state.codeEnsureAsset || !this.state.paymentTerm || !this.state.typeBond || !this.state.totalDepository
+            if(!this.state.codeBond || !this.state.contractVCSC || !this.state.company || !this.state.paymentTerm || !this.state.typeBond || !this.state.totalDepository
                 || !this.state.dayInterestYear || !this.state.currentInterest || !this.state.price || !this.state.totalOfCirculate || !this.state.levelLoan || !this.state.totalLevelMobilize){
                 this.setState({isShowNotice: true});
             }else{
@@ -109,7 +108,6 @@ class ModalAssetBond extends Component{
                     "MSTP": codeBondTemp,
                     "SO_HD": this.state.contractVCSC,
                     "MS_DN": this.state.company,
-                    "MS_TSDB": this.state.codeEnsureAsset,
                     "MS_KYHANTT": this.state.paymentTerm,
                     "MS_LTP": this.state.typeBond,
                     "MS_NTLTN": this.state.dayInterestYear,
@@ -245,7 +243,7 @@ class ModalAssetBond extends Component{
                                     }
                                 </Select>
                             </Form.Item>
-                            <Form.Item
+                            {/* <Form.Item
                                 label="* Tài sản đảm bảo"
                                 validateStatus={(this.state.codeEnsureAsset === null && this.state.isShowNotice) ? "error" : null}
                                 help={(this.state.codeEnsureAsset === null && this.state.isShowNotice) ? "Không được bỏ trống" : null}
@@ -259,7 +257,7 @@ class ModalAssetBond extends Component{
                                         })
                                     }
                                 </Select>
-                            </Form.Item>
+                            </Form.Item> */}
                             <Form.Item
                                 label="* Kì hạn thanh toán"
                                 validateStatus={(this.state.paymentTerm === null && this.state.isShowNotice) ? "error" : null}

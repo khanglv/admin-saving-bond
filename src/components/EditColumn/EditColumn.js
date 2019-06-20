@@ -103,6 +103,16 @@ export class EditableCell extends React.Component {
                         })
                     }
                 </Select>
+                case 'MSTP':
+                    return <Select showSearch style={{ width: '100%' }}>
+                        {
+                            this.props.record.lstBondsAssetData.map((item) => {
+                                return (
+                                    item.FLAG === 1 ? <Option key={item.BONDID} value={item.BONDID}>{item.MSTP}</Option> : null
+                                )
+                            })
+                        }
+                    </Select>
                 default:
                     return;
             }
