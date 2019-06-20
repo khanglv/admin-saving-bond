@@ -644,3 +644,39 @@ export const deleteItemBondsAsset = (data)=>{
     }
     return callApi(options);
 }
+
+//Lãi suất
+export const getListInterestRate = ()=>{
+    const options = {
+        url: URL_INTEREST_RATE,
+        method: "GET",
+    }
+    return callApi(options);
+}
+
+export const createItemInterestRate = (data)=>{
+    const options = {
+        url: URL_INTEREST_RATE,
+        method: "POST",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const updateItemInterestRate = (data)=>{
+    const options = {
+        url: URL_INTEREST_RATE,
+        method: "PUT",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const deleteItemInterestRate = (data)=>{
+    const options = {
+        url: URL_INTEREST_RATE,
+        method: "DELETE",
+        data: data
+    }
+    return callApi(options);
+}

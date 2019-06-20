@@ -7,7 +7,7 @@ export const getListEnsureAsset = fetchData => async (dispatch) => {
     })
     try {
         const res = await api.getListEnsureAsset();
-        if (res) {
+        if (res && !res.error) {
             return dispatch({
                 type: ENSURE_ASSET_SUCCESS,
                 data: res

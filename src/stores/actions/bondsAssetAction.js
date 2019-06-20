@@ -7,7 +7,7 @@ export const getListBondsAsset = fetchData => async (dispatch) => {
     })
     try {
         const res = await api.getListBondsAsset();
-        if (res) {
+        if (res && !res.error) {
             return dispatch({
                 type: BONDS_ASSET_SUCCESS,
                 data: res

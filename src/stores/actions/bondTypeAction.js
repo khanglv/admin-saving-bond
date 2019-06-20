@@ -7,7 +7,7 @@ export const getListBondType = fetchData => async (dispatch) => {
     })
     try {
         const res = await api.getListBondType();
-        if (res) {
+        if (res && !res.error) {
             return dispatch({
                 type: BOND_TYPE_SUCCESS,
                 data: res

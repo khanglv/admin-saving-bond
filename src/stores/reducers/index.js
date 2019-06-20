@@ -11,6 +11,7 @@ import bondsAsset from './bondsAsset';
 import dayInterestYear from './dayInterestYear';
 import paymentTerm from './paymentTerm';
 import bondType from './bondType';
+import interestRate from './interestRate';
 
 export default combineReducers({
     login: login,
@@ -23,5 +24,6 @@ export default combineReducers({
     bondsAsset: bondsAsset,
     dayInterestYear: dayInterestYear,
     paymentTerm: paymentTerm,
-    bondType: bondType
+    bondType: bondType,
+    interestRate: interestRate
 });

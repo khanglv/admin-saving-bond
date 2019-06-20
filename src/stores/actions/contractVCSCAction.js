@@ -7,7 +7,7 @@ export const getListContractVCSC = fetchData => async (dispatch) => {
     })
     try {
         const res = await api.getListContractVCSC();
-        if (res) {
+        if (res && !res.error) {
             return dispatch({
                 type: CONTRACT_VCSC_SUCCESS,
                 data: res

@@ -7,7 +7,7 @@ export const getListFrefix = fetchData => async (dispatch) => {
     })
     try {
         const res = await api.getListFrefix();
-        if (res) {
+        if (res && !res.error) {
             return dispatch({
                 type: FREFIX_SUCCESS,
                 data: res

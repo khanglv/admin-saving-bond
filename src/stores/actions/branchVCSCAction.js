@@ -7,7 +7,7 @@ export const getListBranchVCSC = fetchData => async (dispatch) => {
     })
     try {
         const res = await api.getListBranchVCSC();
-        if (res) {
+        if (res && !res.error) {
             return dispatch({
                 type: BRANCH_VCSC_SUCCESS,
                 data: res

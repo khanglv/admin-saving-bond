@@ -7,7 +7,7 @@ export const getListDayInterestYear = fetchData => async (dispatch) => {
     })
     try {
         const res = await api.getListDayInterestYear();
-        if (res) {
+        if (res && !res.error) {
             return dispatch({
                 type: DAY_INTEREST_YEAR_SUCCESS,
                 data: res

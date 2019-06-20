@@ -7,7 +7,7 @@ export const getListCompany = fetchData => async (dispatch) => {
     })
     try {
         const res = await api.getListCompany();
-        if (res) {
+        if (res && !res.error) {
             return dispatch({
                 type: COMPANY_SUCCESS,
                 data: res

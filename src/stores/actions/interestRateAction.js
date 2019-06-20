@@ -1,26 +1,26 @@
 import * as api from '../../api/api';
-import {INVESTOR_TYPE_REQUEST, INVESTOR_TYPE_SUCCESS, INVESTOR_TYPE_FAILED} from './actionTypes';
+import {INTEREST_RATE_REQUEST, INTEREST_RATE_SUCCESS, INTEREST_RATE_FAILED} from './actionTypes';
 
 export const getListInvestorType = fetchData => async (dispatch) => {
     dispatch({
-        type: INVESTOR_TYPE_REQUEST,
+        type: INTEREST_RATE_REQUEST,
     })
     try {
         const res = await api.getListInvestorType();
         if (res && !res.error) {
             return dispatch({
-                type: INVESTOR_TYPE_SUCCESS,
+                type: INTEREST_RATE_SUCCESS,
                 data: res
             })
         } else {
             return dispatch({
-                type: INVESTOR_TYPE_FAILED,
+                type: INTEREST_RATE_FAILED,
                 message: res.message,
             })
         }
     } catch (er) {
         return dispatch({
-            type: INVESTOR_TYPE_FAILED,
+            type: INTEREST_RATE_FAILED,
             message: er,
         })
     }

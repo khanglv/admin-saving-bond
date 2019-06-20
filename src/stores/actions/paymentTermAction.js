@@ -7,7 +7,7 @@ export const getListPaymentTerm = fetchData => async (dispatch) => {
     })
     try {
         const res = await api.getListPaymentTerm();
-        if (res) {
+        if (res && !res.error) {
             return dispatch({
                 type: PAYMENT_TERM_SUCCESS,
                 data: res
