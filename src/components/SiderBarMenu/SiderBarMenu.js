@@ -6,7 +6,7 @@ import { withRouter } from "react-router";
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 const LIST_ROUTE_CONFIG = ['/frefix', '/command-type', '/trade-status', '/branch-vcsc'];
-const LIST_ROUTE_DATABASE = ['/frefix', '/company', '/payment-term', '/bank-interest', '/fee-trade', '/bond-type', '/command-type', 
+const LIST_ROUTE_DATABASE = ['/frefix', '/company', '/payment-term', '/bank-interest', '/fee-trade', '/bond-type', '/command-type', '/bond-price',
                            '/trade-status', '/branch-vcsc', '/investor-type', '/investor', '/interest-rate', '/contract-vcsc', '/day-interest-year'];
 const LIST_ROUTE_GENERAL = ['/asset-bond', '/ensure-asset'];
 
@@ -100,7 +100,10 @@ class SiderBarMenu extends Component {
                 break;
             case "/interest-rate":
                 this.props.history.push('/interest-rate');
-                break;    
+                break;
+            case "/bond-price":
+                this.props.history.push('/bond-price');
+                break;
             default:
                 break;
         }
@@ -156,6 +159,9 @@ class SiderBarMenu extends Component {
                             </Menu.Item>
                             <Menu.Item key="/day-interest-year">
                                 <span className="middle-text">Ngày tính lãi trong năm</span>
+                            </Menu.Item>
+                            <Menu.Item key="/bond-price">
+                                <span className="middle-text">Giá trị trái phiếu</span>
                             </Menu.Item>
                         </SubMenu>
                         <SubMenu

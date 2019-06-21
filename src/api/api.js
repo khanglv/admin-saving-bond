@@ -18,7 +18,6 @@ const URL_INVESTOR_TYPE = `${BASE_URL}/nhdtType`;
 const URL_ENSURE_ASSETS = `${BASE_URL}/ensureAssets`;
 const URL_DAY_INTEREST_YEAR = `${BASE_URL}/dateInterestYear`;
 const URL_BOND_ASSET = `${BASE_URL}/bonds`;
-const URL_ROOM_TYPE = `${BASE_URL}/roomType`;
 const URL_CONTRACT_VCSC = `${BASE_URL}/contractVCSC`;
 const URL_INTEREST_RATE = `${BASE_URL}/interestRate`;
 const URL_BOND_PRICE = `${BASE_URL}/bondPrice`;
@@ -675,6 +674,42 @@ export const updateItemInterestRate = (data)=>{
 export const deleteItemInterestRate = (data)=>{
     const options = {
         url: URL_INTEREST_RATE,
+        method: "DELETE",
+        data: data
+    }
+    return callApi(options);
+}
+
+//Giá trị trái phiếu
+export const getListBondPrice = ()=>{
+    const options = {
+        url: URL_BOND_PRICE,
+        method: "GET",
+    }
+    return callApi(options);
+}
+
+export const createItemBondPrice = (data)=>{
+    const options = {
+        url: URL_BOND_PRICE,
+        method: "POST",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const updateItemBondPrice = (data)=>{
+    const options = {
+        url: URL_BOND_PRICE,
+        method: "PUT",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const deleteItemBondPrice = (data)=>{
+    const options = {
+        url: URL_BOND_PRICE,
         method: "DELETE",
         data: data
     }

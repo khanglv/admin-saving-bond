@@ -84,7 +84,6 @@ class ModalInterestRate extends Component{
                     await this.props.reloadData();
                     this.setState({
                         codeInterest: '',
-                        codeBond: '',
                         maxInterest: null,
                         interestRecall: null,
                         interestAmplitude: null,
