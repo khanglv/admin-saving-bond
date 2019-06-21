@@ -124,7 +124,7 @@ class ModalAssetBond extends Component{
                     "NGAY_KTPH": this.state.dateBreak,
                     "TONGHANMUC_HUYDONG": this.state.totalLevelMobilize,
                     "HANMUC_CHO": this.state.levelLoan,
-                    "KYHAN_CONLAI": this.state.periodRemain,
+                    "KYHAN": this.state.periodRemain,
                     "TT_NIEMYET": this.state.statusListed,
                     "TS_DAMBAO": this.state.ensureAsset,
                     "SL_LUUKY": this.state.totalDepository
@@ -378,9 +378,9 @@ class ModalAssetBond extends Component{
                             >
                                 <Input name="levelLoan" type="number" placeholder="Số lượng trái phiếu phát hành tối đa" value={this.state.levelLoan} onChange={event => this.updateInputValue(event)} />
                             </Form.Item>
-                            <Form.Item label="Hạn mức còn lại"
+                            <Form.Item label="Kỳ hạn"
                             >
-                                <Input name="periodRemain" type="number" placeholder="Số lượng trái phiếu phát hành tối đa" value={this.state.periodRemain} onChange={event => this.updateInputValue(event)} />
+                                <Input name="periodRemain" type="number" placeholder="Kỳ hạn" value={this.state.periodRemain} onChange={event => this.updateInputValue(event)} />
                             </Form.Item>
                             <Form.Item label="* Trạng thái niêm yết" hasFeedback validateStatus={this.state.statusListed === 1 ? "success" : "warning"}>
                                 <Select

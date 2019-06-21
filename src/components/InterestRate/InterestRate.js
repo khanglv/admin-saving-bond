@@ -71,7 +71,7 @@ class InterestRateF extends Component{
                 title: 'Mã N.Hàng 3', //10
                 dataIndex: 'MA_NH03',
                 editable: true,
-                width: 350
+                width: 150
             },
             {
                 title: 'Mã N.Hàng 4', //11
@@ -86,10 +86,10 @@ class InterestRateF extends Component{
                 width: 150
             },
             {
-                title: 'Ghi chú', //13
-                dataIndex: 'GHICHU_TT',
+                title: 'Điều khoản lãi suất', //13
+                dataIndex: 'DIEUKHOAN_LS',
                 editable: true,
-                width: 200
+                width: 350
             },
             {
                 title: 'Action',

@@ -8,7 +8,7 @@ const SubMenu = Menu.SubMenu;
 const LIST_ROUTE_CONFIG = ['/frefix', '/command-type', '/trade-status', '/branch-vcsc'];
 const LIST_ROUTE_DATABASE = ['/frefix', '/company', '/payment-term', '/bank-interest', '/fee-trade', '/bond-type', '/command-type', '/bond-price',
                            '/trade-status', '/branch-vcsc', '/investor-type', '/investor', '/interest-rate', '/contract-vcsc', '/day-interest-year'];
-const LIST_ROUTE_GENERAL = ['/asset-bond', '/ensure-asset'];
+const LIST_ROUTE_GENERAL = ['/asset-bond', '/ensure-asset', '/room-vcsc'];
 
 const checkRouteOpenDefaultKey = ()=> {
     for(let i = 0; i < LIST_ROUTE_CONFIG.length; i++){
@@ -104,6 +104,9 @@ class SiderBarMenu extends Component {
             case "/bond-price":
                 this.props.history.push('/bond-price');
                 break;
+            case "/room-vcsc":
+                this.props.history.push('/room-vcsc');
+                break;
             default:
                 break;
         }
@@ -178,6 +181,9 @@ class SiderBarMenu extends Component {
                             </Menu.Item>
                             <Menu.Item key="/ensure-asset">
                                 <span className="middle-text">Tài sản đảm bảo</span>
+                            </Menu.Item>
+                            <Menu.Item key="/room-vcsc">
+                                <span className="middle-text">Room VCSC</span>
                             </Menu.Item>
                         </SubMenu>
                         <SubMenu

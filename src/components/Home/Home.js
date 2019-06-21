@@ -4,28 +4,11 @@ class Home extends Component{
     
     render(){
         return(
-            <div style={styles.loginForm}>
-                
+            <div style={{backgroundColor: '#fff', width: '100%', height: '100%', paddingTop: '10vh'}} className="text-center">
+                <img alt="" src="/background.png" />
             </div>
         )
     }
 }
 
 export default Home;
-
-const styles = {
-    loginForm:{
-        background: '#F2F2F2',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh'
-    },
-    MloginForm:{
-        backgroundColor: '#fff',
-        width: '20%',
-        padding: 10,
-        borderRadius: 10,
-        boxShadow: '0 5px 8px rgba(0,0,0,0.23)'
-    }
-}

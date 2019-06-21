@@ -19,6 +19,7 @@ import InterestRate from '../components/InterestRate/InterestRate';
 import ContractVCSC from '../components/ContractVCSC/ContractVCSC';
 import DayInterestYear from '../components/DayInterestYear/DayInterestYear';
 import BondPrice from '../components/BondPrice/BondPrice';
+import RoomVCSC from '../components/RoomVCSC/RoomVCSC';
 
 import { Layout, Avatar, Card, Button } from 'antd';
 const { Meta } = Card;
@@ -57,6 +58,7 @@ export const FInterestRate = ()=> withSidebar(InterestRate)
 export const FContractVCSC = ()=> withSidebar(ContractVCSC)
 export const FDayInterestYear = ()=> withSidebar(DayInterestYear)
 export const FBondPrice = ()=> withSidebar(BondPrice)
+export const FRoomVCSC = ()=> withSidebar(RoomVCSC)
 
 class HeaderCom extends Component{
     constructor(props){

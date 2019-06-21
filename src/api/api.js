@@ -21,6 +21,7 @@ const URL_BOND_ASSET = `${BASE_URL}/bonds`;
 const URL_CONTRACT_VCSC = `${BASE_URL}/contractVCSC`;
 const URL_INTEREST_RATE = `${BASE_URL}/interestRate`;
 const URL_BOND_PRICE = `${BASE_URL}/bondPrice`;
+const URL_ROOM_VCSC = `${BASE_URL}/roomVCSC`;
 
 const TIME_OUT = 10000;
 
@@ -712,6 +713,15 @@ export const deleteItemBondPrice = (data)=>{
         url: URL_BOND_PRICE,
         method: "DELETE",
         data: data
+    }
+    return callApi(options);
+}
+
+//Room VCSC
+export const getListRoomVCSC = ()=>{
+    const options = {
+        url: URL_ROOM_VCSC,
+        method: "GET",
     }
     return callApi(options);
 }

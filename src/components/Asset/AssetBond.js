@@ -142,9 +142,8 @@ class AssetBondF extends Component{
                 width: 200
             },
             {
-                title: 'Kỳ hạn còn lại', //21
-                dataIndex: 'KYHAN_CONLAI',
-                editable: true,
+                title: 'Kỳ hạn', //21
+                dataIndex: 'KYHAN',
                 width: 200
             },
             {

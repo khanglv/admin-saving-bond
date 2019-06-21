@@ -13,6 +13,7 @@ import paymentTerm from './paymentTerm';
 import bondType from './bondType';
 import interestRate from './interestRate';
 import bondPrice from './bondPrice';
+import roomVCSC from './roomVCSC';
 
 export default combineReducers({
     login: login,
@@ -27,5 +28,6 @@ export default combineReducers({
     paymentTerm: paymentTerm,
     bondType: bondType,
     interestRate: interestRate,
-    bondPrice: bondPrice
+    bondPrice: bondPrice,
+    roomVCSC: roomVCSC
 });

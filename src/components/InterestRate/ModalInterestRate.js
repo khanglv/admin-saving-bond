@@ -60,7 +60,7 @@ class ModalInterestRate extends Component{
     
     onHandleOk = async()=>{
         try{
-            if(!this.state.codeInterest || !this.state.codeBond || !this.state.maxInterest || !this.state.interestRecall || !this.state.interestAmplitude || !this.state.interestAverage){
+            if(!this.state.codeInterest || !this.state.codeBond || !this.state.maxInterest || !this.state.interestRecall || !this.state.interestAmplitude || !this.state.interestAverage || !this.state.note){
                 this.setState({isShowNotice: true});
             }else{
                 let dataTmp = {
@@ -75,7 +75,7 @@ class ModalInterestRate extends Component{
                     "MA_NH03": this.state.codeBank_3,
                     "MA_NH04": this.state.codeBank_4,
                     "MA_NH05": this.state.codeBank_5,
-                    "GHICHU_TT": this.state.note
+                    "DIEUKHOAN_LS": this.state.note
                 }
                 const res = await createItemInterestRate(dataTmp);
                 if(res.error){
@@ -198,8 +198,12 @@ class ModalInterestRate extends Component{
                             <Form.Item label="Mã ngân hàng 5">
                                 <Input name="codeBank_5" placeholder="Mã ngân hàng 5" value={this.state.codeBank_5} onChange={event => this.updateInputValue(event)} />
                             </Form.Item>
-                            <Form.Item label="Ghi chú">
-                                <Input name="note" placeholder="Ghi chú" value={this.state.note} onChange={event => this.updateInputValue(event)} />
+                            <Form.Item 
+                                label="Điều khoản lãi suất"
+                                validateStatus={(this.state.note.length === 0 && this.state.isShowNotice) ? "error" : null}
+                                help={(this.state.note.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                            >
+                                <Input name="note" placeholder="Điều khoản lãi suất" value={this.state.note} onChange={event => this.updateInputValue(event)} />
                             </Form.Item>
                         </Form>
                     </Col>
