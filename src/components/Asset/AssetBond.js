@@ -144,6 +144,7 @@ class AssetBondF extends Component{
             {
                 title: 'Kỳ hạn', //21
                 dataIndex: 'KYHAN',
+                editable: true,
                 width: 200
             },
             {
@@ -347,7 +348,8 @@ class AssetBondF extends Component{
                     "MS_DN": row.TEN_DN,
                     "MS_KYHANTT": row.MS_KYHANTT,
                     "MS_LTP": row.TENLOAI_TP,
-                    "MS_NTLTN": row.SONGAYTINHLAI
+                    "MS_NTLTN": row.SONGAYTINHLAI,
+                    "NGAYPH": common.convertToFormat(item.NGAYPH)
                 }
                 this.handleSaveEdit(row);
             } else {
