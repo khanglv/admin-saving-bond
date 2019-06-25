@@ -87,7 +87,7 @@ class ModalAssetBond extends Component{
     
     onHandleOk = async()=>{
         try{
-            if(!this.state.codeBond || !this.state.contractVCSC || !this.state.company || !this.state.paymentTerm || !this.state.typeBond || !this.state.totalDepository
+            if((!this.state.codeBond && !this.state.codeBondNewPrefix) || !this.state.contractVCSC || !this.state.company || !this.state.paymentTerm || !this.state.typeBond || !this.state.totalDepository
                 || !this.state.dayInterestYear || !this.state.currentInterest || !this.state.price || !this.state.totalOfCirculate || !this.state.levelLoan || !this.state.totalLevelMobilize){
                 this.setState({isShowNotice: true});
             }else{
