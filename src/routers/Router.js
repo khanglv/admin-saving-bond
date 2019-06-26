@@ -26,7 +26,8 @@ import {
     FContractVCSC,
     FDayInterestYear,
     FBondPrice,
-    FRoomVCSC
+    FRoomVCSC,
+    FSetCommand
 } from './MainGeneral';
 
 const accessTokenAuth = localStorage.getItem('accessTokenAuthKey');
@@ -81,6 +82,7 @@ class RouteURL extends Component{
                         <Route exact path="/day-interest-year" component={FDayInterestYear} />
                         <Route exact path="/bond-price" component={FBondPrice} />
                         <Route exact path="/room-vcsc" component={FRoomVCSC} />
+                        <Route exact path="/set-command" component={FSetCommand} />
                         {/* nhập sai đường dẫn */}
                         <Route exact path="*" component={Error404} />
                     </Switch>

@@ -20,6 +20,7 @@ import ContractVCSC from '../components/ContractVCSC/ContractVCSC';
 import DayInterestYear from '../components/DayInterestYear/DayInterestYear';
 import BondPrice from '../components/BondPrice/BondPrice';
 import RoomVCSC from '../components/RoomVCSC/RoomVCSC';
+import SetCommand from '../components/SetCommand/SetCommand';
 
 import { Layout, Avatar, Card, Button } from 'antd';
 const { Meta } = Card;
@@ -32,8 +33,8 @@ const withSidebar = (View) =>
                 <HeaderCom />
                 <Layout>
                     <SiderBarMenu />
-                    <Layout style={{height: '93vh'}}>
-                        <View/>
+                    <Layout style={{height: '93vh', backgroundColor: '#fff'}}>
+                        <View />
                     </Layout>
                 </Layout>
             </Layout>
@@ -59,6 +60,7 @@ export const FContractVCSC = ()=> withSidebar(ContractVCSC)
 export const FDayInterestYear = ()=> withSidebar(DayInterestYear)
 export const FBondPrice = ()=> withSidebar(BondPrice)
 export const FRoomVCSC = ()=> withSidebar(RoomVCSC)
+export const FSetCommand = ()=> withSidebar(SetCommand)
 
 class HeaderCom extends Component{
     constructor(props){
@@ -104,8 +106,8 @@ class CardAccount extends Component {
             >
                 <Meta
                     avatar={<Avatar style={{ backgroundColor: '#438599' }} icon="user" />}
-                    title={this.state.accountInfo ? this.state.accountInfo[0].USERNAME : "Admin"}
-                    description={this.state.accountInfo ? this.state.accountInfo[0].FullName : "This is admin"}
+                    title={this.state.accountInfo ? this.state.accountInfo.USERNAME : "Admin"}
+                    description={this.state.accountInfo ? this.state.accountInfo.FullName : "This is admin"}
                 />
             </Card>
         )

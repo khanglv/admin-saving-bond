@@ -37,10 +37,6 @@
     height: 50px!important;
 }
 
-.ant-menu-item-selected{
-    
-}
-
 .ant-avatar{
     line-height: 1.2!important;
 }
@@ -65,4 +61,9 @@
 
 .middle-text{
     vertical-align: middle;
+}
+
+.middle-div{
+    display: flex!important;
+    align-items: center;
 }

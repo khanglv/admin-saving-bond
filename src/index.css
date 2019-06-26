@@ -32,6 +32,11 @@ code {
   vertical-align: middle;
 }
 
+.middle-div{
+  display: flex!important;
+  align-items: center;
+}
+
 .color-main{
   background: #4b79a1;
 }

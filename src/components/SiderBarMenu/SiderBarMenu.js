@@ -5,10 +5,10 @@ import { withRouter } from "react-router";
 
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
-const LIST_ROUTE_CONFIG = ['/frefix', '/command-type', '/trade-status', '/branch-vcsc'];
 const LIST_ROUTE_DATABASE = ['/frefix', '/company', '/payment-term', '/bank-interest', '/fee-trade', '/bond-type', '/command-type', '/bond-price',
                            '/trade-status', '/branch-vcsc', '/investor-type', '/investor', '/interest-rate', '/contract-vcsc', '/day-interest-year'];
-const LIST_ROUTE_GENERAL = ['/asset-bond', '/ensure-asset', '/room-vcsc'];
+const LIST_ROUTE_GENERAL = ['/asset-bond', '/ensure-asset', '/room-vcsc', '/set-command'];
+const LIST_ROUTE_CONFIG = ['/frefix', '/command-type', '/trade-status', '/branch-vcsc'];
 
 const checkRouteOpenDefaultKey = ()=> {
     for(let i = 0; i < LIST_ROUTE_CONFIG.length; i++){
@@ -107,6 +107,9 @@ class SiderBarMenu extends Component {
             case "/room-vcsc":
                 this.props.history.push('/room-vcsc');
                 break;
+            case "/set-command":
+                this.props.history.push('/set-command');
+                break;
             default:
                 break;
         }
@@ -130,82 +133,85 @@ class SiderBarMenu extends Component {
                          <SubMenu
                             key="database"
                             title={
-                                <span>
+                                <span className="middle-div">
                                     <Icon type="database" />
-                                    <span className="middle-text">Database</span>
+                                    <span>Database</span>
                                 </span>
                             }
                         >
                             <Menu.Item key="/company">
-                                <span className="middle-text">Tổ chức phát hành</span>
+                                <span>Tổ chức phát hành</span>
                             </Menu.Item>
                             <Menu.Item key="/bank-interest">
-                                <span className="middle-text">Lãi suất ngân hàng</span>
+                                <span>Lãi suất ngân hàng</span>
                             </Menu.Item>
                             <Menu.Item key="/fee-trade">
-                                <span className="middle-text">Chi phí giao dịch</span>
+                                <span>Chi phí giao dịch</span>
                             </Menu.Item>
                             <Menu.Item key="/payment-term">
-                                <span className="middle-text">Kỳ hạn thanh toán</span>
+                                <span>Kỳ hạn thanh toán</span>
                             </Menu.Item>
                             <Menu.Item key="/bond-type">
-                                <span className="middle-text">Loại trái phiếu</span>
+                                <span>Loại trái phiếu</span>
                             </Menu.Item>
                             <Menu.Item key="/investor">
-                                <span className="middle-text">Nhà đầu tư</span>
+                                <span>Nhà đầu tư</span>
                             </Menu.Item>
                             <Menu.Item key="/interest-rate">
-                                <span className="middle-text">Lãi suất</span>
+                                <span>Lãi suất</span>
                             </Menu.Item>
                             <Menu.Item key="/contract-vcsc">
-                                <span className="middle-text">Hợp đồng mua VCSC</span>
+                                <span>Hợp đồng mua VCSC</span>
                             </Menu.Item>
                             <Menu.Item key="/day-interest-year">
-                                <span className="middle-text">Ngày tính lãi trong năm</span>
+                                <span>Ngày tính lãi trong năm</span>
                             </Menu.Item>
                             <Menu.Item key="/bond-price">
-                                <span className="middle-text">Giá trị trái phiếu</span>
+                                <span>Giá trị trái phiếu</span>
                             </Menu.Item>
                         </SubMenu>
                         <SubMenu
                             key="general"
                             title={
-                                <span>
+                                <span className="middle-div">
                                     <Icon type="control" />
-                                    <span className="middle-text">General</span>
+                                    <span>General</span>
                                 </span>
                             }
                         >
                             <Menu.Item key="/asset-bond">
-                                <span className="middle-text">Trái phiếu</span>
+                                <span>Trái phiếu</span>
                             </Menu.Item>
                             <Menu.Item key="/ensure-asset">
-                                <span className="middle-text">Tài sản đảm bảo</span>
+                                <span>Tài sản đảm bảo</span>
                             </Menu.Item>
                             <Menu.Item key="/room-vcsc">
-                                <span className="middle-text">Room VCSC</span>
+                                <span>Room VCSC</span>
+                            </Menu.Item>
+                            <Menu.Item key="/set-command">
+                                <span>Đặt lệnh</span>
                             </Menu.Item>
                         </SubMenu>
                         <SubMenu
                             key="configs"
                             title={
-                                <span>
+                                <span className="middle-div">
                                     <Icon type="tool" />
-                                    <span className="middle-text">Configs</span>
+                                    <span>Configs</span>
                                 </span>
                             }
                         >
                             <Menu.Item key="/frefix">
-                                <span className="middle-text">Prefix</span>
+                                <span>Prefix</span>
                             </Menu.Item>
                             <Menu.Item key="/command-type">
-                                <span className="middle-text">Loại Lệnh</span>
+                                <span>Loại Lệnh</span>
                             </Menu.Item>
                             <Menu.Item key="/trade-status">
-                                <span className="middle-text">Trạng thái giao dịch</span>
+                                <span>Trạng thái giao dịch</span>
                             </Menu.Item>
                             <Menu.Item key="/branch-vcsc">
-                                <span className="middle-text">Chi nhánh VCSC</span>
+                                <span>Chi nhánh VCSC</span>
                             </Menu.Item>
                         </SubMenu>
                     </Menu>
