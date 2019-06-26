@@ -35,6 +35,7 @@
 .ant-menu-item{
     margin: 0!important;
     height: 50px!important;
+    padding-left: 35px!important;
 }
 
 .ant-avatar{

@@ -22,6 +22,7 @@ class ModalBankInterest extends Component{
         this.state = {
             currency: value.currency || 'Open',
             nameBank: '',
+            codeBank: '',
             interest: '',
             isShowNotice: false
         };
@@ -42,11 +43,12 @@ class ModalBankInterest extends Component{
 
     onHandleOk = async()=>{
         try {
-            if(!this.state.nameBank|| !this.state.interest){
+            if(!this.state.nameBank|| !this.state.interest || !this.state.codeBank){
                 this.setState({isShowNotice: true});
             }else{
                 let dataTmp = {
                     "TEN_NH": this.state.nameBank,
+                    "MA_NH": this.state.codeBank,
                     "LAISUAT_HH": this.state.interest
                 }
                 const res = await createItemBankInterest(dataTmp);
@@ -56,6 +58,7 @@ class ModalBankInterest extends Component{
                     await this.props.reloadData();
                     this.setState({
                         nameBank: '',
+                        codeBank: '',
                         interest: '',
                         isShowNotice: false
                     });
@@ -95,6 +98,13 @@ class ModalBankInterest extends Component{
                         help = {(this.state.nameBank.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                     >
                         <Input name="nameBank" placeholder="Tên ngân hàng" value={this.state.nameBank} onChange={event => this.updateInputValue(event)}/>
+                    </Form.Item>
+                    <Form.Item 
+                        label="* Mã số ngân hàng"
+                        validateStatus = {(this.state.codeBank.length === 0 && this.state.isShowNotice)  ? "error" : null}
+                        help = {(this.state.codeBank.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                    >
+                        <Input name="codeBank" placeholder="Mã số ngân hàng" value={this.state.codeBank} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
                     <Form.Item 
                         label="* Lãi suất (%)"

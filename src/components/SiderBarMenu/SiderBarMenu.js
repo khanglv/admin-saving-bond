@@ -155,13 +155,13 @@ class SiderBarMenu extends Component {
                                 <span>Loại trái phiếu</span>
                             </Menu.Item>
                             <Menu.Item key="/investor">
-                                <span>Nhà đầu tư</span>
+                                <span>D.Sách nhà đầu tư</span>
                             </Menu.Item>
                             <Menu.Item key="/interest-rate">
                                 <span>Lãi suất</span>
                             </Menu.Item>
                             <Menu.Item key="/contract-vcsc">
-                                <span>Hợp đồng mua VCSC</span>
+                                <span>Hợp đồng phát hành</span>
                             </Menu.Item>
                             <Menu.Item key="/day-interest-year">
                                 <span>Ngày tính lãi trong năm</span>
@@ -180,16 +180,16 @@ class SiderBarMenu extends Component {
                             }
                         >
                             <Menu.Item key="/asset-bond">
-                                <span>Trái phiếu</span>
+                                <span>D.Sách trái phiếu</span>
                             </Menu.Item>
                             <Menu.Item key="/ensure-asset">
-                                <span>Tài sản đảm bảo</span>
+                                <span>D.Sách T.Sản đảm bảo</span>
                             </Menu.Item>
                             <Menu.Item key="/room-vcsc">
                                 <span>Room VCSC</span>
                             </Menu.Item>
                             <Menu.Item key="/set-command">
-                                <span>Đặt lệnh</span>
+                                <span>Danh sách lệnh</span>
                             </Menu.Item>
                         </SubMenu>
                         <SubMenu

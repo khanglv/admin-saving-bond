@@ -27,7 +27,13 @@ class BankInterestF extends Component{
                 dataIndex: 'TEN_NH',
                 width: 200,
                 editable: true,
-            },  
+            },
+            {
+                title: 'Mã ngân hàng', //2
+                dataIndex: 'MA_NH',
+                width: 200,
+                editable: true,
+            },
             {
                 title: 'Lãi suất hoa hồng (%)', //3
                 dataIndex: 'LAISUAT_HH',

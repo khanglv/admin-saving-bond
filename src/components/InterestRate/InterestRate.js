@@ -8,6 +8,7 @@ import * as common from '../Common/Common';
 import {connect} from 'react-redux';
 import {getListInterestRate} from '../../stores/actions/interestRateAction';
 import {getListBondsAsset} from '../../stores/actions/bondsAssetAction';
+import {getListBankInterest} from '../../stores/actions/bankInterestAction';
 
 class InterestRateF extends Component{
     constructor(props) {
@@ -58,30 +59,35 @@ class InterestRateF extends Component{
             {
                 title: 'Mã N.Hàng 1', //8
                 dataIndex: 'MA_NH01',
+                tmpData: 'MA_NH01',
                 editable: true,
                 width: 150
             },
             {
                 title: 'Mã N.Hàng 2', //9
                 dataIndex: 'MA_NH02',
+                tmpData: 'MA_NH02',
                 editable: true,
                 width: 150
             },
             {
                 title: 'Mã N.Hàng 3', //10
                 dataIndex: 'MA_NH03',
+                tmpData: 'MA_NH03',
                 editable: true,
                 width: 150
             },
             {
                 title: 'Mã N.Hàng 4', //11
                 dataIndex: 'MA_NH04',
+                tmpData: 'MA_NH04',
                 editable: true,
                 width: 150
             },
             {
                 title: 'Mã N.Hàng 5', //12
                 dataIndex: 'MA_NH05',
+                tmpData: 'MA_NH05',
                 editable: true,
                 width: 150
             },
@@ -131,6 +137,7 @@ class InterestRateF extends Component{
             openModal: false,
             editingKey: '',
             lstBondsAsset: [],
+            lstBankInterest: []
         };
     }
 
@@ -139,9 +146,11 @@ class InterestRateF extends Component{
     async componentDidMount(){
         try {
             const lstBondsAsset = await this.props.getListBondsAsset();
+            const lstBankInterest = await this.props.getListBankInterest();
             this.setState(
                 {
                     lstBondsAsset: lstBondsAsset.data,
+                    lstBankInterest: lstBankInterest.data
                 }
             );
         } catch (error) {
@@ -161,6 +170,7 @@ class InterestRateF extends Component{
                         ...item,
                         "NGAYTAO": common.convertDDMMYYYY(item.NGAYTAO),
                         "lstBondsAssetData": this.props.lstBondsAsset,
+                        "lstBankInterestData": this.props.lstBankInterest,
                         "key": i + 1
                     }
                 })
@@ -262,7 +272,7 @@ class InterestRateF extends Component{
                 ...col,
                 onCell: record => ({
                     record,  //setting type input (date, number ...)
-                    inputType: col.dataIndex === 'MSTP' ? 'select' : 'text' ,
+                    inputType: ['MSTP', 'MA_NH01', 'MA_NH02', 'MA_NH03', 'MA_NH04', 'MA_NH05'].indexOf(col.dataIndex) > -1 ? 'select' : 'text' ,
                     dataIndex: col.dataIndex,
                     title: col.title,
                     tmpData: col.tmpData,
@@ -274,7 +284,7 @@ class InterestRateF extends Component{
         return(
             <div>
                 <ModalInterestRate isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}
-                    lstBondsAssetData={this.state.lstBondsAsset}
+                    lstBondsAssetData={this.state.lstBondsAsset} lstBankInterestData={this.state.lstBankInterest}
                 />
                 <div className="p-top10" style={{padding: 10}}>
                     <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
@@ -303,6 +313,7 @@ const InterestRate = Form.create()(InterestRateF);
 const mapStateToProps = state =>{
     return{
         lstBondsAsset: state.bondsAsset.data,
+        lstBankInterest: state.bankInterest.data
     }
 }
 
@@ -310,6 +321,7 @@ const mapDispatchToProps = dispatch =>{
     return{
         getListBondsAsset: ()=> dispatch(getListBondsAsset()),
         getListInterestRate: ()=> dispatch(getListInterestRate()),
+        getListBankInterest: ()=> dispatch(getListBankInterest())
     }
 }
 

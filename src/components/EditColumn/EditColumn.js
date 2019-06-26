@@ -120,6 +120,20 @@ export class EditableCell extends React.Component {
                             })
                         }
                     </Select>
+                case 'MA_NH01':
+                case 'MA_NH02':
+                case 'MA_NH03':
+                case 'MA_NH04':
+                case 'MA_NH05':
+                    return <Select showSearch style={{ width: '100%' }}>
+                        {
+                            this.props.record.lstBankInterestData.map((item) => {
+                                return (
+                                    item.FLAG === 1 ? <Option key={item.LAISUAT_ID} value={item.MA_NH}>{item.MA_NH}</Option> : null
+                                )
+                            })
+                        }
+                    </Select>
                 default:
                     return;
             }

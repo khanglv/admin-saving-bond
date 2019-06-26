@@ -184,19 +184,59 @@ class ModalInterestRate extends Component{
                     <Col span={12}>
                         <Form {...formItemLayout}>
                             <Form.Item label="Mã ngân hàng 1">
-                                <Input name="codeBank_1" placeholder="Mã ngân hàng 1" value={this.state.codeBank_1} onChange={event => this.updateInputValue(event)} />
+                                <Select showSearch placeholder="Mã ngân hàng 1" onChange={this.updateSelectValue('codeBank_1')}>
+                                    {
+                                        this.props.lstBankInterestData.map((item) => {
+                                            return (
+                                                item.FLAG === 1 ? <Option key={item.LAISUAT_ID} value={item.MA_NH}>{item.MA_NH}</Option> : null
+                                            )
+                                        })
+                                    }
+                                </Select>
                             </Form.Item>
                             <Form.Item label="Mã ngân hàng 2">
-                                <Input name="codeBank_2" placeholder="Mã ngân hàng 2" value={this.state.codeBank_2} onChange={event => this.updateInputValue(event)} />
+                                <Select showSearch placeholder="Mã ngân hàng 2" onChange={this.updateSelectValue('codeBank_2')}>
+                                    {
+                                        this.props.lstBankInterestData.map((item) => {
+                                            return (
+                                                item.FLAG === 1 ? <Option key={item.LAISUAT_ID} value={item.MA_NH}>{item.MA_NH}</Option> : null
+                                            )
+                                        })
+                                    }
+                                </Select>
                             </Form.Item>
                             <Form.Item label="Mã ngân hàng 3">
-                                <Input name="codeBank_3" placeholder="Mã ngân hàng 3" value={this.state.codeBank_3} onChange={event => this.updateInputValue(event)} />
+                                <Select showSearch placeholder="Mã ngân hàng 3" onChange={this.updateSelectValue('codeBank_3')}>
+                                    {
+                                        this.props.lstBankInterestData.map((item) => {
+                                            return (
+                                                item.FLAG === 1 ? <Option key={item.LAISUAT_ID} value={item.MA_NH}>{item.MA_NH}</Option> : null
+                                            )
+                                        })
+                                    }
+                                </Select>
                             </Form.Item>
                             <Form.Item label="Mã ngân hàng 4">
-                                <Input name="codeBank_4" placeholder="Mã ngân hàng 4" value={this.state.codeBank_4} onChange={event => this.updateInputValue(event)} />
+                                <Select showSearch placeholder="Mã ngân hàng 4" onChange={this.updateSelectValue('codeBank_4')}>
+                                    {
+                                        this.props.lstBankInterestData.map((item) => {
+                                            return (
+                                                item.FLAG === 1 ? <Option key={item.LAISUAT_ID} value={item.MA_NH}>{item.MA_NH}</Option> : null
+                                            )
+                                        })
+                                    }
+                                </Select>
                             </Form.Item>
                             <Form.Item label="Mã ngân hàng 5">
-                                <Input name="codeBank_5" placeholder="Mã ngân hàng 5" value={this.state.codeBank_5} onChange={event => this.updateInputValue(event)} />
+                                <Select showSearch placeholder="Mã ngân hàng 5" onChange={this.updateSelectValue('codeBank_5')}>
+                                    {
+                                        this.props.lstBankInterestData.map((item) => {
+                                            return (
+                                                item.FLAG === 1 ? <Option key={item.LAISUAT_ID} value={item.MA_NH}>{item.MA_NH}</Option> : null
+                                            )
+                                        })
+                                    }
+                                </Select>
                             </Form.Item>
                             <Form.Item 
                                 label="Điều khoản lãi suất"
