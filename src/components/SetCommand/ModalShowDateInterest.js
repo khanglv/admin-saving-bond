@@ -22,8 +22,13 @@ class ModalShowDateInterest extends Component{
             },
             {
                 title: 'Tiền nhận', //1
-                dataIndex: 'interestRate',
+                dataIndex: 'moneyReceived',
                 width: 200
+            },
+            {
+                title: 'Lãi suất (%)', //1
+                dataIndex: 'interestRate',
+                width: 100
             }
         ]
         const value = props.value || {};
@@ -47,6 +52,7 @@ class ModalShowDateInterest extends Component{
                 ...item,
                 "content": "Coupon",
                 "date": common.convertDDMMYYYY(item.date),
+                "moneyReceived": common.convertTextDecimal(item.moneyReceived),
                 "key": i + 1
             }
         });

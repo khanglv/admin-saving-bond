@@ -155,6 +155,8 @@ class ContractVCSCF extends Component{
                         "NGAY_DH": common.convertDDMMYYYY(item.NGAY_DH),
                         "lstCompanyData": this.props.lstCompany,
                         "lstBranchVCSCData": this.props.lstBranchVCSC,
+                        "MENHGIA_TP": common.convertTextDecimal(item.MENHGIA_TP),
+                        "SOLUONG_PH": common.convertTextDecimal(item.SOLUONG_PH),
                         "key": i + 1
                     }
                 })

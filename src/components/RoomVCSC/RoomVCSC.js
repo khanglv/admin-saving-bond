@@ -85,6 +85,7 @@ class RoomVCSC extends Component{
                 const lstTmp = await (res.data.filter(item => item.FLAG === 1)).map((item, i) => {
                     return {
                         ...item,
+                        "HANMUC": common.convertTextDecimal(item.HANMUC),
                         "NGAYTAO": common.convertDDMMYYYY(item.NGAYTAO),
                         "key": i + 1
                     }

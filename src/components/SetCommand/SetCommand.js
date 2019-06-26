@@ -154,6 +154,8 @@ class SetCommand extends Component{
                         "NGAYTAO": common.convertDDMMYYYY(item.NGAYTAO),
                         "NGAY_GD": common.convertDDMMYYYY(item.NGAY_GD),
                         "NGAYHUY": common.convertDDMMYYYY(item.NGAYHUY),
+                        "DONGIA": common.convertTextDecimal(item.DONGIA),
+                        "TONGGIATRI": common.convertTextDecimal(item.TONGGIATRI),
                         "key": i + 1
                     }
                 })

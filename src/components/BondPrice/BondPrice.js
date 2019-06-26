@@ -142,6 +142,7 @@ class BondPriceF extends Component{
                         "NGAYTAO": common.convertDDMMYYYY(item.NGAYTAO),
                         "NGAY_AP": common.convertDDMMYYYY(item.NGAY_AP),
                         "NGAY_HH": common.convertDDMMYYYY(item.NGAY_HH),
+                        "GIATRI_HIENTAI": common.convertTextDecimal(item.GIATRI_HIENTAI),
                         "lstBondsAssetData": this.props.lstBondsAsset,
                         "key": i + 1
                     }

@@ -24,3 +24,7 @@ export const notify = (type, data) => {
 export const convertStringDate = (date)=>{
     return moment(new Date(date)).format('DD/MM/YYYY').split('/').join('');
 }
+
+export const convertTextDecimal = (number)=>{
+    return parseInt(number).toLocaleString(undefined, {maximumFractionDigits:2})
+}
