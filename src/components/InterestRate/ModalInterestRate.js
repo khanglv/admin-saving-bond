@@ -60,44 +60,68 @@ class ModalInterestRate extends Component{
     
     onHandleOk = async()=>{
         try{
-            if(!this.state.codeInterest || !this.state.codeBond || !this.state.maxInterest || !this.state.interestRecall || !this.state.interestAmplitude || !this.state.interestAverage || !this.state.note){
-                this.setState({isShowNotice: true});
-            }else{
-                let dataTmp = {
-                    "MSLS": this.state.codeInterest,
-                    "BOND_ID": this.state.codeBond,
-                    "LS_TOIDA": this.state.maxInterest,
-                    "LS_TH": this.state.interestRecall,
-                    "LS_BIENDO": this.state.interestAmplitude,
-                    "LS_BINHQUAN": this.state.interestAverage,
-                    "MA_NH01": this.state.codeBank_1,
-                    "MA_NH02": this.state.codeBank_2,
-                    "MA_NH03": this.state.codeBank_3,
-                    "MA_NH04": this.state.codeBank_4,
-                    "MA_NH05": this.state.codeBank_5,
-                    "DIEUKHOAN_LS": this.state.note
+            const {
+                codeInterest, 
+                codeBond, 
+                maxInterest, 
+                interestRecall, 
+                interestAmplitude, 
+                interestAverage, 
+                codeBank_1, 
+                codeBank_2, 
+                codeBank_3, 
+                codeBank_4, 
+                codeBank_5, 
+                note
+            } = this.state;
+            
+            const arrBank = [codeBank_1, codeBank_2, codeBank_3, codeBank_4, codeBank_5].filter(function (v) {
+                return v != '';
+            });
+
+            const findDuplicates = (arr) => arr.filter((item, index) => arr.indexOf(item) != index)
+            if(findDuplicates(arrBank).length === 0) {
+                if(!codeInterest || !codeBond || !maxInterest || !interestRecall || !interestAmplitude || !interestAverage || !note){
+                    this.setState({isShowNotice: true});
+                } else {
+                    let dataTmp = {
+                        "MSLS": codeInterest,
+                        "BOND_ID": codeBond,
+                        "LS_TOIDA": maxInterest,
+                        "LS_TH": interestRecall,
+                        "LS_BIENDO": interestAmplitude,
+                        "LS_BINHQUAN": interestAverage,
+                        "MA_NH01": codeBank_1,
+                        "MA_NH02": codeBank_2,
+                        "MA_NH03": codeBank_3,
+                        "MA_NH04": codeBank_4,
+                        "MA_NH05": codeBank_5,
+                        "DIEUKHOAN_LS": note
+                    }
+                    const res = await createItemInterestRate(dataTmp);
+                    if(res.error){
+                        common.notify('error', 'Thao tác thất bại :( ');
+                    }else{
+                        await this.props.reloadData();
+                        this.setState({
+                            codeInterest: '',
+                            maxInterest: null,
+                            interestRecall: null,
+                            interestAmplitude: null,
+                            interestAverage: null,
+                            codeBank_1: '',
+                            codeBank_2: '',
+                            codeBank_3: '',
+                            codeBank_4: '',
+                            codeBank_5: '',
+                            note: '',
+                            isShowNotice: false
+                        });
+                        await common.notify('success', 'Thao tác thành công ^^!');
+                    }
                 }
-                const res = await createItemInterestRate(dataTmp);
-                if(res.error){
-                    common.notify('error', 'Thao tác thất bại :( ');
-                }else{
-                    await this.props.reloadData();
-                    this.setState({
-                        codeInterest: '',
-                        maxInterest: null,
-                        interestRecall: null,
-                        interestAmplitude: null,
-                        interestAverage: null,
-                        codeBank_1: '',
-                        codeBank_2: '',
-                        codeBank_3: '',
-                        codeBank_4: '',
-                        codeBank_5: '',
-                        note: '',
-                        isShowNotice: false
-                    });
-                    await common.notify('success', 'Thao tác thành công ^^!');
-                }
+            } else {
+                common.notify('error', 'Mã ngân hàng bị trùng' );
             }
         }catch(err){
             common.notify('error', 'Thao tác thất bại :( ' );
