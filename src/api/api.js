@@ -735,3 +735,12 @@ export const getListSetCommand = ()=>{
     }
     return callApi(options);
 }
+
+export const updateApproveSetCommand = (data) => {
+    const options = {
+        url: `${URL_SET_COMMAND}/updateStatus`,
+        method: "PUT",
+        data: data
+    }
+    return callApi(options);
+}

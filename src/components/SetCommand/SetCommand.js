@@ -4,6 +4,7 @@ import * as common from '../Common/Common';
 import ModalShowDateInterest from './ModalShowDateInterest';
 import {connect} from 'react-redux';
 import {getListSetCommand} from '../../stores/actions/setCommandAction';
+import { updateApproveSetCommand } from '../../api/api';
 
 class SetCommand extends Component{
     constructor(props) {
@@ -24,10 +25,13 @@ class SetCommand extends Component{
                     return(
                         this.state.dataSource.length >= 1 ?
                             <div>
-                                <Tooltip title="Duyệt" className="pointer">
-                                    <Icon type="check" style={{color: '#1cd356', fontSize: 16}}/>
-                                </Tooltip>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <Popconfirm title="Hủy duyệt lệnh này???" onConfirm={() => this.handleDelete()}>
+                                <Popconfirm title="Duyệt lệnh này?" onConfirm={() => this.handleOk(record)}>
+                                    <Tooltip title="Duyệt" className="pointer">
+                                        <Icon type="check" style={{color: '#1cd356', fontSize: 16}}/>
+                                    </Tooltip>
+                                </Popconfirm>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <Popconfirm title="Hủy duyệt lệnh này?" onConfirm={() => this.handleDelete()}>
                                     <Tooltip title="Hủy duyệt" className="pointer">
                                         <Icon type="close" style={{color: '#f5222d', fontSize: 16}}/>
                                     </Tooltip>
@@ -132,6 +136,22 @@ class SetCommand extends Component{
 
     async componentDidMount(){
         await this.loadData();
+    }
+
+    handleOk = async (data) => {
+        console.log(data);
+        try {
+            const req = await updateApproveSetCommand({
+                MSDL: data.MSDL,
+                status: 1,
+            });
+            console.log(req);
+            if(!req.error) {
+                this.loadData();
+            }
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     onDetailDateInterest = (data)=>{

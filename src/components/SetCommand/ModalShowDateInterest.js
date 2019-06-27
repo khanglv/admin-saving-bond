@@ -63,6 +63,7 @@ class ModalShowDateInterest extends Component{
                 visible={this.props.isOpen}
                 onOk={() => this.onHandleOk()}
                 onCancel={this.setModal2Visible}
+                footer={null}
             >
                 <div className="p-top10" style={{ padding: 10 }}>
                     <Table

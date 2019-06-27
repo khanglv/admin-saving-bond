@@ -76,10 +76,10 @@ class ModalInterestRate extends Component{
             } = this.state;
             
             const arrBank = [codeBank_1, codeBank_2, codeBank_3, codeBank_4, codeBank_5].filter(function (v) {
-                return v != '';
+                return v !== '';
             });
 
-            const findDuplicates = (arr) => arr.filter((item, index) => arr.indexOf(item) != index)
+            const findDuplicates = (arr) => arr.filter((item, index) => arr.indexOf(item) !== index)
             if(findDuplicates(arrBank).length === 0) {
                 if(!codeInterest || !codeBond || !maxInterest || !interestRecall || !interestAmplitude || !interestAverage || !note){
                     this.setState({isShowNotice: true});
