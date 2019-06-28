@@ -728,9 +728,9 @@ export const getListRoomVCSC = ()=>{
 }
 
 //Set command
-export const getListSetCommand = ()=>{
+export const getListSetCommand = (status)=>{
     const options = {
-        url: URL_SET_COMMAND,
+        url: `${URL_SET_COMMAND}/${status}`,
         method: "GET",
     }
     return callApi(options);

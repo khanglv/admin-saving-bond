@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
-import { Table, Icon, Button, Tooltip, Popconfirm} from 'antd';
+import { Table, Icon, Button, Tooltip, Popconfirm, Tabs} from 'antd';
 import * as common from '../Common/Common';
 import ModalShowDateInterest from './ModalShowDateInterest';
 import {connect} from 'react-redux';
 import {getListSetCommand} from '../../stores/actions/setCommandAction';
 import { updateApproveSetCommand } from '../../api/api';
+
+const TabPane = Tabs.TabPane;
 
 class SetCommand extends Component{
     constructor(props) {
@@ -24,18 +26,21 @@ class SetCommand extends Component{
                 render: (text, record) =>{
                     return(
                         this.state.dataSource.length >= 1 ?
-                            <div>
-                                <Popconfirm title="Duyệt lệnh này?" onConfirm={() => this.handleOk(record)}>
-                                    <Tooltip title="Duyệt" className="pointer" placement="left">
-                                        <Icon type="check" style={{color: '#1cd356', fontSize: 16}}/>
-                                    </Tooltip>
-                                </Popconfirm>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <Popconfirm title="Hủy lệnh này?" onConfirm={() => this.handleDelete()}>
-                                    <Tooltip title="Hủy duyệt" className="pointer" placement="right">
-                                        <Icon type="close" style={{color: '#f5222d', fontSize: 16}}/>
-                                    </Tooltip>
-                                </Popconfirm>
+                            <div>{record.TRANGTHAI_LENH === 0 ? 
+                                <div>
+                                    <Popconfirm title="Duyệt lệnh này?" onConfirm={() => this.handleOk(record)}>
+                                        <Tooltip title="Duyệt" className="pointer" placement="left">
+                                            <Icon type="check" style={{color: '#1cd356', fontSize: 16}}/>
+                                        </Tooltip>
+                                    </Popconfirm>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <Popconfirm title="Hủy lệnh này?" onConfirm={() => this.handleReject(record)}>
+                                        <Tooltip title="Hủy duyệt" className="pointer" placement="right">
+                                            <Icon type="close" style={{color: '#f5222d', fontSize: 16}}/>
+                                        </Tooltip>
+                                    </Popconfirm>
+                                </div>
+                            : record.TRANGTHAI_LENH === 1 ? <div style={{color: '#1cd356'}}>Đã duyệt</div> : <div style={{color: 'red'}}>Đã hủy bỏ</div>}
                             </div>
                          : null
                     )
@@ -64,12 +69,12 @@ class SetCommand extends Component{
             {
                 title: 'Đơn giá',
                 dataIndex: 'DONGIA',
-                width: 150
+                width: 120
             },
             {
                 title: 'Tổng giá trị',
                 dataIndex: 'TONGGIATRI',
-                width: 200
+                width: 180
             },
             {
                 title: 'Lãi suất',
@@ -95,13 +100,17 @@ class SetCommand extends Component{
                 title: 'Trạng thái',
                 dataIndex: 'TRANGTHAI_LENH',
                 editable: true,
-                width: 70,
-                render: TT_NIEMYET =>{
+                width: 100,
+                render: TRANGTHAI_LENH =>{
                     let type = "check-circle";
                     let color = "green";
-                    if(TT_NIEMYET === 0){
+                    if(TRANGTHAI_LENH === 0){
                         type="stop";
                         color="#faad14"
+                    }
+                    if(TRANGTHAI_LENH === 2){
+                        type="close-circle";
+                        color="red"
                     }
                     return(
                         <div className="text-center">
@@ -129,6 +138,8 @@ class SetCommand extends Component{
 
         this.state = {
             dataSource: [],
+            dataSource_2: [],
+            dataSource_3: [],
             openModal: false,
             lstSetCommand: []
         };
@@ -139,17 +150,39 @@ class SetCommand extends Component{
     }
 
     handleOk = async (data) => {
-        console.log(data);
         try {
             const req = await updateApproveSetCommand({
                 MSDL: data.MSDL,
-                status: 1,
+                status: 2,
             });
             console.log(req);
             if(!req.error) {
                 this.loadData();
+                common.notify("success", "Thao tác thành công !!!");
+            }else{
+                common.notify("error", "Thao tác thất bại :(");
             }
         } catch (err) {
+            common.notify("error", "Thao tác thất bại :(");
+            console.log(err);
+        }
+    }
+
+    handleReject = async(data)=>{
+        try {
+            const req = await updateApproveSetCommand({
+                MSDL: data.MSDL,
+                status: 2,
+            });
+            console.log(req);
+            if(!req.error) {
+                this.loadData();
+                common.notify("success", "Thao tác thành công !!!");
+            }else{
+                common.notify("error", "Thao tác thất bại :(");
+            }
+        } catch (err) {
+            common.notify("error", "Thao tác thất bại :(");
             console.log(err);
         }
     }
@@ -164,7 +197,8 @@ class SetCommand extends Component{
 
     loadData = async()=>{
         try {
-            const res = await this.props.getListSetCommand();
+            //Danh sách chờ
+            const res = await this.props.getListSetCommand(0);
             if(res.error){
                 common.notify('error', 'Thao tác thất bại :( ');
             }else{
@@ -179,7 +213,45 @@ class SetCommand extends Component{
                         "key": i + 1
                     }
                 })
-                this.setState({dataSource: lstTmp, editingKey: '' });
+                this.setState({dataSource: lstTmp});
+            }
+
+            //Danh sách đã duyệt
+            const res_2 = await this.props.getListSetCommand(1);
+            if(res_2.error){
+                common.notify('error', 'Thao tác thất bại :( ');
+            }else{
+                const lstTmp_2 = await (res_2.data.filter(item => item.FLAG === 1)).map((item, i) => {
+                    return {
+                        ...item,
+                        "NGAYTAO": common.convertDDMMYYYY(item.NGAYTAO),
+                        "NGAY_GD": common.convertDDMMYYYY(item.NGAY_GD),
+                        "NGAYHUY": common.convertDDMMYYYY(item.NGAYHUY),
+                        "DONGIA": common.convertTextDecimal(item.DONGIA),
+                        "TONGGIATRI": common.convertTextDecimal(item.TONGGIATRI),
+                        "key": i + 1
+                    }
+                })
+                this.setState({dataSource_2: lstTmp_2});
+            }
+
+            //Danh sách hủy
+            const res_3 = await this.props.getListSetCommand(2);
+            if(res_3.error){
+                common.notify('error', 'Thao tác thất bại :( ');
+            }else{
+                const lstTmp_3 = await (res_3.data.filter(item => item.FLAG === 1)).map((item, i) => {
+                    return {
+                        ...item,
+                        "NGAYTAO": common.convertDDMMYYYY(item.NGAYTAO),
+                        "NGAY_GD": common.convertDDMMYYYY(item.NGAY_GD),
+                        "NGAYHUY": common.convertDDMMYYYY(item.NGAYHUY),
+                        "DONGIA": common.convertTextDecimal(item.DONGIA),
+                        "TONGGIATRI": common.convertTextDecimal(item.TONGGIATRI),
+                        "key": i + 1
+                    }
+                })
+                this.setState({dataSource_3: lstTmp_3});
             }
         } catch (error) {
             console.log("err load data " + error);
@@ -191,14 +263,42 @@ class SetCommand extends Component{
             <div>
                 <ModalShowDateInterest isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} lstSetCommand={this.state.lstSetCommand}/>
                 <div className="p-top10" style={{padding: 10}}>
-                    <Table
-                        bordered
-                        dataSource={this.state.dataSource}
-                        size="small"
-                        columns={this.columns}
-                        pagination={{ pageSize: 15 }}
-                        scroll={{x: '130%'}}
-                    />
+                    <Tabs>
+                        <TabPane tab="Danh sách chờ" key="1">
+                            <Table
+                                bordered
+                                dataSource={this.state.dataSource}
+                                size="small"
+                                columns={this.columns}
+                                pagination={{ pageSize: 15 }}
+                                scroll={{x: '130%'}}
+                            />
+                        </TabPane>
+                        <TabPane tab="Danh sách đã duyệt" key="2">
+                            <div className="p-top10" style={{padding: 10}}>
+                                <Table
+                                    bordered
+                                    dataSource={this.state.dataSource_2}
+                                    size="small"
+                                    columns={this.columns}
+                                    pagination={{ pageSize: 15 }}
+                                    scroll={{x: '130%'}}
+                                />
+                            </div>
+                        </TabPane>
+                        <TabPane tab="Danh sách hủy" key="3">
+                            <div className="p-top10" style={{padding: 10}}>
+                                <Table
+                                    bordered
+                                    dataSource={this.state.dataSource_3}
+                                    size="small"
+                                    columns={this.columns}
+                                    pagination={{ pageSize: 15 }}
+                                    scroll={{x: '130%'}}
+                                />
+                            </div>
+                        </TabPane>
+                    </Tabs>
                 </div>
             </div>
         )
@@ -213,7 +313,7 @@ const mapStateToProps = state =>{
 
 const mapDispatchToProps = dispatch =>{
     return{
-        getListSetCommand: ()=> dispatch(getListSetCommand()),
+        getListSetCommand: (status)=> dispatch(getListSetCommand(status)),
     }
 }
 

@@ -6,7 +6,7 @@ export const getListSetCommand = fetchData => async (dispatch) => {
         type: SET_COMMAND_REQUEST,
     })
     try {
-        const res = await api.getListSetCommand();
+        const res = await api.getListSetCommand(fetchData);
         if (res && !res.error) {
             return dispatch({
                 type: SET_COMMAND_SUCCESS,
