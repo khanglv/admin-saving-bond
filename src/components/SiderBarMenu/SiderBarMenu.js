@@ -189,7 +189,7 @@ class SiderBarMenu extends Component {
                                 <span>Room VCSC</span>
                             </Menu.Item>
                             <Menu.Item key="/set-command">
-                                <span>Danh sách lệnh</span>
+                                <span>Quản lý lệnh</span>
                             </Menu.Item>
                         </SubMenu>
                         <SubMenu

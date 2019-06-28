@@ -26,13 +26,13 @@ class SetCommand extends Component{
                         this.state.dataSource.length >= 1 ?
                             <div>
                                 <Popconfirm title="Duyệt lệnh này?" onConfirm={() => this.handleOk(record)}>
-                                    <Tooltip title="Duyệt" className="pointer">
+                                    <Tooltip title="Duyệt" className="pointer" placement="left">
                                         <Icon type="check" style={{color: '#1cd356', fontSize: 16}}/>
                                     </Tooltip>
                                 </Popconfirm>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <Popconfirm title="Hủy duyệt lệnh này?" onConfirm={() => this.handleDelete()}>
-                                    <Tooltip title="Hủy duyệt" className="pointer">
+                                <Popconfirm title="Hủy lệnh này?" onConfirm={() => this.handleDelete()}>
+                                    <Tooltip title="Hủy duyệt" className="pointer" placement="right">
                                         <Icon type="close" style={{color: '#f5222d', fontSize: 16}}/>
                                     </Tooltip>
                                 </Popconfirm>

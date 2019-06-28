@@ -113,7 +113,10 @@ class ModalBondPrice extends Component{
                         validateStatus={(this.state.codeBond.length === 0 && this.state.isShowNotice) ? "error" : null}
                         help={(this.state.codeBond.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                     >
-                        <Select showSearch placeholder="Chọn trái phiếu" onChange={this.updateSelectValue('codeBond')}>
+                        <Select showSearch placeholder="Chọn trái phiếu" onChange={this.updateSelectValue('codeBond')}
+                            filterOption={(input, option) =>
+                            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                        >
                             {
                                 this.props.lstBondsAssetData.map((item) => {
                                     return (

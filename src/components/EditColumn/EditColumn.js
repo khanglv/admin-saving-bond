@@ -31,7 +31,10 @@ export class EditableCell extends React.Component {
         if (this.props.inputType === 'select') {
             switch(this.props.dataIndex){
                 case 'MS_DN':
-                        return <Select showSearch style={{ width: '100%' }} >
+                        return <Select showSearch style={{ width: '100%' }}
+                            filterOption={(input, option) =>
+                            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                        >
                         {
                             this.props.record.lstCompanyData.map((item)=>{
                                 return(
@@ -41,7 +44,10 @@ export class EditableCell extends React.Component {
                         }
                     </Select>
                 case 'MS_CNVCSC':
-                        return <Select showSearch style={{ width: '100%' }}>
+                        return <Select showSearch style={{ width: '100%' }}
+                            filterOption={(input, option) =>
+                            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                        >
                         {
                             this.props.record.lstBranchVCSCData.map((item)=>{
                                 return(
@@ -51,7 +57,10 @@ export class EditableCell extends React.Component {
                         }
                     </Select>
                 case 'TEN_DN':
-                    return <Select showSearch style={{ width: '100%' }}>
+                    return <Select showSearch style={{ width: '100%' }}
+                        filterOption={(input, option) =>
+                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    >
                     {
                         this.props.record.lstCompanyData.map((item)=>{
                             return(
@@ -61,7 +70,10 @@ export class EditableCell extends React.Component {
                     }
                 </Select>    
                 case 'TENTAISANDAMBAO':
-                    return <Select showSearch style={{ width: '100%' }}>
+                    return <Select showSearch style={{ width: '100%' }}
+                        filterOption={(input, option) =>
+                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    >
                     {
                         this.props.record.lstEnsureAssetData.map((item) => {
                             return (
@@ -71,17 +83,23 @@ export class EditableCell extends React.Component {
                     }
                 </Select>
                 case 'MS_KYHANTT':
-                    return <Select showSearch style={{ width: '100%' }}>
+                    return <Select showSearch style={{ width: '100%' }}
+                        filterOption={(input, option) =>
+                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    >
                     {
                         this.props.record.lstPaymentTermData.map((item) => {
                             return (
-                                item.FLAG === 1 ? <Option key={item.MSKYHANTT} value={item.MSKYHANTT}>{item.MSKYHANTT}</Option> : null
+                                item.FLAG === 1 ? <Option key={item.MSKYHANTT} value={item.MSKYHANTT}>{`${item.MSKYHANTT}`}</Option> : null
                             )
                         })
                     }
                 </Select>
                 case 'TENLOAI_TP':
-                    return <Select showSearch style={{ width: '100%' }}>
+                    return <Select showSearch style={{ width: '100%' }}
+                        filterOption={(input, option) =>
+                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    >
                     {
                         this.props.record.lstBondTypeData.map((item) => {
                             return (
@@ -91,17 +109,23 @@ export class EditableCell extends React.Component {
                     }
                 </Select>
                 case 'SONGAYTINHLAI':
-                    return <Select showSearch style={{ width: '100%' }}>
+                    return <Select showSearch style={{ width: '100%' }}
+                        filterOption={(input, option) =>
+                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    >
                     {
                         this.props.record.lstDayInterestYearData.map((item) => {
                             return (
-                                item.FLAG === 1 ? <Option key={item.MSNTLTN} value={item.MSNTLTN}>{item.SONGAYTINHLAI}</Option> : null
+                                item.FLAG === 1 ? <Option key={item.MSNTLTN} value={item.MSNTLTN}>{`${item.SONGAYTINHLAI}`}</Option> : null
                             )
                         })
                     }
                 </Select>
                 case 'SO_HD':
-                    return <Select showSearch style={{ width: '100%' }}>
+                    return <Select showSearch style={{ width: '100%' }}
+                        filterOption={(input, option) =>
+                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    >
                     {
                          this.props.record.lstContractVCSCData.map((item) => {
                             return (
@@ -111,7 +135,10 @@ export class EditableCell extends React.Component {
                     }
                 </Select>
                 case 'MSTP':
-                    return <Select showSearch style={{ width: '100%' }}>
+                    return <Select showSearch style={{ width: '100%' }}
+                        filterOption={(input, option) =>
+                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    >
                         {
                             this.props.record.lstBondsAssetData.map((item) => {
                                 return (
@@ -125,7 +152,10 @@ export class EditableCell extends React.Component {
                 case 'MA_NH03':
                 case 'MA_NH04':
                 case 'MA_NH05':
-                    return <Select showSearch style={{ width: '100%' }}>
+                    return <Select showSearch style={{ width: '100%' }}
+                        filterOption={(input, option) =>
+                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    >
                         {
                             this.props.record.lstBankInterestData.map((item) => {
                                 return (

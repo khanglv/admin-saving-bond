@@ -137,7 +137,10 @@ class ModalContractVCSC extends Component{
                         validateStatus = {(this.state.codeCompany.length === 0 && this.state.isShowNotice)  ? "error" : null}
                         help = {(this.state.codeCompany.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                     >
-                        <Select showSearch placeholder="Chọn doanh nghiệp" onChange={this.updateSelectValue('codeCompany')}>
+                        <Select showSearch placeholder="Chọn doanh nghiệp" onChange={this.updateSelectValue('codeCompany')}
+                            filterOption={(input, option) =>
+                            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                        >
                             {
                                 this.props.lstCompanyData.map((item)=>{
                                     return(
@@ -152,7 +155,10 @@ class ModalContractVCSC extends Component{
                         validateStatus = {(this.state.branchOfVCSC.length === 0 && this.state.isShowNotice)  ? "error" : null}
                         help = {(this.state.branchOfVCSC.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                     >
-                        <Select showSearch placeholder="Chọn chi nhánh VCSC" onChange={this.updateSelectValue('branchOfVCSC')}>
+                        <Select showSearch placeholder="Chọn chi nhánh VCSC" onChange={this.updateSelectValue('branchOfVCSC')}
+                            filterOption={(input, option) =>
+                            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                        >
                             {
                                 this.props.lstBranchVCSCData.map((item)=>{
                                     return(

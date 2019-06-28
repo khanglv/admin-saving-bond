@@ -55,7 +55,7 @@ class AssetBondF extends Component{
                 dataIndex: 'TENLOAI_TP',
                 tmpData: 'MS_LTP',
                 editable: true,
-                width: 150
+                width:250
             },
             {
                 title: 'Ngày tính lãi năm', //7
@@ -207,7 +207,7 @@ class AssetBondF extends Component{
                                     <Icon type="edit" style={{color: editingKey === '' ? '#096dd9' : '#bfbfbf', fontSize: 16}} onClick={() => editingKey === '' && this.onEdit(record.key)}/>
                                 </Tooltip>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.BONDID)}>
-                                    <Tooltip title="Xóa dòng này" className="pointer">
+                                    <Tooltip title="Xóa" className="pointer" placement="right">
                                         <Icon type="delete" style={{color: editingKey === '' ? '#f5222d' : '#bfbfbf', fontSize: 16}}/>
                                     </Tooltip>
                                 </Popconfirm>

@@ -164,7 +164,10 @@ class ModalInterestRate extends Component{
                                 validateStatus={(this.state.codeBond.length === 0 && this.state.isShowNotice) ? "error" : null}
                                 help={(this.state.codeBond.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                             >
-                                <Select showSearch placeholder="Chọn trái phiếu" onChange={this.updateSelectValue('codeBond')}>
+                                <Select showSearch placeholder="Chọn trái phiếu" onChange={this.updateSelectValue('codeBond')}
+                                    filterOption={(input, option) =>
+                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                >
                                     {
                                         this.props.lstBondsAssetData.map((item) => {
                                             return (
@@ -208,7 +211,10 @@ class ModalInterestRate extends Component{
                     <Col span={12}>
                         <Form {...formItemLayout}>
                             <Form.Item label="Mã ngân hàng 1">
-                                <Select showSearch placeholder="Mã ngân hàng 1" onChange={this.updateSelectValue('codeBank_1')}>
+                                <Select showSearch placeholder="Mã ngân hàng 1" onChange={this.updateSelectValue('codeBank_1')}
+                                    filterOption={(input, option) =>
+                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                >
                                     {
                                         this.props.lstBankInterestData.map((item) => {
                                             return (
@@ -219,7 +225,10 @@ class ModalInterestRate extends Component{
                                 </Select>
                             </Form.Item>
                             <Form.Item label="Mã ngân hàng 2">
-                                <Select showSearch placeholder="Mã ngân hàng 2" onChange={this.updateSelectValue('codeBank_2')}>
+                                <Select showSearch placeholder="Mã ngân hàng 2" onChange={this.updateSelectValue('codeBank_2')}
+                                    filterOption={(input, option) =>
+                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                >
                                     {
                                         this.props.lstBankInterestData.map((item) => {
                                             return (
@@ -230,7 +239,10 @@ class ModalInterestRate extends Component{
                                 </Select>
                             </Form.Item>
                             <Form.Item label="Mã ngân hàng 3">
-                                <Select showSearch placeholder="Mã ngân hàng 3" onChange={this.updateSelectValue('codeBank_3')}>
+                                <Select showSearch placeholder="Mã ngân hàng 3" onChange={this.updateSelectValue('codeBank_3')}
+                                    filterOption={(input, option) =>
+                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                >
                                     {
                                         this.props.lstBankInterestData.map((item) => {
                                             return (
@@ -241,7 +253,10 @@ class ModalInterestRate extends Component{
                                 </Select>
                             </Form.Item>
                             <Form.Item label="Mã ngân hàng 4">
-                                <Select showSearch placeholder="Mã ngân hàng 4" onChange={this.updateSelectValue('codeBank_4')}>
+                                <Select showSearch placeholder="Mã ngân hàng 4" onChange={this.updateSelectValue('codeBank_4')}
+                                    filterOption={(input, option) =>
+                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                >
                                     {
                                         this.props.lstBankInterestData.map((item) => {
                                             return (
@@ -252,7 +267,10 @@ class ModalInterestRate extends Component{
                                 </Select>
                             </Form.Item>
                             <Form.Item label="Mã ngân hàng 5">
-                                <Select showSearch placeholder="Mã ngân hàng 5" onChange={this.updateSelectValue('codeBank_5')}>
+                                <Select showSearch placeholder="Mã ngân hàng 5" onChange={this.updateSelectValue('codeBank_5')}
+                                    filterOption={(input, option) =>
+                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                >
                                     {
                                         this.props.lstBankInterestData.map((item) => {
                                             return (

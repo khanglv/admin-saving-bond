@@ -196,7 +196,11 @@ class ModalAssetBond extends Component{
                                 validateStatus={(this.state.codeBond.length === 0 && this.state.isShowNotice) ? "error" : null}
                                 help={(this.state.codeBond.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                             >
-                                <Select disabled={!this.state.isTypePrefix} showSearch placeholder="Típ đầu ngữ mã số trái phiếu" onChange={this.updateSelectValue('codeBond')}>
+                                <Select disabled={!this.state.isTypePrefix} showSearch placeholder="Típ đầu ngữ mã số trái phiếu" 
+                                    onChange={this.updateSelectValue('codeBond')}
+                                    filterOption={(input, option) =>
+                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                >
                                     {
                                         this.props.lstPrefixData.map((item) => {
                                             return (
@@ -218,7 +222,10 @@ class ModalAssetBond extends Component{
                                 validateStatus={(this.state.contractVCSC.length === 0 && this.state.isShowNotice) ? "error" : null}
                                 help={(this.state.contractVCSC.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                             >
-                                <Select showSearch placeholder="Số hợp đồng" onChange={this.updateSelectValue('contractVCSC')}>
+                                <Select showSearch placeholder="Số hợp đồng" onChange={this.updateSelectValue('contractVCSC')}
+                                    filterOption={(input, option) =>
+                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                >
                                     {
                                         this.props.lstContractVCSCData.map((item) => {
                                             return (
@@ -233,7 +240,10 @@ class ModalAssetBond extends Component{
                                 validateStatus={(this.state.company.length === 0 && this.state.isShowNotice) ? "error" : null}
                                 help={(this.state.company.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                             >
-                                <Select showSearch placeholder="Doanh nghiệp" onChange={this.updateSelectValue('company')}>
+                                <Select showSearch placeholder="Doanh nghiệp" onChange={this.updateSelectValue('company')}
+                                    filterOption={(input, option) =>
+                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                >
                                     {
                                         this.props.lstCompanyData.map((item) => {
                                             return (
@@ -263,11 +273,14 @@ class ModalAssetBond extends Component{
                                 validateStatus={(this.state.paymentTerm === null && this.state.isShowNotice) ? "error" : null}
                                 help={(this.state.paymentTerm === null && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                             >
-                                <Select showSearch placeholder="Kỳ hạn thanh toán" onChange={this.updateSelectValue('paymentTerm')}>
+                                <Select showSearch placeholder="Kỳ hạn thanh toán" onChange={this.updateSelectValue('paymentTerm')}
+                                    filterOption={(input, option) =>
+                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                >
                                     {
                                         this.props.lstPaymentTermData.map((item) => {
                                             return (
-                                                item.FLAG === 1 ? <Option key={item.MSKYHANTT} value={item.MSKYHANTT}>{item.LOAI_TT}</Option> : null
+                                                item.FLAG === 1 ? <Option key={item.MSKYHANTT} value={item.MSKYHANTT}>{`${item.LOAI_TT}`}</Option> : null
                                             )
                                         })
                                     }
@@ -277,7 +290,10 @@ class ModalAssetBond extends Component{
                                 validateStatus={(this.state.typeBond.length === 0 && this.state.isShowNotice) ? "error" : null}
                                 help={(this.state.typeBond.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                             >
-                                <Select showSearch placeholder="Loại trái phiếu" onChange={this.updateSelectValue('typeBond')}>
+                                <Select showSearch placeholder="Loại trái phiếu" onChange={this.updateSelectValue('typeBond')}
+                                    filterOption={(input, option) =>
+                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                >
                                     {
                                         this.props.lstBondTypeData.map((item) => {
                                             return (
@@ -292,11 +308,14 @@ class ModalAssetBond extends Component{
                                 validateStatus={(this.state.dayInterestYear === null && this.state.isShowNotice) ? "error" : null}
                                 help={(this.state.dayInterestYear === null && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                             >
-                                <Select showSearch placeholder="Ngày tính lãi trong năm" onChange={this.updateSelectValue('dayInterestYear')}>
+                                <Select showSearch placeholder="Ngày tính lãi trong năm" onChange={this.updateSelectValue('dayInterestYear')}
+                                    filterOption={(input, option) =>
+                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                >
                                     {
                                         this.props.lstDayInterestYearData.map((item) => {
                                             return (
-                                                item.FLAG === 1 ? <Option key={item.MSNTLTN} value={item.MSNTLTN}>{item.SONGAYTINHLAI}</Option> : null
+                                                item.FLAG === 1 ? <Option key={item.MSNTLTN} value={item.MSNTLTN}>{`${item.SONGAYTINHLAI}`}</Option> : null
                                             )
                                         })
                                     }
