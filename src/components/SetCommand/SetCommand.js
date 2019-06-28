@@ -89,10 +89,15 @@ class SetCommand extends Component{
             {
                 title: 'Ngày trái tức',
                 dataIndex: 'NGAY_TRAITUC',
-                width: 150,
+                width: 120,
                 render: (NGAY_TRAITUC)=>{
                     return (
-                        <Button className="middle-div" icon="exclamation-circle" onClick={()=>this.onDetailDateInterest(NGAY_TRAITUC)}>Xem chi tiết</Button>
+                        <div className="text-center">
+                            <Tooltip title="Xem chi tiết" className="pointer">
+                                <Icon type="schedule" style={{fontSize: 18, color: '#4b79a1'}} onClick={()=>this.onDetailDateInterest(NGAY_TRAITUC)}/>
+                            </Tooltip>
+                        </div>
+                        // <Button className="middle-div" icon="exclamation-circle" onClick={()=>this.onDetailDateInterest(NGAY_TRAITUC)}>Xem chi tiết</Button>
                     )
                 }
             },
