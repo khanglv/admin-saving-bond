@@ -30,18 +30,20 @@ class BondHolderF extends Component{
             {
                 title: 'Nhà đầu tư', //2
                 dataIndex: 'TENNDT',
+                tmpData: 'MS_NDT',
+                editable: true,
                 width: 200,
             },  
             {
                 title: 'Trái phiếu', //3
                 dataIndex: 'MSTP',
+                tmpData: 'BOND_ID',
                 editable: true,
                 width: 200
             },
             {
-                title: 'Số hợp đồng', //3
+                title: 'Số hợp đồng',
                 dataIndex: 'SO_HD',
-                editable: true,
                 width: 200
             },
             {
@@ -83,14 +85,12 @@ class BondHolderF extends Component{
             {
                 title: 'Ngày phát hành',
                 dataIndex: 'NGAYPH',
-                width: 150,
-                editable: true,
+                width: 150
             },
             {
                 title: 'Ngày đáo hạn',
                 dataIndex: 'NGAYDH',
-                width: 150,
-                editable: true,
+                width: 150
             },
             {
                 title: 'S.Lượng khả dụng',
@@ -170,7 +170,8 @@ class BondHolderF extends Component{
                     "SONGAYNAMGIU": common.convertTextDecimal(item.SONGAYNAMGIU),
                     "DONGIA": common.convertTextDecimal(item.DONGIA),
                     "TONGGIATRI": common.convertTextDecimal(item.TONGGIATRI),
-                    "lstInvestorType": this.props.lstInvestorType,
+                    "lstInvestorData": this.props.lstInvestor,
+                    "lstBondsAssetData": this.props.lstBondsAsset,
                     "key": i + 1
                 }
             })
@@ -271,7 +272,7 @@ class BondHolderF extends Component{
                 ...col,
                 onCell: record => ({
                     record,  //setting type input (date, number ...)
-                    inputType: col.dataIndex === 'NGAYCAP' ? 'date' : 'text' ,
+                    inputType: ['MSTP', 'TENNDT'].indexOf(col.dataIndex) > -1 ? 'select' : (col.dataIndex === 'TRANGTHAI' ? 'options': col.dataIndex === 'NGAYMUA' ? 'date' : 'text') ,
                     dataIndex: col.dataIndex,
                     title: col.title,
                     editing: this.isEditing(record),

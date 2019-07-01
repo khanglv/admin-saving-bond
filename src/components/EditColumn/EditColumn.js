@@ -147,6 +147,19 @@ export class EditableCell extends React.Component {
                             })
                         }
                     </Select>
+                case 'TENNDT':
+                    return <Select showSearch style={{ width: '100%' }}
+                        filterOption={(input, option) =>
+                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    >
+                        {
+                            this.props.record.lstInvestorData.filter(item=>item.FLAG === 1).map((item) => {
+                                return (
+                                    <Option key={item.MSNDT} value={item.MSNDT}>{item.MSNDT}</Option>
+                                )
+                            })
+                        }
+                    </Select>
                 case 'MA_NH01':
                 case 'MA_NH02':
                 case 'MA_NH03':

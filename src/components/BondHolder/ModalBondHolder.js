@@ -187,7 +187,7 @@ class ModalBondHolder extends Component{
                             </Form.Item>
                             <Form.Item label="Số ngày nắm giữ">
                             <Tag color="green" style={{fontSize: 14, padding: 5}}>
-                                {this.state.itemBond.SONGAYTINHLAI ? common.convertTextDecimal(fomular.genTotalDateHolding(this.state.itemBond.NGAYPH, this.state.itemBond.NGAYPH, this.state.itemBond.NGAYDH, this.state.itemBond.SONGAYTINHLAI)) : 0}
+                                {this.state.itemBond.SONGAYTINHLAI ? common.convertTextDecimal(fomular.genTotalDateHolding(this.state.dateBuy, this.state.itemBond.NGAYPH, this.state.itemBond.NGAYDH, this.state.itemBond.SONGAYTINHLAI)) : 0}
                             </Tag>ngày
                             </Form.Item>
                             <Form.Item
