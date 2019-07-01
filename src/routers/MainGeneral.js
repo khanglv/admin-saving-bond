@@ -21,6 +21,7 @@ import DayInterestYear from '../components/DayInterestYear/DayInterestYear';
 import BondPrice from '../components/BondPrice/BondPrice';
 import RoomVCSC from '../components/RoomVCSC/RoomVCSC';
 import SetCommand from '../components/SetCommand/SetCommand';
+import BondHolder from '../components/BondHolder/BondHolder';
 
 import { Layout, Avatar, Card, Button } from 'antd';
 const { Meta } = Card;
@@ -61,6 +62,7 @@ export const FDayInterestYear = ()=> withSidebar(DayInterestYear)
 export const FBondPrice = ()=> withSidebar(BondPrice)
 export const FRoomVCSC = ()=> withSidebar(RoomVCSC)
 export const FSetCommand = ()=> withSidebar(SetCommand)
+export const FBondHolder = ()=> withSidebar(BondHolder)
 
 class HeaderCom extends Component{
     constructor(props){

@@ -16,6 +16,8 @@ import bondPrice from './bondPrice';
 import roomVCSC from './roomVCSC';
 import setCommand from './setCommand';
 import bankInterest from './bankInterest';
+import investor from './investor';
+import listAssets from './listAssets';
 
 export default combineReducers({
     login: login,
@@ -33,5 +35,7 @@ export default combineReducers({
     bondPrice: bondPrice,
     roomVCSC: roomVCSC,
     setCommand: setCommand,
-    bankInterest: bankInterest
+    bankInterest: bankInterest,
+    investor: investor,
+    listAssets: listAssets
 });

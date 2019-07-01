@@ -23,6 +23,7 @@ const URL_INTEREST_RATE = `${BASE_URL}/interestRate`;
 const URL_BOND_PRICE = `${BASE_URL}/bondPrice`;
 const URL_ROOM_VCSC = `${BASE_URL}/roomVCSC`;
 const URL_SET_COMMAND = `${BASE_URL}/setCommand`;
+const URL_ASSETS = `${BASE_URL}/assets`;
 
 const TIME_OUT = 10000;
 
@@ -740,6 +741,42 @@ export const updateApproveSetCommand = (data) => {
     const options = {
         url: `${URL_SET_COMMAND}/updateStatus`,
         method: "PUT",
+        data: data
+    }
+    return callApi(options);
+}
+
+//Tài sản
+export const getListAssets = ()=>{
+    const options = {
+        url: URL_ASSETS,
+        method: "GET",
+    }
+    return callApi(options);
+}
+
+export const createListAssets = (data)=>{
+    const options = {
+        url: URL_ASSETS,
+        method: "POST",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const updateListAssets = (data)=>{
+    const options = {
+        url: URL_ASSETS,
+        method: "PUT",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const deleteListAssets = (data)=>{
+    const options = {
+        url: URL_ASSETS,
+        method: "DELETE",
         data: data
     }
     return callApi(options);

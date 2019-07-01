@@ -405,7 +405,7 @@ class ModalAssetBond extends Component{
                                 <Select
                                     defaultValue="1"
                                     placeholder="Chọn trạng thái niêm yết"
-                                    onChange={event => this.updateSelectValue('statusListed')}
+                                    onChange={this.updateSelectValue('statusListed')}
                                 >
                                     <Option value="1">Có</Option>
                                     <Option value="0">Không</Option>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Table, Icon, Button, Tooltip, Popconfirm, Tabs} from 'antd';
+import { Table, Icon, Tooltip, Popconfirm, Tabs} from 'antd';
 import * as common from '../Common/Common';
 import ModalShowDateInterest from './ModalShowDateInterest';
 import {connect} from 'react-redux';
