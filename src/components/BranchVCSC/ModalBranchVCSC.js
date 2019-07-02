@@ -132,7 +132,7 @@ class ModalBranchVCSC extends Component{
                         validateStatus = {(this.state.address.length === 0 && this.state.isShowNotice)  ? "error" : null}
                         help = {(this.state.address.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                     >
-                        <Input name="address" type="number" placeholder="Địa chỉ chi nhánh" value={this.state.address} onChange={event => this.updateInputValue(event)}/>
+                        <Input name="address" placeholder="Địa chỉ chi nhánh" value={this.state.address} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
                     <Form.Item 
                         label="* Người đại diện"
