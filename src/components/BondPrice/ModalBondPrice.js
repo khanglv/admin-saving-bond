@@ -152,13 +152,13 @@ class ModalBondPrice extends Component{
                     </Form.Item>
                     <Form.Item label="* Trạng thái">
                         <Select
-                            defaultValue="1"
+                            defaultValue={1}
                             placeholder="Chọn trạng thái"
                             onChange={this.updateSelectValue('status')}
                         >
-                            <Option value="1">Phát hành</Option>
-                            <Option value="2">Huy động</Option>
-                            <Option value="0">Hết huy động</Option>
+                            <Option value={1}>Phát hành</Option>
+                            <Option value={2}>Huy động</Option>
+                            <Option value={0}>Hết huy động</Option>
                         </Select>
                     </Form.Item>
                 </Form>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {createItemBondsAsset, createItemFrefix} from '../../api/api';
+import {createItemBondsAsset} from '../../api/api';
 import { 
     Modal,
     Form,
@@ -7,9 +7,7 @@ import {
     DatePicker,
     Select,
     Row,
-    Col,
-    Checkbox,
-    Tag
+    Col
 } from 'antd';
 import * as common from '../Common/Common';
 import moment from 'moment';
@@ -25,9 +23,7 @@ class ModalAssetBond extends Component{
         const value = props.value || {};
         this.state = {
             currency: value.currency || 'Open',
-            isTypePrefix: true,
             codeBond: '',
-            codeBondNewPrefix: '',
             contractVCSC: '',
             company: '',
             paymentTerm: null,
@@ -63,12 +59,6 @@ class ModalAssetBond extends Component{
         this.setState({ currency });
     };
 
-    onChangeCheckbox = ()=>{
-        this.setState((prew) => ({
-            isTypePrefix: !prew.isTypePrefix
-        }))
-    }
-
     updateInputValue = (event)=>{
         this.setState({[event.target.name]: event.target.value});
     }
@@ -87,25 +77,12 @@ class ModalAssetBond extends Component{
     
     onHandleOk = async()=>{
         try{
-            if((!this.state.codeBond && !this.state.codeBondNewPrefix) || !this.state.contractVCSC || !this.state.company || !this.state.paymentTerm || !this.state.typeBond || !this.state.totalDepository
+            if(!this.state.codeBond || !this.state.contractVCSC || !this.state.company || !this.state.paymentTerm || !this.state.typeBond || !this.state.totalDepository
                 || !this.state.dayInterestYear || !this.state.currentInterest || !this.state.price || !this.state.totalOfCirculate || !this.state.levelLoan || !this.state.totalLevelMobilize){
                 this.setState({isShowNotice: true});
             }else{
-                let codeBondTemp = this.state.codeBond + common.convertStringDate(this.state.dateRelease);
-                if(!this.state.isTypePrefix){
-                    codeBondTemp = this.state.codeBondNewPrefix + common.convertStringDate(this.state.dateRelease);
-                    let dataTmp = {
-                        "KYTU_PREFIX": this.state.codeBondNewPrefix,
-                    }
-                    const res = await createItemFrefix(dataTmp);
-                    if (res.error) {
-                        common.notify('error', 'Thao tác thất bại :( ');
-                    } else {
-                        await common.notify('success', 'Thao tác thành công, đã tạo ra 1 cột mới ở bảng Prefix ^^!');
-                    }
-                }
                 let dataTmp = {
-                    "MSTP": codeBondTemp,
+                    "MSTP": this.state.codeBond,
                     "SO_HD": this.state.contractVCSC,
                     "MS_DN": this.state.company,
                     "MS_KYHANTT": this.state.paymentTerm,
@@ -135,8 +112,7 @@ class ModalAssetBond extends Component{
                 }else{
                     await this.props.reloadData();
                     this.setState({
-                        isTypePrefix: true,
-                        codeBondNewPrefix: '',
+                        codeBond: '',
                         currentInterest: null,
                         sortName: '',
                         infoBond: '',
@@ -188,34 +164,12 @@ class ModalAssetBond extends Component{
                 <Row>
                     <Col span={12}>
                         <Form {...formItemLayout}>
-                            <Form.Item label="MÃ SỐ TRÁI PHIẾU">
-                                <Tag color="green" style={{fontSize: 16, padding: 5}}>{this.state.isTypePrefix === true ? this.state.codeBond + common.convertStringDate(this.state.dateRelease) : this.state.codeBondNewPrefix + common.convertStringDate(this.state.dateRelease)}</Tag>
-                            </Form.Item>
                             <Form.Item
-                                label="* Prefix"
+                                label="* Mã trái phiếu"
                                 validateStatus={(this.state.codeBond.length === 0 && this.state.isShowNotice) ? "error" : null}
                                 help={(this.state.codeBond.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                             >
-                                <Select disabled={!this.state.isTypePrefix} showSearch placeholder="Típ đầu ngữ mã số trái phiếu" 
-                                    onChange={this.updateSelectValue('codeBond')}
-                                    filterOption={(input, option) =>
-                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                                >
-                                    {
-                                        this.props.lstPrefixData.map((item) => {
-                                            return (
-                                                item.FLAG === 1 ? <Option key={item.KYTU_PREFIX} value={item.KYTU_PREFIX}>{item.KYTU_PREFIX}</Option> : null
-                                            )
-                                        })
-                                    }
-                                </Select>
-                            </Form.Item>
-                            <Form.Item
-                                label="Tạo mới Prefix"
-                                validateStatus="warning"
-                            >
-                                <Input name="codeBondNewPrefix" disabled={this.state.isTypePrefix} placeholder="Mã Prefix nhập khi muốn tạo mới" value={this.state.codeBondNewPrefix} onChange={event => this.updateInputValue(event)} />
-                                <Checkbox onChange={this.onChangeCheckbox}>Tạo mới prefix</Checkbox>
+                                <Input name="codeBond" placeholder="Nhập mã trái phiếu" value={this.state.codeBond} onChange={event => this.updateInputValue(event)} />
                             </Form.Item>
                             <Form.Item
                                 label="* Số Hợp đồng"
@@ -345,6 +299,20 @@ class ModalAssetBond extends Component{
                             >
                                 <Input name="price" type="number" placeholder="Mệnh giá trái phiếu" value={this.state.price} onChange={event => this.updateInputValue(event)} />
                             </Form.Item>
+                            <Form.Item label="Kỳ hạn"
+                            >
+                                <Input name="periodRemain" type="number" placeholder="Kỳ hạn" value={this.state.periodRemain} onChange={event => this.updateInputValue(event)} />
+                            </Form.Item>
+                            <Form.Item label="* Trạng thái niêm yết" hasFeedback validateStatus={this.state.statusListed === 1 ? "success" : "warning"}>
+                                <Select
+                                    defaultValue={1}
+                                    placeholder="Chọn trạng thái niêm yết"
+                                    onChange={this.updateSelectValue('statusListed')}
+                                >
+                                    <Option value={1}>Có</Option>
+                                    <Option value={0}>Không</Option>
+                                </Select>
+                            </Form.Item>
                         </Form>
                     </Col>
                     
@@ -396,20 +364,6 @@ class ModalAssetBond extends Component{
                                 help={(this.state.levelLoan === null && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                             >
                                 <Input name="levelLoan" type="number" placeholder="Số lượng trái phiếu phát hành tối đa" value={this.state.levelLoan} onChange={event => this.updateInputValue(event)} />
-                            </Form.Item>
-                            <Form.Item label="Kỳ hạn"
-                            >
-                                <Input name="periodRemain" type="number" placeholder="Kỳ hạn" value={this.state.periodRemain} onChange={event => this.updateInputValue(event)} />
-                            </Form.Item>
-                            <Form.Item label="* Trạng thái niêm yết" hasFeedback validateStatus={this.state.statusListed === 1 ? "success" : "warning"}>
-                                <Select
-                                    defaultValue="1"
-                                    placeholder="Chọn trạng thái niêm yết"
-                                    onChange={this.updateSelectValue('statusListed')}
-                                >
-                                    <Option value="1">Có</Option>
-                                    <Option value="0">Không</Option>
-                                </Select>
                             </Form.Item>
                             <Form.Item label="Tài sản đảm bảo">
                                 <Input name="ensureAsset" placeholder="Tài sản đảm bảo" value={this.state.ensureAsset} onChange={event => this.updateInputValue(event)} />

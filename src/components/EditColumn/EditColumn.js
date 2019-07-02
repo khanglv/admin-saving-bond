@@ -140,9 +140,9 @@ export class EditableCell extends React.Component {
                         option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                     >
                         {
-                            this.props.record.lstBondsAssetData.map((item) => {
+                            this.props.record.lstBondsAssetData.filter(item => item.FLAG === 1).map((item) => {
                                 return (
-                                    item.FLAG === 1 ? <Option key={item.BONDID} value={item.BONDID}>{item.MSTP}</Option> : null
+                                    <Option key={item.BOND_ID} value={item.BOND_ID}>{item.MSTP}</Option>
                                 )
                             })
                         }

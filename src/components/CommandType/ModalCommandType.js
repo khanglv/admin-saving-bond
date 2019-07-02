@@ -115,12 +115,12 @@ class ModalCommandType extends Component{
                     </Form.Item>
                     <Form.Item label="* Trạng thái" hasFeedback validateStatus={this.state.status === 1 ? "success" : "warning"}>
                         <Select
-                            defaultValue="1"
+                            defaultValue={1}
                             placeholder="Chọn trạng thái"
                             onChange={event => this.updateSelectValue(event)}
                             >
-                            <Option value="1">Hoạt động</Option>
-                            <Option value="0">Ngừng hoạt động</Option>
+                            <Option value={1}>Hoạt động</Option>
+                            <Option value={0}>Ngừng hoạt động</Option>
                         </Select>
                     </Form.Item>
                 </Form>

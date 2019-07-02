@@ -7,7 +7,6 @@ import * as common from '../Common/Common';
 
 import {connect} from 'react-redux';
 import {getListBondsAsset} from '../../stores/actions/bondsAssetAction';
-import {getListFrefix} from '../../stores/actions/prefixAction';
 import {getListContractVCSC} from '../../stores/actions/contractVCSCAction';
 import {getListCompany} from '../../stores/actions/companyAction';
 import {getListPaymentTerm} from '../../stores/actions/paymentTermAction';
@@ -236,7 +235,6 @@ class AssetBondF extends Component{
 
     async componentDidMount(){
         try {
-            const lstPrefix = await this.props.getListPrefix();
             const lstContractVCSC = await this.props.getListContractVCSC();
             const lstCompany = await this.props.getListCompany();
             const lstPaymentTerm = await this.props.getListPaymentTerm();
@@ -244,7 +242,6 @@ class AssetBondF extends Component{
             const lstDayInterestYear = await this.props.getListDayInterestYear();
             this.setState(
                 {
-                    lstPrefix: lstPrefix.data,
                     lstContractVCSC: lstContractVCSC.data,
                     lstCompany: lstCompany.data,
                     lstPaymentTerm: lstPaymentTerm.data,
@@ -399,7 +396,6 @@ class AssetBondF extends Component{
         return(
             <div>
                 <ModalAssetBond isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}
-                    lstPrefixData={this.state.lstPrefix}
                     lstContractVCSCData={this.state.lstContractVCSC}
                     lstCompanyData={this.state.lstCompany}
                     lstEnsureAssetData={this.state.lstEnsureAsset}
@@ -445,7 +441,6 @@ const mapStateToProps = state =>{
 const mapDispatchToProps = dispatch =>{
     return{
         getListBondsAsset: ()=> dispatch(getListBondsAsset()),
-        getListPrefix: ()=> dispatch(getListFrefix()),
         getListContractVCSC: ()=> dispatch(getListContractVCSC()),
         getListCompany: ()=> dispatch(getListCompany()),
         getListPaymentTerm: ()=> dispatch(getListPaymentTerm()),
