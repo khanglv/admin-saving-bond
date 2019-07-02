@@ -79,7 +79,7 @@ class ModalContractVCSC extends Component{
                 }
                 const res = await createItemContractVCSC(dataTmp);
                 if(res.error){
-                    notify('error', 'Thao tác thất bại :( ');
+                    notify('error', 'Thao tác thất bại :( ' + res.error);
                 }else{
                     await this.props.reloadData();
                     this.setState({
@@ -99,7 +99,7 @@ class ModalContractVCSC extends Component{
                 }
             }
         }catch(err){
-            notify('error', 'Thao tác thất bại :( ' );
+            notify('error', 'Thao tác thất bại :( ' + err );
         }
     }
 

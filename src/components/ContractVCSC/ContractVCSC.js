@@ -144,7 +144,7 @@ class ContractVCSCF extends Component{
         try {
             const res = await this.props.getListContractVCSC();
             if(res.error){
-                common.notify('error', 'Thao tác thất bại :( ');
+                common.notify('error', 'Thao tác thất bại :( ' + res.error);
             }else{
                 const lstTmp = await (res.data.filter(item => item.FLAG === 1)).map((item, i) => {
                     return {
@@ -186,13 +186,13 @@ class ContractVCSCF extends Component{
             const res = await updateItemContractVCSC(data);
             if(res.error){
                 this.loadData();
-                common.notify('error', 'Thao tác thất bại :( ');
+                common.notify('error', 'Thao tác thất bại :( ' + res.error);
             }else{
                 await this.loadData();
                 await common.notify('success', 'Thao tác thành công ^^!');
             }
         } catch (error) {
-            common.notify('error', 'Thao tác thất bại :( ');
+            common.notify('error', 'Thao tác thất bại :( ' + error);
         }
     }
 
@@ -203,13 +203,13 @@ class ContractVCSCF extends Component{
             }
             const res = await deleteItemContractVCSC(dataTmp);
             if(res.error){
-                common.notify('error', 'Thao tác thất bại :( ');
+                common.notify('error', 'Thao tác thất bại :( ' + res.error);
             }else{
                 await this.loadData();
                 await common.notify('success', 'Thao tác thành công ^^!');
             }
         }catch(err){
-            common.notify('error', 'Thao tác thất bại :( ');
+            common.notify('error', 'Thao tác thất bại :( ' + err);
         }
     };
 

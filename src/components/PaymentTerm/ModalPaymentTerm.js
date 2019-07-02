@@ -51,7 +51,7 @@ class ModalBankInterest extends Component{
                 }
                 const res = await createItemPaymentTerm(dataTmp);
                 if (res.error) {
-                    openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+                    openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
                 } else {
                     await this.props.reloadData();
                     this.setState({
@@ -64,7 +64,7 @@ class ModalBankInterest extends Component{
                 }
             }
         } catch (err) {
-            openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+            openNotificationWithIcon('error', 'Thao tác thất bại :( ' + err);
         }
     }
 

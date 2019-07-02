@@ -7,9 +7,11 @@ import {
     DatePicker,
     Select,
     Row,
-    Col
+    Col, 
+    Tag
 } from 'antd';
 import * as common from '../Common/Common';
+import * as formula from '../Common/Formula';
 import moment from 'moment';
 
 const { Option } = Select;
@@ -77,8 +79,8 @@ class ModalAssetBond extends Component{
     
     onHandleOk = async()=>{
         try{
-            if(!this.state.codeBond || !this.state.contractVCSC || !this.state.company || !this.state.paymentTerm || !this.state.typeBond || !this.state.totalDepository
-                || !this.state.dayInterestYear || !this.state.currentInterest || !this.state.price || !this.state.totalOfCirculate || !this.state.levelLoan || !this.state.totalLevelMobilize){
+            if(!this.state.codeBond || !this.state.contractVCSC || !this.state.company || !this.state.paymentTerm || !this.state.typeBond
+                || !this.state.dayInterestYear || !this.state.currentInterest || !this.state.price || !this.state.totalLevelMobilize){
                 this.setState({isShowNotice: true});
             }else{
                 let dataTmp = {
@@ -94,21 +96,21 @@ class ModalAssetBond extends Component{
                     "MENHGIA": this.state.price,
                     "SL_PHTD": this.state.maxRelease,
                     "SL_DPH": this.state.released,
-                    "SL_LH": this.state.totalOfCirculate,
+                    "SL_LH": this.state.released - this.state.totalRecall,
                     "SL_TH": this.state.totalRecall,
                     "NGAYPH": this.state.dateRelease,
                     "NGAYDH": this.state.dateExpire,
                     "NGAY_KTPH": this.state.dateBreak,
                     "TONGHANMUC_HUYDONG": this.state.totalLevelMobilize,
                     "HANMUC_CHO": this.state.levelLoan,
-                    "KYHAN": this.state.periodRemain,
+                    "KYHAN": formula.diffMonth(this.state.dateRelease, this.state.dateExpire),
                     "TT_NIEMYET": this.state.statusListed,
                     "TS_DAMBAO": this.state.ensureAsset,
                     "SL_LUUKY": this.state.totalDepository
                 }
                 const res = await createItemBondsAsset(dataTmp);
                 if(res.error){
-                    common.notify('error', 'Thao tác thất bại :( ');
+                    common.notify('error', 'Thao tác thất bại :( ' + res.error);
                 }else{
                     await this.props.reloadData();
                     this.setState({
@@ -119,14 +121,12 @@ class ModalAssetBond extends Component{
                         price: null,
                         maxRelease: null,
                         released: null,
-                        totalOfCirculate: null,
                         totalRecall: null,
                         dateRelease: moment(new Date(), dateFormat),
                         dateExpire: moment(new Date(new Date(newDate).setMonth(newDate.getMonth()+6)), dateFormat),
                         dateBreak: moment(new Date(new Date(newDate).setMonth(newDate.getMonth()+12)), dateFormat),
                         totalLevelMobilize: null,
                         levelLoan: null,
-                        periodRemain: null,
                         statusListed: 1,
                         ensureAsset: '',
                         totalDepository: null,
@@ -136,7 +136,7 @@ class ModalAssetBond extends Component{
                 }
             }
         }catch(err){
-            common.notify('error', 'Thao tác thất bại :( ' );
+            common.notify('error', 'Thao tác thất bại :( ' + err );
         }
     }
 
@@ -299,10 +299,6 @@ class ModalAssetBond extends Component{
                             >
                                 <Input name="price" type="number" placeholder="Mệnh giá trái phiếu" value={this.state.price} onChange={event => this.updateInputValue(event)} />
                             </Form.Item>
-                            <Form.Item label="Kỳ hạn"
-                            >
-                                <Input name="periodRemain" type="number" placeholder="Kỳ hạn" value={this.state.periodRemain} onChange={event => this.updateInputValue(event)} />
-                            </Form.Item>
                             <Form.Item label="* Trạng thái niêm yết" hasFeedback validateStatus={this.state.statusListed === 1 ? "success" : "warning"}>
                                 <Select
                                     defaultValue={1}
@@ -333,6 +329,10 @@ class ModalAssetBond extends Component{
                             >
                                 <DatePicker name="dateBreak" value={this.state.dateBreak} format={dateFormat} onChange={this.updateInputDate('dateBreak')} />
                             </Form.Item>
+                            <Form.Item label="Kỳ hạn"
+                            >
+                                <Tag color="green" style={{fontSize: 15}}>{formula.diffMonth(this.state.dateRelease, this.state.dateExpire)}</Tag>tháng
+                            </Form.Item>
                             <Form.Item
                                 label="S.Lượng P.Hành tối đa"
                             >
@@ -341,12 +341,8 @@ class ModalAssetBond extends Component{
                             <Form.Item label="Số lượng đã phát hành">
                                 <Input name="released" type="number" placeholder="Số lượng trái phiếu đã phát hành" value={this.state.released} onChange={event => this.updateInputValue(event)} />
                             </Form.Item>
-                            <Form.Item
-                                label="* Số lượng lưu hành"
-                                validateStatus={(this.state.totalOfCirculate === null && this.state.isShowNotice) ? "error" : null}
-                                help={(this.state.totalOfCirculate === null && this.state.isShowNotice) ? "Không được bỏ trống" : null}
-                            >
-                                <Input name="totalOfCirculate" type="number" placeholder="Số lượng trái phiếu lưu hành" value={this.state.totalOfCirculate} onChange={event => this.updateInputValue(event)} />
+                            <Form.Item label="Số lượng lưu hành">
+                                <Tag color="green" style={{fontSize: 15}}>{this.state.released - this.state.totalRecall}</Tag>
                             </Form.Item>
                             <Form.Item
                                 label="Số lượng thu hồi"
@@ -359,19 +355,13 @@ class ModalAssetBond extends Component{
                             >
                                 <Input name="totalLevelMobilize" type="number" placeholder="Tổng hạn mức huy động" value={this.state.totalLevelMobilize} onChange={event => this.updateInputValue(event)} />
                             </Form.Item>
-                            <Form.Item label="* Hạn mức cho"
-                                validateStatus={(this.state.levelLoan === null && this.state.isShowNotice) ? "error" : null}
-                                help={(this.state.levelLoan === null && this.state.isShowNotice) ? "Không được bỏ trống" : null}
-                            >
+                            <Form.Item label="Hạn mức chờ">
                                 <Input name="levelLoan" type="number" placeholder="Số lượng trái phiếu phát hành tối đa" value={this.state.levelLoan} onChange={event => this.updateInputValue(event)} />
                             </Form.Item>
                             <Form.Item label="Tài sản đảm bảo">
                                 <Input name="ensureAsset" placeholder="Tài sản đảm bảo" value={this.state.ensureAsset} onChange={event => this.updateInputValue(event)} />
                             </Form.Item>
-                            <Form.Item label="* Số lượng lưu ký"
-                                validateStatus={(this.state.totalDepository === null && this.state.isShowNotice) ? "error" : null}
-                                help={(this.state.totalDepository === null && this.state.isShowNotice) ? "Không được bỏ trống" : null}
-                            >
+                            <Form.Item label="Số lượng lưu ký">
                                 <Input name="totalDepository" placeholder="Số lượng lưu ký" type="number" value={this.state.totalDepository} onChange={event => this.updateInputValue(event)} />
                             </Form.Item>
                         </Form>

@@ -163,7 +163,7 @@ class InterestRateF extends Component{
         try {
             const res = await this.props.getListInterestRate();
             if(res.error){
-                common.notify('error', 'Thao tác thất bại :( ');
+                common.notify('error', 'Thao tác thất bại :( ' + res.error);
             }else{
                 const lstTmp = await (res.data.filter(item => item.FLAG === 1)).map((item, i) => {
                     return {
@@ -178,7 +178,7 @@ class InterestRateF extends Component{
             }
         } catch (error) {
             console.log("err load data " + error);
-            common.notify('error', 'Thao tác thất bại :( ');
+            common.notify('error', 'Thao tác thất bại :( ' + error);
         }
     }
 
@@ -200,13 +200,13 @@ class InterestRateF extends Component{
             const res = await updateItemInterestRate(data);
             if(res.error){
                 this.loadData();
-                common.notify('error', 'Thao tác thất bại :( ');
+                common.notify('error', 'Thao tác thất bại :( ' + res.error);
             }else{
                 await this.loadData();
                 await common.notify('success', 'Thao tác thành công ^^!');
             }
         } catch (error) {
-            common.notify('error', 'Thao tác thất bại :( ');
+            common.notify('error', 'Thao tác thất bại :( ' + error);
         }
     }
 
@@ -217,13 +217,13 @@ class InterestRateF extends Component{
             }
             const res = await deleteItemInterestRate(dataTmp);
             if(res.error){
-                common.notify('error', 'Thao tác thất bại :( ' + res.error);
+                common.notify('error', 'Thao tác thất bại :( ' + res.error + res.error);
             }else{
                 await this.loadData();
                 await common.notify('success', 'Thao tác thành công ^^!');
             }
         }catch(err){
-            common.notify('error', 'Thao tác thất bại :( ');
+            common.notify('error', 'Thao tác thất bại :( ' + err);
         }
     };
 

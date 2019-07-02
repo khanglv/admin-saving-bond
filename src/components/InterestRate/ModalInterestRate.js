@@ -100,7 +100,7 @@ class ModalInterestRate extends Component{
                     }
                     const res = await createItemInterestRate(dataTmp);
                     if(res.error){
-                        common.notify('error', 'Thao tác thất bại :( ');
+                        common.notify('error', 'Thao tác thất bại :( ' + res.error);
                     }else{
                         await this.props.reloadData();
                         this.setState({
@@ -124,7 +124,7 @@ class ModalInterestRate extends Component{
                 common.notify('error', 'Mã ngân hàng bị trùng' );
             }
         }catch(err){
-            common.notify('error', 'Thao tác thất bại :( ' );
+            common.notify('error', 'Thao tác thất bại :( ' + err );
         }
     }
 

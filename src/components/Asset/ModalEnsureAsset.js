@@ -56,7 +56,7 @@ class ModalEnsureAsset extends Component{
                 }
             }
         } catch (err) {
-            notify('error', 'Thao tác thất bại :( ');
+            notify('error', 'Thao tác thất bại :( ' + err);
         }
     }
 

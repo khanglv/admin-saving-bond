@@ -94,7 +94,7 @@ class DayInterestYearF extends Component{
         try {
             const res = await this.props.getListDayInterestYear();
             if(res.error){
-                common.notify('error', 'Thao tác thất bại :( ');
+                common.notify('error', 'Thao tác thất bại :( ' + res.error);
             }else{
                 const lstTmp = await (res.data.filter(item => item.FLAG === 1)).map((item, i) => {
                     return {
@@ -128,13 +128,13 @@ class DayInterestYearF extends Component{
             const res = await updateItemDayInterestYear(data);
             if(res.error){
                 this.loadData();
-                openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+                openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
             }else{
                 await this.loadData();
                 await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
             }
         } catch (error) {
-            openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+            openNotificationWithIcon('error', 'Thao tác thất bại :( ' + error);
         }
     }
 
@@ -145,13 +145,13 @@ class DayInterestYearF extends Component{
             }
             const res = await deleteItemDayInterestYear(dataTmp);
             if(res.error){
-                openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+                openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
             }else{
                 await this.loadData();
                 await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
             }
         }catch(err){
-            openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+            openNotificationWithIcon('error', 'Thao tác thất bại :( ' + err);
         }
     };
 

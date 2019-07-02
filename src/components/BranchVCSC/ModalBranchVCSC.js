@@ -68,7 +68,7 @@ class ModalBranchVCSC extends Component{
                 }
                 const res = await createItemBranchVCSC(dataTmp);
                 if (res.error) {
-                    openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+                    openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
                 } else {
                     await this.props.reloadData();
                     this.setState({
@@ -87,7 +87,7 @@ class ModalBranchVCSC extends Component{
                 }
             }
         } catch (err) {
-            openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+            openNotificationWithIcon('error', 'Thao tác thất bại :( ' + err);
         }
     }
 

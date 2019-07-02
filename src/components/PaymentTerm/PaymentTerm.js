@@ -127,7 +127,7 @@ class PaymentTermF extends Component{
                 await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
             }
         } catch (error) {
-            openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+            openNotificationWithIcon('error', 'Thao tác thất bại :( ' + error);
         }
     }
 
@@ -138,13 +138,13 @@ class PaymentTermF extends Component{
             }
             const res = await deleteItemPaymentTerm(dataTmp);
             if(res.error){
-                openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+                openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
             }else{
                 await this.loadData();
                 await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
             }
         }catch(err){
-            openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+            openNotificationWithIcon('error', 'Thao tác thất bại :( ' + err);
         }
     };
 

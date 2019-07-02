@@ -95,7 +95,7 @@ class ModalBondHolder extends Component{
                 }
                 const res = await createListAssets(dataTmp);
                 if(res.error){
-                    openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+                    openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
                 }else{
                     await this.props.reloadData();
                     this.setState({
@@ -114,7 +114,7 @@ class ModalBondHolder extends Component{
                 }
             }
         }catch(err){
-            openNotificationWithIcon('error', 'Thao tác thất bại :( ' );
+            openNotificationWithIcon('error', 'Thao tác thất bại :( ' + err );
         }
     }
 

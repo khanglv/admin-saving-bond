@@ -73,7 +73,7 @@ class AssetBondF extends Component{
                 title: 'Mã viết tắt', //9
                 dataIndex: 'MAVIETTAT',
                 editable: true,
-                width: 150
+                width: 200
             },
             {
                 title: 'TT Trái phiếu', //10
@@ -141,10 +141,10 @@ class AssetBondF extends Component{
                 width: 200
             },
             {
-                title: 'Kỳ hạn', //21
+                title: 'Kỳ hạn (tháng)', //21
                 dataIndex: 'KYHAN',
                 editable: true,
-                width: 200
+                width: 150
             },
             {
                 title: 'T.T N.Yết', //22
@@ -259,7 +259,7 @@ class AssetBondF extends Component{
         try {
             const res = await this.props.getListBondsAsset();
             if(res.error){
-                common.notify('error', 'Thao tác thất bại :( ');
+                common.notify('error', 'Thao tác thất bại :( ' + res.error);
             }else{
                 const lstTmp = await (res.data.filter(item => item.FLAG === 1)).map((item, i) => {
                     return {
@@ -273,6 +273,7 @@ class AssetBondF extends Component{
                         "SL_DPH": common.convertTextDecimal(item.SL_DPH),
                         "SL_LH": common.convertTextDecimal(item.SL_LH),
                         "SL_TH": common.convertTextDecimal(item.SL_TH),
+                        "TONGHANMUC_HUYDONG": common.convertTextDecimal(item.TONGHANMUC_HUYDONG),
                         "lstContractVCSCData": this.props.lstContractVCSC,
                         "lstCompanyData": this.props.lstCompany,
                         "lstPaymentTermData": this.props.lstPaymentTerm,
@@ -306,13 +307,13 @@ class AssetBondF extends Component{
             const res = await updateItemBondsAsset(data);
             if(res.error){
                 this.loadData();
-                common.notify('error', 'Thao tác thất bại :( ');
+                common.notify('error', 'Thao tác thất bại :( ' + res.error);
             }else{
                 await this.loadData();
                 await common.notify('success', 'Thao tác thành công ^^!');
             }
         } catch (error) {
-            common.notify('error', 'Thao tác thất bại :( ');
+            common.notify('error', 'Thao tác thất bại :( ' + error);
         }
     }
 
@@ -329,7 +330,7 @@ class AssetBondF extends Component{
                 await common.notify('success', 'Thao tác thành công ^^!');
             }
         }catch(err){
-            common.notify('error', 'Thao tác thất bại :( ');
+            common.notify('error', 'Thao tác thất bại :( ' + err);
         }
     };
 

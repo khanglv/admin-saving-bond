@@ -44,7 +44,7 @@ class ModalDayInterestYear extends Component{
                 }
                 const res = await createItemDayInterestYear(dataTmp);
                 if (res.error) {
-                    notify('error', 'Thao tác thất bại :( ');
+                    notify('error', 'Thao tác thất bại :( ' + res.error);
                 } else {
                     this.setState({
                         totalDayInterest: null,
@@ -56,7 +56,7 @@ class ModalDayInterestYear extends Component{
                 }
             }
         } catch (err) {
-            notify('error', 'Thao tác thất bại :( ');
+            notify('error', 'Thao tác thất bại :( ' + err);
         }
     }
 

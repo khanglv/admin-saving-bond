@@ -68,7 +68,7 @@ class ModalBondPrice extends Component{
                 }
                 const res = await createItemBondPrice(dataTmp);
                 if(res.error){
-                    common.notify('error', 'Thao tác thất bại :( ');
+                    common.notify('error', 'Thao tác thất bại :( ' + res.error);
                 }else{
                     await this.props.reloadData();
                     this.setState({
@@ -83,7 +83,7 @@ class ModalBondPrice extends Component{
                 }
             }
         }catch(err){
-            common.notify('error', 'Thao tác thất bại :( ' );
+            common.notify('error', 'Thao tác thất bại :( ' + err );
         }
     }
 

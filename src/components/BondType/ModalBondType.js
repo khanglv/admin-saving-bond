@@ -66,7 +66,7 @@ class ModalBondType extends Component{
                 }
             }
         } catch (err) {
-            openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+            openNotificationWithIcon('error', 'Thao tác thất bại :( ' + err);
         }
     }
 

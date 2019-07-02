@@ -80,7 +80,7 @@ class RoomVCSC extends Component{
         try {
             const res = await this.props.getListRoomVCSC();
             if(res.error){
-                common.notify('error', 'Thao tác thất bại :( ');
+                common.notify('error', 'Thao tác thất bại :( ' + res.error);
             }else{
                 const lstTmp = await (res.data.filter(item => item.FLAG === 1)).map((item, i) => {
                     return {

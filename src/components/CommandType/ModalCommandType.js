@@ -60,7 +60,7 @@ class ModalCommandType extends Component{
                 }
                 const res = await createItemCommandType(dataTmp);
                 if (res.error) {
-                    openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+                    openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
                 } else {
                     await this.props.reloadData();
                     this.setState({
@@ -73,7 +73,7 @@ class ModalCommandType extends Component{
                 }
             }
         } catch (err) {
-            openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+            openNotificationWithIcon('error', 'Thao tác thất bại :( ' + err);
         }
     }
 

@@ -158,13 +158,13 @@ class InvestorF extends Component{
             const res = await updateItemInvestor(data);
             if(res.error){
                 this.loadData();
-                openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+                openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
             }else{
                 await this.loadData();
                 await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
             }
         } catch (error) {
-            openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+            openNotificationWithIcon('error', 'Thao tác thất bại :( ' + error);
         }
     }
 
@@ -175,13 +175,13 @@ class InvestorF extends Component{
             }
             const res = await deleteItemInvestor(dataTmp);
             if(res.error){
-                openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+                openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
             }else{
                 await this.loadData();
                 await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
             }
         }catch(err){
-            openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+            openNotificationWithIcon('error', 'Thao tác thất bại :( ' + err);
         }
     };
 

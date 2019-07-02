@@ -205,7 +205,7 @@ class SetCommand extends Component{
             //Danh sách chờ
             const res = await this.props.getListSetCommand(0);
             if(res.error){
-                common.notify('error', 'Thao tác thất bại :( ');
+                common.notify('error', 'Thao tác thất bại :( ' + res.error);
             }else{
                 const lstTmp = await (res.data.filter(item => item.FLAG === 1)).map((item, i) => {
                     return {
@@ -224,7 +224,7 @@ class SetCommand extends Component{
             //Danh sách đã duyệt
             const res_2 = await this.props.getListSetCommand(1);
             if(res_2.error){
-                common.notify('error', 'Thao tác thất bại :( ');
+                common.notify('error', 'Thao tác thất bại :( ' + res.error);
             }else{
                 const lstTmp_2 = await (res_2.data.filter(item => item.FLAG === 1)).map((item, i) => {
                     return {
@@ -243,7 +243,7 @@ class SetCommand extends Component{
             //Danh sách hủy
             const res_3 = await this.props.getListSetCommand(2);
             if(res_3.error){
-                common.notify('error', 'Thao tác thất bại :( ');
+                common.notify('error', 'Thao tác thất bại :( ' + res.error);
             }else{
                 const lstTmp_3 = await (res_3.data.filter(item => item.FLAG === 1)).map((item, i) => {
                     return {

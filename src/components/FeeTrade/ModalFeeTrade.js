@@ -63,7 +63,7 @@ class ModalFeeTrade extends Component{
                 }
                 const res = await createItemFeeTrade(dataTmp);
                 if (res.error) {
-                    openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+                    openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
                 } else {
                     this.setState({
                         nameFeeTrade: '',
@@ -77,7 +77,7 @@ class ModalFeeTrade extends Component{
                 }
             }
         } catch (err) {
-            openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+            openNotificationWithIcon('error', 'Thao tác thất bại :( ' + err);
         }
     }
 

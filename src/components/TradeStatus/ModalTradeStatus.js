@@ -52,7 +52,7 @@ class ModalTradeStatus extends Component{
                 }
                 const res = await createItemTradeStatus(dataTmp);
                 if (res.error) {
-                    openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+                    openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
                 } else {
                     await this.props.reloadData();
                     this.setState({
@@ -65,7 +65,7 @@ class ModalTradeStatus extends Component{
                 }
             }
         } catch (err) {
-            openNotificationWithIcon('error', 'Thao tác thất bại :( ');
+            openNotificationWithIcon('error', 'Thao tác thất bại :( ' + err);
         }
     }
 
