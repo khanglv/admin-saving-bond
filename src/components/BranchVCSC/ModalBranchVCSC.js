@@ -23,6 +23,7 @@ class ModalBranchVCSC extends Component{
             currency: value.currency || 'Open',
             codeBranchVCSC: '',
             nameBranchVCSC: '',
+            address: '',
             surrogate: '',
             phoneOfSurrogate: '',
             email: '',
@@ -51,13 +52,14 @@ class ModalBranchVCSC extends Component{
 
     onHandleOk = async()=>{
         try {
-            if(!this.state.codeBranchVCSC || !this.state.nameBranchVCSC || !this.state.surrogate || !this.state.phoneOfSurrogate || !this.state.numberGPTL || !this.state.accountBank || !this.state.nameBank){
+            if(!this.state.codeBranchVCSC || !this.state.nameBranchVCSC || !this.state.surrogate || !this.state.phoneOfSurrogate || !this.state.address){
                 this.setState({isShowNotice: true});
             }else{
                 let dataTmp = {
                     "MSCNVCSC": this.state.codeBranchVCSC,
                     "TENCHINHANH": this.state.nameBranchVCSC,
                     "NGUOIDAIDIEN": this.state.surrogate,
+                    "DIACHI": this.state.address,
                     "DTNGUOIDAIDIEN": this.state.phoneOfSurrogate,
                     "EMAIL": this.state.email,
                     "SOGPTL": this.state.numberGPTL,
@@ -73,6 +75,7 @@ class ModalBranchVCSC extends Component{
                         codeBranchVCSC: '',
                         nameBranchVCSC: '',
                         surrogate: '',
+                        address: '',
                         phoneOfSurrogate: '',
                         email: '',
                         numberGPTL: '',
@@ -125,6 +128,13 @@ class ModalBranchVCSC extends Component{
                         <Input name="nameBranchVCSC" placeholder="Tên chi nhánh" value={this.state.nameBranchVCSC} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
                     <Form.Item 
+                        label="* Địa chỉ"
+                        validateStatus = {(this.state.address.length === 0 && this.state.isShowNotice)  ? "error" : null}
+                        help = {(this.state.address.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                    >
+                        <Input name="address" type="number" placeholder="Địa chỉ chi nhánh" value={this.state.address} onChange={event => this.updateInputValue(event)}/>
+                    </Form.Item>
+                    <Form.Item 
                         label="* Người đại diện"
                         validateStatus = {(this.state.surrogate.length === 0 && this.state.isShowNotice)  ? "error" : null}
                         help = {(this.state.surrogate.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
@@ -144,21 +154,21 @@ class ModalBranchVCSC extends Component{
                         <Input name="email" type="email" placeholder="Email" value={this.state.email} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
                     <Form.Item 
-                        label="* Số G.Phép thành lập"
+                        label="Số G.Phép thành lập"
                         validateStatus = {(this.state.numberGPTL.length === 0 && this.state.isShowNotice)  ? "error" : null}
                         help = {(this.state.numberGPTL.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                     >
                         <Input name="numberGPTL" placeholder="Số giấy phép thành lập" value={this.state.numberGPTL} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
                     <Form.Item 
-                        label="* Tài khoản ngân hàng"
+                        label="Tài khoản ngân hàng"
                         validateStatus = {(this.state.accountBank.length === 0 && this.state.isShowNotice)  ? "error" : null}
                         help = {(this.state.accountBank.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                     >
                         <Input name="accountBank" type="number" placeholder="Tài khoản ngân hàng" value={this.state.accountBank} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
                     <Form.Item 
-                        label="* Tên ngân hàng"
+                        label="Tên ngân hàng"
                         validateStatus = {(this.state.nameBank.length === 0 && this.state.isShowNotice)  ? "error" : null}
                         help = {(this.state.nameBank.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                     >

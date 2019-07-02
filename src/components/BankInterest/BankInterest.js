@@ -23,14 +23,14 @@ class BankInterestF extends Component{
                 color: 'red'
             },
             {
-                title: 'Tên ngân hàng', //2
-                dataIndex: 'TEN_NH',
+                title: 'Mã ngân hàng', //2
+                dataIndex: 'MA_NH',
                 width: 200,
                 editable: true,
             },
             {
-                title: 'Mã ngân hàng', //2
-                dataIndex: 'MA_NH',
+                title: 'Tên ngân hàng', //2
+                dataIndex: 'TEN_NH',
                 width: 200,
                 editable: true,
             },

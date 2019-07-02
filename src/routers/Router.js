@@ -7,6 +7,7 @@ import {
 
 import {Error404} from '../components/Error404/Error404';
 import Login from '../components/Login/Login';
+import Test from '../components/Test/Test';
 import {
     FHome,
     FBond,
@@ -85,6 +86,7 @@ class RouteURL extends Component{
                         <Route exact path="/room-vcsc" component={FRoomVCSC} />
                         <Route exact path="/set-command" component={FSetCommand} />
                         <Route exact path="/bond-holder" component={FBondHolder} />
+                        <Route exact path="/test" component={Test} />
                         {/* nhập sai đường dẫn */}
                         <Route exact path="*" component={Error404} />
                     </Switch>

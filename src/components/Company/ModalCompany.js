@@ -62,7 +62,7 @@ class ModalCompany extends Component{
 
     onHandleOk = async()=>{
         try{
-            if(!this.state.numberOfCompany || !this.state.nameCompany || !this.state.address || !this.state.surrogate){
+            if(!this.state.numberOfCompany || !this.state.nameCompany || !this.state.phoneNumber || !this.state.address || !this.state.surrogate){
                 this.setState({isShowNotice: true});
             }else{
                 let dataTmp = {
@@ -142,8 +142,8 @@ class ModalCompany extends Component{
                     >
                         <Input name="address" placeholder="Địa chỉ" value={this.state.address} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
-                    <Form.Item label="Điện thoại">
-                        <Input name="phoneNumber" placeholder="Số điện thoại" value={this.state.phoneNumber} onChange={event => this.updateInputValue(event)}/>
+                    <Form.Item label="* Điện thoại">
+                        <Input name="phoneNumber" type="number" placeholder="Số điện thoại" value={this.state.phoneNumber} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
                     <Form.Item label="Email">
                         <Input type="email" name="email" placeholder="Email" value={this.state.email} onChange={event => this.updateInputValue(event)}/>
