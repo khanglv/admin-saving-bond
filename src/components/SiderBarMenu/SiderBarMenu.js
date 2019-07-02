@@ -207,12 +207,12 @@ class SiderBarMenu extends Component {
                             <Menu.Item key="/frefix">
                                 <span>Prefix</span>
                             </Menu.Item>
-                            <Menu.Item key="/command-type">
+                            {/* <Menu.Item key="/command-type">
                                 <span>Loại Lệnh</span>
-                            </Menu.Item>
-                            <Menu.Item key="/trade-status">
+                            </Menu.Item> */}
+                            {/* <Menu.Item key="/trade-status">
                                 <span>Trạng thái giao dịch</span>
-                            </Menu.Item>
+                            </Menu.Item> */}
                             <Menu.Item key="/branch-vcsc">
                                 <span>Chi nhánh VCSC</span>
                             </Menu.Item>
