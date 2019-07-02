@@ -7,8 +7,8 @@ const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 const LIST_ROUTE_DATABASE = ['/frefix', '/company', '/payment-term', '/bank-interest', '/fee-trade', '/bond-type', '/command-type', '/bond-price',
                            '/trade-status', '/branch-vcsc', '/investor-type', '/investor', '/interest-rate', '/contract-vcsc', '/day-interest-year'];
-const LIST_ROUTE_GENERAL = ['/asset-bond', '/ensure-asset', '/set-command', '/bond-holder'];
-const LIST_ROUTE_CONFIG = ['/frefix', '/command-type', '/trade-status', '/branch-vcsc', '/room-vcsc'];
+const LIST_ROUTE_GENERAL = ['/asset-bond', '/ensure-asset', '/set-command', '/bond-holder', '/room-vcsc'];
+const LIST_ROUTE_CONFIG = ['/frefix', '/command-type', '/trade-status', '/branch-vcsc'];
 
 const checkRouteOpenDefaultKey = ()=> {
     for(let i = 0; i < LIST_ROUTE_CONFIG.length; i++){
@@ -191,6 +191,9 @@ class SiderBarMenu extends Component {
                             <Menu.Item key="/bond-holder">
                                 <span>D.Sách trái chủ</span>
                             </Menu.Item>
+                            <Menu.Item key="/room-vcsc">
+                                <span>D.sách T.Phiếu VCSC</span>
+                            </Menu.Item>
                             {/* <Menu.Item key="/ensure-asset">
                                 <span>D.Sách T.Sản đảm bảo</span>
                             </Menu.Item> */}
@@ -215,9 +218,6 @@ class SiderBarMenu extends Component {
                             </Menu.Item> */}
                             <Menu.Item key="/branch-vcsc">
                                 <span>Chi nhánh VCSC</span>
-                            </Menu.Item>
-                            <Menu.Item key="/room-vcsc">
-                                <span>D.sách T.Phiếu VCSC</span>
                             </Menu.Item>
                         </SubMenu>
                     </Menu>

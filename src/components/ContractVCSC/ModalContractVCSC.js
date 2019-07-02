@@ -48,8 +48,8 @@ class ModalContractVCSC extends Component{
         this.setState({[event.target.name]: event.target.value});
     }
 
-    updateInputDate = (value)=>{
-        this.setState({dateRange: value});
+    updateInputDate = name => (value)=>{
+        this.setState({[name]: value});
     }
 
     updateSelectValue = name => (event)=>{
@@ -117,7 +117,7 @@ class ModalContractVCSC extends Component{
 
         return(
             <Modal
-                title="Nhà đầu tư"
+                title="Hợp đồng phát hành"
                 centered
                 visible={this.props.isOpen}
                 onOk={() => this.onHandleOk()}
@@ -171,7 +171,7 @@ class ModalContractVCSC extends Component{
                     <Form.Item 
                         label="* Ngày ký"
                     >
-                        <DatePicker name="signDay" value={this.state.signDay} format={dateFormat} onChange={this.updateInputDate}/>
+                        <DatePicker name="signDay" value={this.state.signDay} format={dateFormat} onChange={this.updateInputDate('signDay')}/>
                     </Form.Item>
                     <Form.Item label="* Lãi suất (%)"
                         validateStatus = {(this.state.interestRate === null && this.state.isShowNotice)  ? "error" : null}
@@ -188,12 +188,12 @@ class ModalContractVCSC extends Component{
                     <Form.Item 
                         label="Ngày phát hành"
                     >
-                        <DatePicker name="dateRelease" value={this.state.dateRelease} format={dateFormat} onChange={this.updateInputDate}/>
+                        <DatePicker name="dateRelease" value={this.state.dateRelease} format={dateFormat} onChange={this.updateInputDate('dateRelease')}/>
                     </Form.Item>
                     <Form.Item 
                         label="Ngày đáo hạn"
                     >
-                        <DatePicker name="dateExpire" value={this.state.dateExpire} format={dateFormat} onChange={this.updateInputDate}/>
+                        <DatePicker name="dateExpire" value={this.state.dateExpire} format={dateFormat} onChange={this.updateInputDate('dateExpire')}/>
                     </Form.Item>
                     <Form.Item 
                         label="* Mệnh giá trái phiếu"
