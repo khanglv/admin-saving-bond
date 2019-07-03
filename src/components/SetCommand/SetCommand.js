@@ -158,7 +158,7 @@ class SetCommand extends Component{
         try {
             const req = await updateApproveSetCommand({
                 MSDL: data.MSDL,
-                status: 2,
+                status: 1,
             });
             console.log(req);
             if(!req.error) {
