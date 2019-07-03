@@ -23,26 +23,24 @@ class SetCommand extends Component{
                 dataIndex: 'operation',
                 fixed: 'left',
                 width: 100,
-                render: (text, record) =>{
-                    return(
-                        this.state.dataSource.length >= 1 ?
-                            <div>{record.TRANGTHAI_LENH === 0 ? 
-                                <div>
-                                    <Popconfirm title="Duyệt lệnh này?" onConfirm={() => this.handleOk(record)}>
-                                        <Tooltip title="Duyệt" className="pointer" placement="left">
-                                            <Icon type="check" style={{color: '#1cd356', fontSize: 16}}/>
-                                        </Tooltip>
-                                    </Popconfirm>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                render: (text, record) => {
+                    return (
+                        <div>{record.TRANGTHAI_LENH === 0 ?
+                            <div>
+                                <Popconfirm title="Duyệt lệnh này?" onConfirm={() => this.handleOk(record)}>
+                                    <Tooltip title="Duyệt" className="pointer" placement="left">
+                                        <Icon type="check" style={{ color: '#1cd356', fontSize: 16 }} />
+                                    </Tooltip>
+                                </Popconfirm>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <Popconfirm title="Hủy lệnh này?" onConfirm={() => this.handleReject(record)}>
-                                        <Tooltip title="Hủy duyệt" className="pointer" placement="right">
-                                            <Icon type="close" style={{color: '#f5222d', fontSize: 16}}/>
-                                        </Tooltip>
-                                    </Popconfirm>
-                                </div>
-                            : record.TRANGTHAI_LENH === 1 ? <div style={{color: '#1cd356'}}>Đã duyệt</div> : <div style={{color: 'red'}}>Đã hủy bỏ</div>}
+                                    <Tooltip title="Hủy duyệt" className="pointer" placement="right">
+                                        <Icon type="close" style={{ color: '#f5222d', fontSize: 16 }} />
+                                    </Tooltip>
+                                </Popconfirm>
                             </div>
-                         : null
+                            : record.TRANGTHAI_LENH === 1 ? <div style={{ color: '#1cd356' }}>Đã duyệt</div> : <div style={{ color: 'red' }}>Đã hủy bỏ</div>}
+                        </div>
                     )
                 }
             },
@@ -212,7 +210,6 @@ class SetCommand extends Component{
                         ...item,
                         "NGAYTAO": common.convertDDMMYYYY(item.NGAYTAO),
                         "NGAY_GD": common.convertDDMMYYYY(item.NGAY_GD),
-                        "NGAYHUY": common.convertDDMMYYYY(item.NGAYHUY),
                         "DONGIA": common.convertTextDecimal(item.DONGIA),
                         "TONGGIATRI": common.convertTextDecimal(item.TONGGIATRI),
                         "key": i + 1
@@ -231,7 +228,6 @@ class SetCommand extends Component{
                         ...item,
                         "NGAYTAO": common.convertDDMMYYYY(item.NGAYTAO),
                         "NGAY_GD": common.convertDDMMYYYY(item.NGAY_GD),
-                        "NGAYHUY": common.convertDDMMYYYY(item.NGAYHUY),
                         "DONGIA": common.convertTextDecimal(item.DONGIA),
                         "TONGGIATRI": common.convertTextDecimal(item.TONGGIATRI),
                         "key": i + 1

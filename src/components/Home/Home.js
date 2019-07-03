@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {getListCommandType} from '../../api/api';
+import {getListFrefix} from '../../api/api';
 
 class Home extends Component{
     componentDidMount(){
-        getListCommandType();
+        getListFrefix();
     }
 
     render(){

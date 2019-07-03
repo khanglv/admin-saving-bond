@@ -7,6 +7,7 @@ import {
     Select,
     Row,
     Col,
+    Tag
 } from 'antd';
 import * as common from '../Common/Common';
 
@@ -31,7 +32,8 @@ class ModalInterestRate extends Component{
             codeBank_4: '',
             codeBank_5: '',
             note: '',
-            isShowNotice: false
+            isShowNotice: false,
+            lstBankTmp: []
         };
     }
 
@@ -55,6 +57,10 @@ class ModalInterestRate extends Component{
     }
 
     updateSelectValue = name => (event)=>{
+        this.setState({[name]: event});
+    }
+
+    updateSelectValueBank = name => (event)=>{
         this.setState({[name]: event});
     }
     
@@ -179,13 +185,6 @@ class ModalInterestRate extends Component{
                             </Form.Item>
                            
                             <Form.Item
-                                label="* Lãi suất tối đa"
-                                validateStatus={(this.state.maxInterest === null && this.state.isShowNotice) ? "error" : null}
-                                help={(this.state.maxInterest === null && this.state.isShowNotice) ? "Không được bỏ trống" : null}
-                            >
-                                <Input name="maxInterest" type="number" placeholder="Lãi suất tối đa" value={this.state.maxInterest} onChange={event => this.updateInputValue(event)} />
-                            </Form.Item>
-                            <Form.Item
                                 label="* Lãi suất thu hồi"
                                 validateStatus={(this.state.interestRecall === null && this.state.isShowNotice) ? "error" : null}
                                 help={(this.state.interestRecall === null && this.state.isShowNotice) ? "Không được bỏ trống" : null}
@@ -201,31 +200,34 @@ class ModalInterestRate extends Component{
                             </Form.Item>
                             <Form.Item
                                 label="* Lãi suất bình quân"
-                                validateStatus={(this.state.interestAverage === null && this.state.isShowNotice) ? "error" : null}
-                                help={(this.state.interestAverage === null && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                             >
-                                <Input name="interestAverage" type="number" placeholder="Lãi suất biên độ" value={this.state.interestAverage} onChange={event => this.updateInputValue(event)} />
+                                <Tag color="green">10</Tag>%
+                            </Form.Item>
+                            <Form.Item
+                                label="* Lãi suất tối đa"
+                            >
+                                <Tag color="orange">20</Tag>%
                             </Form.Item>
                         </Form>
                     </Col>
                     <Col span={12}>
                         <Form {...formItemLayout}>
                             <Form.Item label="Mã ngân hàng 1">
-                                <Select showSearch placeholder="Mã ngân hàng 1" onChange={this.updateSelectValue('codeBank_1')}
+                                <Select showSearch placeholder="Mã ngân hàng 1" onChange={this.updateSelectValueBank('codeBank_1')}
                                     filterOption={(input, option) =>
                                     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                                 >
                                     {
-                                        this.props.lstBankInterestData.map((item) => {
+                                        this.props.lstBankInterestData.filter(item => item.FLAG === 1).map((item) => {
                                             return (
-                                                item.FLAG === 1 ? <Option key={item.LAISUAT_ID} value={item.MA_NH}>{item.MA_NH}</Option> : null
+                                                <Option key={item.LAISUAT_ID} value={item.MA_NH}>{item.MA_NH}</Option>
                                             )
                                         })
                                     }
                                 </Select>
                             </Form.Item>
                             <Form.Item label="Mã ngân hàng 2">
-                                <Select showSearch placeholder="Mã ngân hàng 2" onChange={this.updateSelectValue('codeBank_2')}
+                                <Select showSearch placeholder="Mã ngân hàng 2" onChange={this.updateSelectValueBank('codeBank_2')}
                                     filterOption={(input, option) =>
                                     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                                 >
@@ -239,7 +241,7 @@ class ModalInterestRate extends Component{
                                 </Select>
                             </Form.Item>
                             <Form.Item label="Mã ngân hàng 3">
-                                <Select showSearch placeholder="Mã ngân hàng 3" onChange={this.updateSelectValue('codeBank_3')}
+                                <Select showSearch placeholder="Mã ngân hàng 3" onChange={this.updateSelectValueBank('codeBank_3')}
                                     filterOption={(input, option) =>
                                     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                                 >
@@ -253,7 +255,7 @@ class ModalInterestRate extends Component{
                                 </Select>
                             </Form.Item>
                             <Form.Item label="Mã ngân hàng 4">
-                                <Select showSearch placeholder="Mã ngân hàng 4" onChange={this.updateSelectValue('codeBank_4')}
+                                <Select showSearch placeholder="Mã ngân hàng 4" onChange={this.updateSelectValueBank('codeBank_4')}
                                     filterOption={(input, option) =>
                                     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                                 >
@@ -267,7 +269,7 @@ class ModalInterestRate extends Component{
                                 </Select>
                             </Form.Item>
                             <Form.Item label="Mã ngân hàng 5">
-                                <Select showSearch placeholder="Mã ngân hàng 5" onChange={this.updateSelectValue('codeBank_5')}
+                                <Select showSearch placeholder="Mã ngân hàng 5" onChange={this.updateSelectValueBank('codeBank_5')}
                                     filterOption={(input, option) =>
                                     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                                 >
