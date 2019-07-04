@@ -8,11 +8,39 @@ import {
     Row,
     Col,
     Tag,
-    Radio
+    Radio,
+    Card,
+    Popover
 } from 'antd';
 import * as common from '../Common/Common';
 
 const { Option } = Select;
+
+//Hình ảnh mô tả công thức tính lãi
+const content_1 = (
+    <Card
+        hoverable
+        style={{ width: 240 }}
+        
+    >
+  </Card>
+);
+
+const content_2 = (
+    <Card
+        hoverable
+        style={{ width: 240 }}
+    >
+  </Card>
+);
+
+const content_3 = (
+    <Card
+        hoverable
+        style={{ width: 240 }}
+    >
+  </Card>
+);
 
 class ModalInterestRate extends Component{
 
@@ -23,10 +51,9 @@ class ModalInterestRate extends Component{
             currency: value.currency || 'Open',
             codeInterest: '',
             codeBond: '',
-            maxInterest: null,
-            interestRecall: null,
-            interestAmplitude: null,
-            interestAverage: null,
+            interestRecall: 0,
+            interestAmplitude: 0,
+            interestAverage: 0,
             codeBank_1: '',
             codeBank_2: '',
             codeBank_3: '',
@@ -34,7 +61,7 @@ class ModalInterestRate extends Component{
             codeBank_5: '',
             note: '',
             isShowNotice: false,
-            lstBankTmp: []
+            lstBankInterestRateTmp: []
         };
     }
 
@@ -54,16 +81,42 @@ class ModalInterestRate extends Component{
     }
 
     updateInputValue = (event)=>{
-        this.setState({[event.target.name]: event.target.value});
+        let valueTmp = event.target.value;
+        if(event.target.name === 'interestRecall' || event.target.name === 'interestAmplitude'){
+            valueTmp = parseFloat(valueTmp);
+        }
+        this.setState({[event.target.name]: valueTmp});
     }
 
     updateSelectValue = name => (event)=>{
         this.setState({[name]: event});
     }
 
-    updateSelectValueBank = name => (event)=>{
-        this.setState({[name]: event});
-        
+    updateSelectValueBank = name => async(event)=>{
+        await this.setState({[name]: event});
+        let {lstBankInterestRateTmp = []} = this.state;
+        if(this.props.lstBankInterestData){
+            const index = await this.props.lstBankInterestData.findIndex(item => event === item.MA_NH);
+            if(index > -1){
+                const indexCheckList = lstBankInterestRateTmp.findIndex(item => name === item.code);
+                if(indexCheckList > -1){
+                    lstBankInterestRateTmp[indexCheckList].interest = this.props.lstBankInterestData[index].LAISUAT_HH;
+                }else{
+                    lstBankInterestRateTmp.push({"code": name, "interest": this.props.lstBankInterestData[index].LAISUAT_HH});
+                }
+                await this.setState({lstBankInterestRateTmp});
+            }
+        }
+        if (lstBankInterestRateTmp.length) {
+            let tmpLstBankInterestRateTmp = lstBankInterestRateTmp.map((item)=>{
+                return item.interest;
+            });
+            if(tmpLstBankInterestRateTmp.length){
+                let sum = tmpLstBankInterestRateTmp.reduce(function (a, b) { return a + b; });
+                let avg = parseFloat((sum / tmpLstBankInterestRateTmp.length).toFixed(2));
+                this.setState({interestAverage: avg});
+            }
+        }
     }
     
     onHandleOk = async()=>{
@@ -95,7 +148,7 @@ class ModalInterestRate extends Component{
                     let dataTmp = {
                         "MSLS": codeInterest,
                         "BOND_ID": codeBond,
-                        "LS_TOIDA": maxInterest,
+                        "LS_TOIDA": this.state.interestAverage + this.state.interestAmplitude,
                         "LS_TH": interestRecall,
                         "LS_BIENDO": interestAmplitude,
                         "LS_BINHQUAN": interestAverage,
@@ -113,10 +166,9 @@ class ModalInterestRate extends Component{
                         await this.props.reloadData();
                         this.setState({
                             codeInterest: '',
-                            maxInterest: null,
-                            interestRecall: null,
-                            interestAmplitude: null,
-                            interestAverage: null,
+                            interestRecall: 0,
+                            interestAmplitude: 0,
+                            interestAverage: 0,
                             codeBank_1: '',
                             codeBank_2: '',
                             codeBank_3: '',
@@ -203,20 +255,27 @@ class ModalInterestRate extends Component{
                             <Form.Item
                                 label="* Lãi suất bình quân"
                             >
-                                <Tag color="green">10</Tag>%
+                                <Tag color="green">{this.state.interestAverage}</Tag>%
                             </Form.Item>
                             <Form.Item
                                 label="* Lãi suất tối đa"
                             >
-                                <Tag color="orange">20</Tag>%
+                                <Tag color="orange">{this.state.interestAverage + this.state.interestAmplitude}</Tag>%
                             </Form.Item>
                             <Form.Item
                                 label="* Công thức tính"
                             >
+                                <Tag color="geekblue">Chọn công thức tính giá trị trái phiếu</Tag>
                                 <Radio.Group name="radiogroup" defaultValue={1}>
-                                    <Radio value={1}>Công thức 1</Radio>
-                                    <Radio value={2}>Công thức 2</Radio>
-                                    <Radio value={3}>Công thức 3</Radio>
+                                    <Popover placement="top" content={content_1} title="Trả lãi định kì 3 tháng/ lần">
+                                        <Radio value={1}>3 tháng</Radio>
+                                    </Popover>
+                                    <Popover placement="top" content={content_2} title="Trả lãi định kì 6 tháng/ lần">
+                                        <Radio value={2}>6 tháng</Radio>
+                                    </Popover>
+                                    <Popover placement="top" content={content_3} title="Trả lãi định kì 12 tháng/ lần">
+                                        <Radio value={3}>12 tháng</Radio>
+                                    </Popover>
                                 </Radio.Group>
                             </Form.Item>
                         </Form>
