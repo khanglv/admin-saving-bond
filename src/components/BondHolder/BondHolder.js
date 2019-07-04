@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { Table, Button, Popconfirm, notification, Icon, Tooltip, Form, Tag} from 'antd';
 import ModalBondHolder from './ModalBondHolder';
 import {updateListAssets, deleteListAssets} from '../../api/api';
-import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
+import {EditableContext, EditableCell, ResizeableTitle} from '../EditColumn/EditColumn';
 import * as common from '../Common/Common';
 import {connect} from 'react-redux';
 import {getListAssets} from '../../stores/actions/listAssetsAction';
@@ -137,11 +137,12 @@ class BondHolderF extends Component{
                 }
             },
         ];
-        
+
         this.state = {
             dataSource: [],
             openModal: false,
-            editingKey: ''
+            editingKey: '',
+            columns: this.columns
         };
     }
 
@@ -152,7 +153,7 @@ class BondHolderF extends Component{
             await this.props.getListBondsAsset();
             await this.props.getListInvestor();
         } catch (error) {
-            
+
         }
         await this.loadData();
     }
@@ -261,19 +262,37 @@ class BondHolderF extends Component{
         this.setState({ editingKey: key });
     }
 
+    handleResize = index => (e, { size }) => {
+        this.setState(({ columns }) => {
+            const nextColumns = [...columns];
+            nextColumns[index] = {
+                ...nextColumns[index],
+                width: size.width,
+            };
+            return { columns: nextColumns };
+        });
+    };
+
     render() {
         const components = {
+            header: {
+                cell: ResizeableTitle,
+            },
             body: {
                 cell: EditableCell,
             },
         };
 
-        const columns = this.columns.map(col => {
+        const columns = this.state.columns.map((col, index) => {
             if (!col.editable) {
                 return col;
             }
             return {
                 ...col,
+                onHeaderCell: column => ({
+                    width: column.width,
+                    onResize: this.handleResize(index),
+                }),
                 onCell: record => ({
                     record,  //setting type input (date, number ...)
                     inputType: ['MSTP', 'TENNDT'].indexOf(col.dataIndex) > -1 ? 'select' : (col.dataIndex === 'TRANGTHAI' ? 'options': col.dataIndex === 'NGAYMUA' ? 'date' : 'text') ,

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { Table, Button, Popconfirm, Icon, Tooltip, Form, Tag} from 'antd';
 import ModalAssetBond from './ModalAssetBond';
 import {updateItemBondsAsset, deleteItemBondsAsset} from '../../api/api';
-import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
+import {EditableContext, EditableCell, ResizeableTitle} from '../EditColumn/EditColumn';
 import * as common from '../Common/Common';
 
 import {connect} from 'react-redux';
@@ -219,6 +219,7 @@ class AssetBondF extends Component{
 
         this.state = {
             dataSource: [],
+            columns: this.columns,
             openModal: false,
             editingKey: '',
             lstPrefix: [],
@@ -376,19 +377,37 @@ class AssetBondF extends Component{
         this.setState({ editingKey: key });
     }
 
+    handleResize = index => (e, { size }) => {
+        this.setState(({ columns }) => {
+            const nextColumns = [...columns];
+            nextColumns[index] = {
+                ...nextColumns[index],
+                width: size.width,
+            };
+            return { columns: nextColumns };
+        });
+    };
+
     render() {
         const components = {
+            header: {
+                cell: ResizeableTitle,
+            },
             body: {
                 cell: EditableCell,
             },
         };
 
-        const columns = this.columns.map(col => {
+        const columns = this.state.columns.map((col, index) => {
             if (!col.editable) {
                 return col;
             }
             return {
                 ...col,
+                onHeaderCell: column => ({
+                    width: column.width,
+                    onResize: this.handleResize(index),
+                }),
                 onCell: record => ({
                     record,  //setting type input (date, number ...)
                     inputType: ['NGAYDH', 'NGAY_KTPH'].indexOf(col.dataIndex) > -1 ? 'date' : ['TEN_DN', 'TENTAISANDAMBAO', 'MS_KYHANTT', 'TENLOAI_TP', 'SONGAYTINHLAI', 'SO_HD'].indexOf(col.dataIndex) > -1 ? 'select' : (col.dataIndex === 'TT_NIEMYET' ? 'options' : 'text') ,

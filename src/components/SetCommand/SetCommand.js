@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Table, Icon, Tooltip, Popconfirm, Tabs} from 'antd';
 import * as common from '../Common/Common';
 import ModalShowDateInterest from './ModalShowDateInterest';
+import {ResizeableTitle} from '../EditColumn/EditColumn';
 import {connect} from 'react-redux';
 import {getListSetCommand} from '../../stores/actions/setCommandAction';
 import { updateApproveSetCommand } from '../../api/api';
@@ -22,7 +23,8 @@ class SetCommand extends Component{
                 title: 'Action',
                 dataIndex: 'operation',
                 fixed: 'left',
-                width: 100,
+                editable: true,
+                width: 120,
                 render: (text, record) => {
                     return (
                         <div>{record.TRANGTHAI_LENH === 0 ?
@@ -47,46 +49,55 @@ class SetCommand extends Component{
             {
                 title: 'Trái Phiếu', //1
                 dataIndex: 'MSTP',
-                width: 250
+                width: 250,
+                editable: true,
             },
             {
                 title: 'Nhà đầu tư', //2
                 dataIndex: 'TENNDT',
-                width: 250
+                width: 250,
+                editable: true
             },
             {
                 title: 'MS Người giới thiệu', //3
                 dataIndex: 'MS_NGUOI_GT',
-                width: 150
+                width: 150,
+                editable: true
             },
             {
                 title: 'Số lượng',
                 dataIndex: 'SOLUONG',
-                width: 100
+                width: 100,
+                editable: true
             },
             {
                 title: 'Đơn giá',
                 dataIndex: 'DONGIA',
-                width: 120
+                width: 120,
+                editable: true
             },
             {
                 title: 'Tổng giá trị',
                 dataIndex: 'TONGGIATRI',
-                width: 180
+                width: 180,
+                editable: true
             },
             {
                 title: 'Lãi suất',
                 dataIndex: 'LAISUAT_DH',
-                width: 100
+                width: 100,
+                editable: true
             },
             {
                 title: 'Ngày giao dịch',
                 dataIndex: 'NGAY_GD',
-                width: 150
+                width: 150,
+                editable: true
             },
             {
                 title: 'Ngày trái tức',
                 dataIndex: 'NGAY_TRAITUC',
+                editable: true,
                 width: 120,
                 render: (NGAY_TRAITUC)=>{
                     return (
@@ -135,11 +146,13 @@ class SetCommand extends Component{
             {
                 title: 'Ghi chú',
                 dataIndex: 'GHICHU',
-                width: 200
+                width: 200,
+                editable: true
             },
         ];
 
         this.state = {
+            columns: this.columns,
             dataSource: [],
             dataSource_2: [],
             dataSource_3: [],
@@ -259,7 +272,37 @@ class SetCommand extends Component{
         }
     }
 
+    handleResize = index => (e, { size }) => {
+        this.setState(({ columns }) => {
+            const nextColumns = [...columns];
+            nextColumns[index] = {
+                ...nextColumns[index],
+                width: size.width,
+            };
+            return { columns: nextColumns };
+        });
+    };
+
     render() {
+        const components = {
+            header: {
+                cell: ResizeableTitle,
+            }
+        };
+
+        const columns = this.state.columns.map((col, index) => {
+            if (!col.editable) {
+                return col;
+            }
+            return {
+                ...col,
+                onHeaderCell: column => ({
+                    width: column.width,
+                    onResize: this.handleResize(index),
+                })
+            };
+        });
+
         return(
             <div>
                 <ModalShowDateInterest isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} lstSetCommand={this.state.lstSetCommand}/>
@@ -268,9 +311,10 @@ class SetCommand extends Component{
                         <TabPane tab="Danh sách chờ" key="1">
                             <Table
                                 bordered
+                                components={components}
                                 dataSource={this.state.dataSource}
                                 size="small"
-                                columns={this.columns}
+                                columns={columns}
                                 pagination={{ pageSize: 15 }}
                                 scroll={{x: '130%'}}
                             />
@@ -279,9 +323,10 @@ class SetCommand extends Component{
                             <div className="p-top10" style={{padding: 10}}>
                                 <Table
                                     bordered
+                                    components={components}
                                     dataSource={this.state.dataSource_2}
                                     size="small"
-                                    columns={this.columns}
+                                    columns={columns}
                                     pagination={{ pageSize: 15 }}
                                     scroll={{x: '130%'}}
                                 />
@@ -291,9 +336,10 @@ class SetCommand extends Component{
                             <div className="p-top10" style={{padding: 10}}>
                                 <Table
                                     bordered
+                                    components={components}
                                     dataSource={this.state.dataSource_3}
                                     size="small"
-                                    columns={this.columns}
+                                    columns={columns}
                                     pagination={{ pageSize: 15 }}
                                     scroll={{x: '130%'}}
                                 />

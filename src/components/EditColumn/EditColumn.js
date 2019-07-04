@@ -1,9 +1,24 @@
 import React from 'react';
 import {Form, Input, InputNumber, DatePicker, Select } from 'antd';
 import * as common from '../Common/Common';
+import { Resizable } from 'react-resizable';
 
 const dateFormat = 'DD/MM/YYYY';
 const { Option } = Select;
+
+//Resize header column
+export const ResizeableTitle = props => {
+    const { onResize, width, ...restProps } = props;
+    if (!width) {
+        return <th {...restProps} />;
+    }
+
+    return (
+        <Resizable width={width} height={0} onResize={onResize}>
+            <th {...restProps} />
+        </Resizable>
+    );
+};
 
 export const EditableContext = React.createContext();
 
@@ -209,3 +224,4 @@ export class EditableCell extends React.Component {
         return <EditableContext.Consumer>{this.renderCell}</EditableContext.Consumer>;
     }
 }
+
