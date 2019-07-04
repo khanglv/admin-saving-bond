@@ -352,7 +352,13 @@ class AssetBondF extends Component{
                     "MS_KYHANTT": row.MS_KYHANTT,
                     "MS_LTP": row.TENLOAI_TP,
                     "MS_NTLTN": row.SONGAYTINHLAI,
-                    "NGAYPH": common.convertToFormat(item.NGAYPH)
+                    "NGAYPH": common.convertToFormat(item.NGAYPH),
+                    "MENHGIA": common.convertDecimalToNumber(item.MENHGIA),
+                    "SL_PHTD": common.convertDecimalToNumber(item.SL_PHTD),
+                    "SL_DPH": common.convertDecimalToNumber(item.SL_DPH),
+                    "SL_LH": common.convertDecimalToNumber(item.SL_LH),
+                    "SL_TH": common.convertDecimalToNumber(item.SL_TH),
+                    "TONGHANMUC_HUYDONG": common.convertDecimalToNumber(item.TONGHANMUC_HUYDONG),
                 }
                 this.handleSaveEdit(row);
             } else {

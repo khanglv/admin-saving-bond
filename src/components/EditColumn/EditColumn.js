@@ -30,20 +30,7 @@ export class EditableCell extends React.Component {
         }
         if (this.props.inputType === 'select') {
             switch(this.props.dataIndex){
-                case 'MS_DN':
-                        return <Select showSearch style={{ width: '100%' }}
-                            filterOption={(input, option) =>
-                            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                        >
-                        {
-                            this.props.record.lstCompanyData.map((item)=>{
-                                return(
-                                    item.FLAG === 1 ? <Option key={item.MSDN} value={item.MSDN}>{item.TEN_DN}</Option> : null
-                                )
-                            })
-                        }
-                    </Select>
-                case 'MS_CNVCSC':
+                case 'TENCHINHANH':
                         return <Select showSearch style={{ width: '100%' }}
                             filterOption={(input, option) =>
                             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
@@ -56,6 +43,7 @@ export class EditableCell extends React.Component {
                             })
                         }
                     </Select>
+                case 'MS_DN':
                 case 'TEN_DN':
                     return <Select showSearch style={{ width: '100%' }}
                         filterOption={(input, option) =>
@@ -142,7 +130,7 @@ export class EditableCell extends React.Component {
                         {
                             this.props.record.lstBondsAssetData.filter(item => item.FLAG === 1).map((item) => {
                                 return (
-                                    <Option key={item.BOND_ID} value={item.BOND_ID}>{item.MSTP}</Option>
+                                    <Option key={item.BONDID} value={item.BONDID}>{item.MSTP}</Option>
                                 )
                             })
                         }
@@ -155,7 +143,7 @@ export class EditableCell extends React.Component {
                         {
                             this.props.record.lstInvestorData.filter(item=>item.FLAG === 1).map((item) => {
                                 return (
-                                    <Option key={item.MSNDT} value={item.MSNDT}>{item.MSNDT}</Option>
+                                    <Option key={item.MSNDT} value={item.MSNDT}>{item.TENNDT}</Option>
                                 )
                             })
                         }

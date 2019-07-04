@@ -212,7 +212,8 @@ class BondPriceF extends Component{
                 row = {
                     ...row,
                     "MSGIATRI": item.MSGIATRI,
-                    "BOND_ID": row.MSTP
+                    "BOND_ID": row.MSTP,
+                    "GIATRI_HIENTAI": common.convertDecimalToNumber(item.GIATRI_HIENTAI),
                 }
                 this.handleSaveEdit(row);
             } else {

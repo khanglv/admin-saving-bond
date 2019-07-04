@@ -155,7 +155,7 @@ class ModalBondHolder extends Component{
                                     {
                                         this.props.lstInvestorData.filter(item => item.FLAG === 1).map((item) => {
                                             return (
-                                                <Option key={item.MSNDT} value={item.MSNDT}>{item.MSNDT}</Option>
+                                                <Option key={item.MSNDT} value={item.MSNDT}>{item.TENNDT}</Option>
                                             )
                                         })
                                     }

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Table, Button, Popconfirm, notification, Icon, Tooltip, Form, Tag} from 'antd';
 import ModalBondHolder from './ModalBondHolder';
-import {updateItemInvestor, deleteItemInvestor} from '../../api/api';
+import {updateListAssets, deleteListAssets} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
 import * as common from '../Common/Common';
 import {connect} from 'react-redux';
@@ -126,7 +126,7 @@ class BondHolderF extends Component{
                                 <Tooltip title="Chỉnh sửa">
                                     <Icon type="edit" style={{color: editingKey === '' ? '#096dd9' : '#bfbfbf', fontSize: 16}} onClick={() => editingKey === '' && this.onEdit(record.key)}/>
                                 </Tooltip>&nbsp;&nbsp;&nbsp;&nbsp;
-                                <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.MSNDT)}>
+                                <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.MSTS)}>
                                     <Tooltip title="Xóa" className="pointer" placement="right">
                                         <Icon type="delete" style={{color: editingKey === '' ? '#f5222d' : '#bfbfbf', fontSize: 16}}/>
                                     </Tooltip>
@@ -197,7 +197,7 @@ class BondHolderF extends Component{
 
     handleSaveEdit = async(data)=>{
         try {
-            const res = await updateItemInvestor(data);
+            const res = await updateListAssets(data);
             if(res.error){
                 this.loadData();
                 openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
@@ -213,9 +213,9 @@ class BondHolderF extends Component{
     handleDelete = async(id) => {
         try{
             let dataTmp = {
-                "MSNDT": id
+                "MSTS": id
             }
-            const res = await deleteItemInvestor(dataTmp);
+            const res = await deleteListAssets(dataTmp);
             if(res.error){
                 openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
             }else{
@@ -238,8 +238,12 @@ class BondHolderF extends Component{
                 const item = newData[index];
                 row = {
                     ...row,
-                    "MSNDT": item.MSNDT,
-                    "LOAINDT": row.LOAINDT
+                    "MSTS": item.MSTS,
+                    "BOND_ID": row.MSTP,
+                    "MS_NDT": row.TENNDT,
+                    "SONGAYNAMGIU": common.convertDecimalToNumber(item.SONGAYNAMGIU),
+                    "DONGIA": common.convertDecimalToNumber(item.DONGIA),
+                    "TONGGIATRI": common.convertDecimalToNumber(item.TONGGIATRI)
                 }
                 this.handleSaveEdit(row);
             } else {
@@ -274,6 +278,7 @@ class BondHolderF extends Component{
                     record,  //setting type input (date, number ...)
                     inputType: ['MSTP', 'TENNDT'].indexOf(col.dataIndex) > -1 ? 'select' : (col.dataIndex === 'TRANGTHAI' ? 'options': col.dataIndex === 'NGAYMUA' ? 'date' : 'text') ,
                     dataIndex: col.dataIndex,
+                    tmpData: col.tmpData,
                     title: col.title,
                     editing: this.isEditing(record),
                 }),

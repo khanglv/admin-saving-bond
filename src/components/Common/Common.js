@@ -26,5 +26,9 @@ export const convertStringDate = (date)=>{
 }
 
 export const convertTextDecimal = (number)=>{
-    return parseInt(number).toLocaleString(undefined, {maximumFractionDigits:2})
+    return parseInt(number).toLocaleString(undefined, {maximumFractionDigits:2});
+}
+
+export const convertDecimalToNumber = (text)=>{
+    return parseInt(text.split(',').join(''));
 }

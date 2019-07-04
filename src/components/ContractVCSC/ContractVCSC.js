@@ -18,24 +18,27 @@ class ContractVCSCF extends Component{
                 dataIndex: 'key',
                 width: 30,
                 color: 'red',
+                fixed: 'left',
             },
             {
                 title: 'Số hợp đồng', //3
                 dataIndex: 'SOHD',
                 editable: true,
-                width: 150
+                width: 200
             },
             {
                 title: 'Doanh nghiệp', //3
                 dataIndex: 'TEN_DN',
+                tmpData: 'MS_DN',
                 editable: true,
-                width: 200
+                width: 280
             },
             {
                 title: 'Chi nhánh VCSC', //3
                 dataIndex: 'TENCHINHANH',
+                tmpData: 'MS_CNVCSC',
                 editable: true,
-                width: 150
+                width: 250
             },
             {
                 title: 'Ngày ký', //3
@@ -53,7 +56,7 @@ class ContractVCSCF extends Component{
                 title: 'Kỳ hạn (tháng)', //3
                 dataIndex: 'KYHAN',
                 editable: true,
-                width: 100
+                width: 150
             },
             {
                 title: 'Ngày phát hành', //3
@@ -87,6 +90,7 @@ class ContractVCSCF extends Component{
             {
                 title: 'Action',
                 dataIndex: 'operation',
+                fixed: 'right',
                 render: (text, record) =>{
                     const { editingKey } = this.state;
                     const editable = this.isEditing(record);
@@ -224,7 +228,11 @@ class ContractVCSCF extends Component{
                 const item = newData[index];
                 row = {
                     ...row,
-                    "SOHD": item.SOHD
+                    "SOHD": item.SOHD,
+                    "MS_DN": row.TEN_DN,
+                    "MS_CNVCSC": row.TENCHINHANH,
+                    "MENHGIA_TP": common.convertDecimalToNumber(item.MENHGIA_TP),
+                    "SOLUONG_PH": common.convertDecimalToNumber(item.SOLUONG_PH),
                 }
                 this.handleSaveEdit(row);
             } else {
@@ -257,8 +265,9 @@ class ContractVCSCF extends Component{
                 ...col,
                 onCell: record => ({
                     record,
-                    inputType: ['NGAYKY', 'NGAY_PH', 'NGAY_DH'].indexOf(col.dataIndex) > -1 ? 'date' : ['MS_DN', 'MS_CNVCSC'].indexOf(col.dataIndex) > -1 ? 'select' : 'text' ,
+                    inputType: ['NGAYKY', 'NGAY_PH', 'NGAY_DH'].indexOf(col.dataIndex) > -1 ? 'date' : ['TEN_DN', 'TENCHINHANH'].indexOf(col.dataIndex) > -1 ? 'select' : 'text' ,
                     dataIndex: col.dataIndex,
+                    tmpData: col.tmpData,
                     title: col.title,
                     editing: this.isEditing(record),
                 }),
@@ -284,6 +293,7 @@ class ContractVCSCF extends Component{
                             size="small"
                             pagination={{ pageSize: 15 }}
                             rowClassName="editable-row"
+                            scroll={{x: '120%'}}
                         />
                     </EditableContext.Provider>
                 </div>

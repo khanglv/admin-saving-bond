@@ -7,7 +7,8 @@ import {
     Select,
     Row,
     Col,
-    Tag
+    Tag,
+    Radio
 } from 'antd';
 import * as common from '../Common/Common';
 
@@ -62,6 +63,7 @@ class ModalInterestRate extends Component{
 
     updateSelectValueBank = name => (event)=>{
         this.setState({[name]: event});
+        
     }
     
     onHandleOk = async()=>{
@@ -207,6 +209,15 @@ class ModalInterestRate extends Component{
                                 label="* Lãi suất tối đa"
                             >
                                 <Tag color="orange">20</Tag>%
+                            </Form.Item>
+                            <Form.Item
+                                label="* Công thức tính"
+                            >
+                                <Radio.Group name="radiogroup" defaultValue={1}>
+                                    <Radio value={1}>Công thức 1</Radio>
+                                    <Radio value={2}>Công thức 2</Radio>
+                                    <Radio value={3}>Công thức 3</Radio>
+                                </Radio.Group>
                             </Form.Item>
                         </Form>
                     </Col>
