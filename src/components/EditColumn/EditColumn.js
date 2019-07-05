@@ -204,12 +204,12 @@ export class EditableCell extends React.Component {
                 {editing ? (
                     <Form.Item style={{ margin: 0 }}>
                         {getFieldDecorator(dataIndex, {
-                            rules: [
-                                {
-                                    required: true,
-                                    message: `Please Input ${title}!`,
-                                },
-                            ],
+                            // rules: [
+                            //     {
+                            //         required: true,
+                            //         message: `Please Input ${title}!`,
+                            //     },
+                            // ],
                             initialValue: inputType === 'date' ? common.convertDatePicker(common.convertToFormat(record[dataIndex])): inputType === 'select' ? record[tmpData] : record[dataIndex],
                         })(this.getInput())}
                     </Form.Item>

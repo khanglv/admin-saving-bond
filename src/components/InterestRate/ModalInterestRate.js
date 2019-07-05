@@ -20,8 +20,8 @@ const { Option } = Select;
 const content_1 = (
     <Card
         hoverable
-        style={{ width: 240 }}
-        
+        style={{ width: 240, height: 80 }}
+        cover={<img alt="cover1" src="./ct1.PNG" />}
     >
   </Card>
 );
@@ -29,7 +29,8 @@ const content_1 = (
 const content_2 = (
     <Card
         hoverable
-        style={{ width: 240 }}
+        style={{ width: 240, height: 80 }}
+        cover={<img alt="cover1" src="./ct2.PNG" />}
     >
   </Card>
 );
@@ -37,7 +38,8 @@ const content_2 = (
 const content_3 = (
     <Card
         hoverable
-        style={{ width: 240 }}
+        style={{ width: 240, height: 80 }}
+        cover={<img alt="cover1" src="./ct3.PNG" />}
     >
   </Card>
 );
@@ -61,7 +63,8 @@ class ModalInterestRate extends Component{
             codeBank_5: '',
             note: '',
             isShowNotice: false,
-            lstBankInterestRateTmp: []
+            lstBankInterestRateTmp: [],
+            cycleTime: 3
         };
     }
 
@@ -123,8 +126,7 @@ class ModalInterestRate extends Component{
         try{
             const {
                 codeInterest, 
-                codeBond, 
-                maxInterest, 
+                codeBond,
                 interestRecall, 
                 interestAmplitude, 
                 interestAverage, 
@@ -133,7 +135,8 @@ class ModalInterestRate extends Component{
                 codeBank_3, 
                 codeBank_4, 
                 codeBank_5, 
-                note
+                note,
+                cycleTime
             } = this.state;
             
             const arrBank = [codeBank_1, codeBank_2, codeBank_3, codeBank_4, codeBank_5].filter(function (v) {
@@ -142,7 +145,7 @@ class ModalInterestRate extends Component{
 
             const findDuplicates = (arr) => arr.filter((item, index) => arr.indexOf(item) !== index)
             if(findDuplicates(arrBank).length === 0) {
-                if(!codeInterest || !codeBond || !maxInterest || !interestRecall || !interestAmplitude || !interestAverage || !note){
+                if(!codeInterest || !codeBond || !interestRecall || !interestAmplitude || !interestAverage){
                     this.setState({isShowNotice: true});
                 } else {
                     let dataTmp = {
@@ -157,7 +160,8 @@ class ModalInterestRate extends Component{
                         "MA_NH03": codeBank_3,
                         "MA_NH04": codeBank_4,
                         "MA_NH05": codeBank_5,
-                        "DIEUKHOAN_LS": note
+                        "DIEUKHOAN_LS": note,
+                        "CONGTHUC": cycleTime
                     }
                     const res = await createItemInterestRate(dataTmp);
                     if(res.error){
@@ -167,14 +171,9 @@ class ModalInterestRate extends Component{
                         this.setState({
                             codeInterest: '',
                             interestRecall: 0,
-                            interestAmplitude: 0,
-                            interestAverage: 0,
-                            codeBank_1: '',
-                            codeBank_2: '',
-                            codeBank_3: '',
-                            codeBank_4: '',
-                            codeBank_5: '',
                             note: '',
+                            lstBankInterestRateTmp: [],
+                            cycleTime: 3,
                             isShowNotice: false
                         });
                         await common.notify('success', 'Thao tác thành công ^^!');
@@ -266,15 +265,15 @@ class ModalInterestRate extends Component{
                                 label="* Công thức tính"
                             >
                                 <Tag color="geekblue">Chọn công thức tính giá trị trái phiếu</Tag>
-                                <Radio.Group name="radiogroup" defaultValue={1}>
+                                <Radio.Group name="cycleTime" defaultValue={3} onChange={event => this.updateInputValue(event)}>
                                     <Popover placement="top" content={content_1} title="Trả lãi định kì 3 tháng/ lần">
-                                        <Radio value={1}>3 tháng</Radio>
+                                        <Radio value={3}>3 tháng</Radio>
                                     </Popover>
                                     <Popover placement="top" content={content_2} title="Trả lãi định kì 6 tháng/ lần">
-                                        <Radio value={2}>6 tháng</Radio>
+                                        <Radio value={6}>6 tháng</Radio>
                                     </Popover>
                                     <Popover placement="top" content={content_3} title="Trả lãi định kì 12 tháng/ lần">
-                                        <Radio value={3}>12 tháng</Radio>
+                                        <Radio value={12}>12 tháng</Radio>
                                     </Popover>
                                 </Radio.Group>
                             </Form.Item>
@@ -352,11 +351,7 @@ class ModalInterestRate extends Component{
                                     }
                                 </Select>
                             </Form.Item>
-                            <Form.Item 
-                                label="Điều khoản lãi suất"
-                                validateStatus={(this.state.note.length === 0 && this.state.isShowNotice) ? "error" : null}
-                                help={(this.state.note.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
-                            >
+                            <Form.Item label="Điều khoản lãi suất" >
                                 <Input name="note" placeholder="Điều khoản lãi suất" value={this.state.note} onChange={event => this.updateInputValue(event)} />
                             </Form.Item>
                         </Form>

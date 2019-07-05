@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import { Table, Button, Popconfirm, Icon, Tooltip, Form, Tag} from 'antd';
-import ModalBondPrice from './ModalBondPrice';
+import { Table, Popconfirm, Icon, Tooltip, Form, Tag} from 'antd';
+// import ModalBondPrice from './ModalBondPrice';
 import {updateItemBondPrice, deleteItemBondPrice} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
 import * as common from '../Common/Common';
@@ -21,14 +21,11 @@ class BondPriceF extends Component{
             {
                 title: 'Trái phiếu',
                 dataIndex: 'MSTP',
-                tmpData: 'BOND_ID',
-                editable: true,
                 width: 150
             },
             {
                 title: 'Giá trị hiên tại',
                 dataIndex: 'GIATRI_HIENTAI',
-                editable: true,
                 width: 150
             },
             {
@@ -155,13 +152,13 @@ class BondPriceF extends Component{
         }
     }
 
-    handleOpenModal = ()=>{
-        this.setState({openModal: true});
-    }
+    // handleOpenModal = ()=>{
+    //     this.setState({openModal: true});
+    // }
 
-    handleCloseModal = ()=>{
-        this.setState({openModal: false});
-    }
+    // handleCloseModal = ()=>{
+    //     this.setState({openModal: false});
+    // }
 
     handleReloadData = ()=>{
         this.setState({openModal: false});
@@ -211,8 +208,9 @@ class BondPriceF extends Component{
                 const item = newData[index];
                 row = {
                     ...row,
+                    "BOND_ID": item.BOND_ID,
                     "MSGIATRI": item.MSGIATRI,
-                    "BOND_ID": row.MSTP,
+                    "MS_LS": item.MS_LS,
                     "GIATRI_HIENTAI": common.convertDecimalToNumber(item.GIATRI_HIENTAI),
                 }
                 this.handleSaveEdit(row);
@@ -257,13 +255,13 @@ class BondPriceF extends Component{
 
         return(
             <div>
-                <ModalBondPrice isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}
+                {/* <ModalBondPrice isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}
                     lstBondsAssetData={this.state.lstBondsAsset}
-                />
+                /> */}
                 <div className="p-top10" style={{padding: 10}}>
-                    <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
+                    {/* <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
                         <span>Thêm mới</span>
-                    </Button>
+                    </Button> */}
                     <EditableContext.Provider value={this.props.form}>
                         <Table
                             components={components}
