@@ -242,9 +242,9 @@ class BondHolderF extends Component{
                     "MSTS": item.MSTS,
                     "BOND_ID": row.MSTP,
                     "MS_NDT": row.TENNDT,
-                    "SONGAYNAMGIU": common.convertDecimalToNumber(item.SONGAYNAMGIU),
-                    "DONGIA": common.convertDecimalToNumber(item.DONGIA),
-                    "TONGGIATRI": common.convertDecimalToNumber(item.TONGGIATRI)
+                    "SONGAYNAMGIU": common.convertDecimalToNumber(row.SONGAYNAMGIU),
+                    "DONGIA": common.convertDecimalToNumber(row.DONGIA),
+                    "TONGGIATRI": common.convertDecimalToNumber(row.TONGGIATRI)
                 }
                 this.handleSaveEdit(row);
             } else {

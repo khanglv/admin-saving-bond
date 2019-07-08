@@ -171,7 +171,6 @@ class SetCommand extends Component{
                 MSDL: data.MSDL,
                 status: 1,
             });
-            console.log(req);
             if(!req.error) {
                 this.loadData();
                 common.notify("success", "Thao tác thành công !!!");

@@ -266,13 +266,13 @@ class ModalInterestRate extends Component{
                             >
                                 <Tag color="geekblue">Chọn công thức tính giá trị trái phiếu</Tag>
                                 <Radio.Group name="cycleTime" defaultValue={3} onChange={event => this.updateInputValue(event)}>
-                                    <Popover placement="top" content={content_1} title="Trả lãi định kì 3 tháng/ lần">
+                                    <Popover placement="top" content={content_3} title="Trả lãi định kì 3 tháng/ lần">
                                         <Radio value={3}>3 tháng</Radio>
                                     </Popover>
                                     <Popover placement="top" content={content_2} title="Trả lãi định kì 6 tháng/ lần">
                                         <Radio value={6}>6 tháng</Radio>
                                     </Popover>
-                                    <Popover placement="top" content={content_3} title="Trả lãi định kì 12 tháng/ lần">
+                                    <Popover placement="top" content={content_1} title="Trả lãi định kì 12 tháng/ lần">
                                         <Radio value={12}>12 tháng</Radio>
                                     </Popover>
                                 </Radio.Group>

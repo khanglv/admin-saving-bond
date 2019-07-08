@@ -141,7 +141,7 @@ class AssetBondF extends Component{
                 width: 200
             },
             {
-                title: 'Kỳ hạn (tháng)', //21
+                title: 'Kỳ hạn (năm)', //21
                 dataIndex: 'KYHAN',
                 editable: true,
                 width: 150
@@ -354,12 +354,12 @@ class AssetBondF extends Component{
                     "MS_LTP": row.TENLOAI_TP,
                     "MS_NTLTN": row.SONGAYTINHLAI,
                     "NGAYPH": common.convertToFormat(item.NGAYPH),
-                    "MENHGIA": common.convertDecimalToNumber(item.MENHGIA),
-                    "SL_PHTD": common.convertDecimalToNumber(item.SL_PHTD),
-                    "SL_DPH": common.convertDecimalToNumber(item.SL_DPH),
-                    "SL_LH": common.convertDecimalToNumber(item.SL_LH),
-                    "SL_TH": common.convertDecimalToNumber(item.SL_TH),
-                    "TONGHANMUC_HUYDONG": common.convertDecimalToNumber(item.TONGHANMUC_HUYDONG),
+                    "MENHGIA": common.convertDecimalToNumber(row.MENHGIA),
+                    "SL_PHTD": common.convertDecimalToNumber(row.SL_PHTD),
+                    "SL_DPH": common.convertDecimalToNumber(row.SL_DPH),
+                    "SL_LH": common.convertDecimalToNumber(row.SL_LH),
+                    "SL_TH": common.convertDecimalToNumber(row.SL_TH),
+                    "TONGHANMUC_HUYDONG": common.convertDecimalToNumber(row.TONGHANMUC_HUYDONG),
                 }
                 this.handleSaveEdit(row);
             } else {

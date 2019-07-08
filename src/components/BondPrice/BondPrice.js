@@ -211,7 +211,7 @@ class BondPriceF extends Component{
                     "BOND_ID": item.BOND_ID,
                     "MSGIATRI": item.MSGIATRI,
                     "MS_LS": item.MS_LS,
-                    "GIATRI_HIENTAI": common.convertDecimalToNumber(item.GIATRI_HIENTAI),
+                    "GIATRI_HIENTAI": common.convertDecimalToNumber(row.GIATRI_HIENTAI),
                 }
                 this.handleSaveEdit(row);
             } else {

@@ -231,8 +231,8 @@ class ContractVCSCF extends Component{
                     "SOHD": item.SOHD,
                     "MS_DN": row.TEN_DN,
                     "MS_CNVCSC": row.TENCHINHANH,
-                    "MENHGIA_TP": common.convertDecimalToNumber(item.MENHGIA_TP),
-                    "SOLUONG_PH": common.convertDecimalToNumber(item.SOLUONG_PH),
+                    "MENHGIA_TP": common.convertDecimalToNumber(row.MENHGIA_TP),
+                    "SOLUONG_PH": common.convertDecimalToNumber(row.SOLUONG_PH),
                 }
                 this.handleSaveEdit(row);
             } else {
