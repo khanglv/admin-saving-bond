@@ -3,7 +3,7 @@ import { Empty } from 'antd';
 
 export const Error404 = () => {
     return (
-        <div className="text-center">
+        <div type="flex" align="middle">
             <h1>Sorry, route not found</h1>
             <Empty />
         </div>

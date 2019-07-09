@@ -8,7 +8,7 @@ class Home extends Component{
 
     render(){
         return(
-            <div style={{backgroundColor: '#fff', width: '100%', height: '100%', paddingTop: '10vh'}} className="text-center">
+            <div style={{backgroundColor: '#fff', width: '100%', height: '100%', paddingTop: '10vh'}} type="flex" align="middle">
                 <img alt="" src="/background.png" />
             </div>
         )

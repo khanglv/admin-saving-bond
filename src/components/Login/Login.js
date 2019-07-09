@@ -79,7 +79,7 @@ class Login extends Component{
         return(
             <div style={styles.loginForm} className="setBackgroundLogin">
                 <Form onSubmit={this.handleSubmit} style={styles.MloginForm} className="login-form">
-                    <div className="text-center">
+                    <div type="flex" align="middle">
                         <Avatar style={{ backgroundColor: '#4b79a1' }} size={100} icon="user" />
                         <div style={{color: '#0e617b', fontSize: 26}}>Admin</div>
                     </div>

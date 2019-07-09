@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Table, Button, Popconfirm, Icon, Tooltip, Form, Tag} from 'antd';
+import { Table, Button, Popconfirm, Icon, Tooltip, Form, Tag, Collapse} from 'antd';
 import ModalInterestRate from './ModalInterestRate';
 import {updateItemInterestRate, deleteItemInterestRate} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
@@ -10,16 +10,12 @@ import {getListInterestRate} from '../../stores/actions/interestRateAction';
 import {getListBondsAsset} from '../../stores/actions/bondsAssetAction';
 import {getListBankInterest} from '../../stores/actions/bankInterestAction';
 
+const { Panel } = Collapse;
+
 class InterestRateF extends Component{
     constructor(props) {
         super(props);
         this.columns = [
-            {
-                title: 'STT',
-                dataIndex: 'key',
-                width: 30,
-                fixed: 'left',
-            },
             {
                 title: 'MS Lãi suất', //1
                 dataIndex: 'MSLS',
@@ -53,7 +49,6 @@ class InterestRateF extends Component{
             {
                 title: 'LS bình quân', //7
                 dataIndex: 'LS_BINHQUAN',
-                editable: true,
                 width: 150
             },
             {
@@ -100,7 +95,6 @@ class InterestRateF extends Component{
             {
                 title: 'Action',
                 dataIndex: 'operation',
-                fixed: 'right',
                 width: 150,
                 render: (text, record) =>{
                     const { editingKey } = this.state;
@@ -131,7 +125,7 @@ class InterestRateF extends Component{
                 }
             },
         ];
-
+        
         this.state = {
             dataSource: [],
             openModal: false,
@@ -257,6 +251,28 @@ class InterestRateF extends Component{
         this.setState({ editingKey: key });
     }
 
+    // expandedRowRender = (record)=>{
+    //     let result = [];
+    //     result.push(record);
+    //     return <Table 
+    //             columns={this.columns} 
+    //             dataSource={result} 
+    //             pagination={false}
+    //             showHeader={false}
+    //             size="small"
+    //         />;
+    // }
+
+    expandedRowRender = (record) => {
+        return (
+            <Collapse>
+                <Panel className="customHeaderCollapse" style={styles.customPanelStyle} header={record.MSLS} key="1">
+                    <p>{record.MSTP}</p>
+                </Panel>
+            </Collapse>
+        )
+    }
+        
     render() {
         const components = {
             body: {
@@ -280,16 +296,15 @@ class InterestRateF extends Component{
                 }),
             };
         });
-
         return(
             <div>
                 <ModalInterestRate isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}
                     lstBondsAssetData={this.state.lstBondsAsset} lstBankInterestData={this.state.lstBankInterest}
                 />
                 <div className="p-top10" style={{padding: 10}}>
-                    <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
+                    {/* <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
                         <span>Thêm mới</span>
-                    </Button>
+                    </Button> */}
                     <EditableContext.Provider value={this.props.form}>
                         <Table
                             components={components}
@@ -297,6 +312,7 @@ class InterestRateF extends Component{
                             dataSource={this.state.dataSource}
                             columns={columns}
                             size="small"
+                            expandedRowRender={(record) => this.expandedRowRender(record)}
                             pagination={{ pageSize: 15 }}
                             rowClassName="editable-row"
                             scroll={{x: '130%' }}
@@ -326,3 +342,9 @@ const mapDispatchToProps = dispatch =>{
 }
 
 export default connect(mapStateToProps, mapDispatchToProps) (InterestRate);
+
+const styles = {
+    customPanelStyle: {
+        borderRadius: 4
+    }
+}

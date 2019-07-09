@@ -101,7 +101,7 @@ class SetCommand extends Component{
                 width: 120,
                 render: (NGAY_TRAITUC)=>{
                     return (
-                        <div className="text-center">
+                        <div type="flex" align="middle">
                             <Tooltip title="Xem chi tiết" className="pointer">
                                 <Icon type="schedule" style={{fontSize: 18, color: '#4b79a1'}} onClick={()=>this.onDetailDateInterest(NGAY_TRAITUC)}/>
                             </Tooltip>
@@ -127,7 +127,7 @@ class SetCommand extends Component{
                         color="red"
                     }
                     return(
-                        <div className="text-center">
+                        <div type="flex" align="middle">
                             <Icon type={type} style={{color: color}} theme="filled" />
                         </div>
                     )

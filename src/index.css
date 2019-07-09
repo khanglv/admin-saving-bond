@@ -53,6 +53,10 @@ code {
   cursor: pointer;
 }
 
+.ant-table-expanded-row-level-1{
+  background: #eceef0!important;
+}
+
 .ant-table-small > .ant-table-content > .ant-table-body{
   margin: 0!important;
 }
@@ -62,6 +66,20 @@ code {
 }
 .customTag:hover{
   transform: scale(1.2);
+}
+
+.customHeaderCollapse{
+  background: #fff;
+}
+
+.customHeaderCollapse:hover{
+  background: rgb(237, 240, 241);
+}
+
+.customHeaderCollapse > .ant-collapse-header{
+  color: #52c41a!important;
+  padding-top: 8px!important;
+  padding-bottom: 8px!important;
 }
 
 /* Resize header table */
@@ -78,4 +96,8 @@ code {
   right: -5px;
   cursor: col-resize;
   z-index: 1;
+}
+
+.anticon{
+  vertical-align: -0.3em!important;
 }

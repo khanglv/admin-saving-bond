@@ -63,7 +63,7 @@ class BondPriceF extends Component{
                         color="#1890ff"
                     }
                     return(
-                        <div className="text-center">
+                        <div type="flex" align="middle">
                             <Icon type={type} style={{color: color}} theme="filled" />
                         </div>
                     )

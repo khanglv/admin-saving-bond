@@ -52,7 +52,7 @@ class RoomVCSC extends Component{
                         color="#faad14"
                     }
                     return(
-                        <div className="text-center">
+                        <div type="flex" align="middle">
                             <Icon type={type} style={{color: color}} theme="filled" />
                         </div>
                     )

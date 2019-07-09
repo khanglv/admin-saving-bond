@@ -8,7 +8,10 @@ import {
     Select,
     Row,
     Col, 
-    Tag
+    Tag,
+    Card,
+    Radio,
+    Popover
 } from 'antd';
 import * as common from '../Common/Common';
 import * as formula from '../Common/Formula';
@@ -17,6 +20,34 @@ import moment from 'moment';
 const { Option } = Select;
 const dateFormat = 'DD/MM/YYYY';
 const newDate = new Date();
+
+//Hình ảnh mô tả công thức tính lãi
+const content_1 = (
+    <Card
+        hoverable
+        style={{ width: 240, height: 80 }}
+        cover={<img alt="cover1" src="./ct1.PNG" />}
+    >
+  </Card>
+);
+
+const content_2 = (
+    <Card
+        hoverable
+        style={{ width: 240, height: 80 }}
+        cover={<img alt="cover1" src="./ct2.PNG" />}
+    >
+  </Card>
+);
+
+const content_3 = (
+    <Card
+        hoverable
+        style={{ width: 240, height: 80 }}
+        cover={<img alt="cover1" src="./ct3.PNG" />}
+    >
+  </Card>
+);
 
 class ModalAssetBond extends Component{
 
@@ -48,6 +79,7 @@ class ModalAssetBond extends Component{
             statusListed: 1,
             ensureAsset: '',
             totalDepository: null,
+            cycleTime: 3,
             isShowNotice: false
         };
     }
@@ -106,7 +138,8 @@ class ModalAssetBond extends Component{
                     "KYHAN": formula.diffMonth(this.state.dateRelease, this.state.dateExpire),
                     "TT_NIEMYET": this.state.statusListed,
                     "TS_DAMBAO": this.state.ensureAsset,
-                    "SL_LUUKY": this.state.totalDepository
+                    "SL_LUUKY": this.state.totalDepository,
+                    "CONGTHUC": this.state.cycleTime
                 }
                 const res = await createItemBondsAsset(dataTmp);
                 if(res.error){
@@ -129,6 +162,7 @@ class ModalAssetBond extends Component{
                         levelLoan: null,
                         statusListed: 1,
                         ensureAsset: '',
+                        cycleTime: 3,
                         totalDepository: null,
                         isShowNotice: false
                     });
@@ -308,6 +342,22 @@ class ModalAssetBond extends Component{
                                     <Option value={1}>Có</Option>
                                     <Option value={0}>Không</Option>
                                 </Select>
+                            </Form.Item>
+                            <Form.Item
+                                label="* Công thức tính"
+                            >
+                                <Tag color="geekblue">Chọn công thức tính giá trị trái phiếu</Tag>
+                                <Radio.Group name="cycleTime" defaultValue={3} onChange={event => this.updateInputValue(event)}>
+                                    <Popover placement="top" content={content_3} title="Trả lãi định kì 3 tháng/ lần">
+                                        <Radio value={3}>3 tháng</Radio>
+                                    </Popover>
+                                    <Popover placement="top" content={content_2} title="Trả lãi định kì 6 tháng/ lần">
+                                        <Radio value={6}>6 tháng</Radio>
+                                    </Popover>
+                                    <Popover placement="top" content={content_1} title="Trả lãi định kì 12 tháng/ lần">
+                                        <Radio value={12}>12 tháng</Radio>
+                                    </Popover>
+                                </Radio.Group>
                             </Form.Item>
                         </Form>
                     </Col>
