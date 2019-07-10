@@ -157,7 +157,8 @@ class SetCommand extends Component{
             dataSource_2: [],
             dataSource_3: [],
             openModal: false,
-            lstSetCommand: []
+            lstSetCommand: [],
+            isLoading: true
         };
     }
 
@@ -227,7 +228,7 @@ class SetCommand extends Component{
                         "key": i + 1
                     }
                 })
-                this.setState({dataSource: lstTmp});
+                this.setState({dataSource: lstTmp, isLoading: false});
             }
 
             //Danh sách đã duyệt
@@ -310,6 +311,7 @@ class SetCommand extends Component{
                         <TabPane tab="Danh sách chờ" key="1">
                             <Table
                                 bordered
+                                loading={this.state.isLoading}
                                 components={components}
                                 dataSource={this.state.dataSource}
                                 size="small"
@@ -322,6 +324,7 @@ class SetCommand extends Component{
                             <div className="p-top10" style={{padding: 10}}>
                                 <Table
                                     bordered
+                                    loading={this.state.isLoading}
                                     components={components}
                                     dataSource={this.state.dataSource_2}
                                     size="small"
@@ -335,6 +338,7 @@ class SetCommand extends Component{
                             <div className="p-top10" style={{padding: 10}}>
                                 <Table
                                     bordered
+                                    loading={this.state.isLoading}
                                     components={components}
                                     dataSource={this.state.dataSource_3}
                                     size="small"

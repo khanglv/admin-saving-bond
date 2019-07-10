@@ -111,6 +111,7 @@ class TradeStatusF extends Component{
         this.state = {
             dataSource: [],
             count: 2,
+            isLoading: true,
             openModal: false,
             editingKey: ''
         };
@@ -132,7 +133,7 @@ class TradeStatusF extends Component{
                     "key": i + 1
                 }
             })
-            await this.setState({dataSource: lstTmp, editingKey: '' });
+            await this.setState({dataSource: lstTmp, editingKey: '', isLoading: false });
         } catch (error) {
             console.log("err load data " + error);
         }
@@ -246,6 +247,7 @@ class TradeStatusF extends Component{
                         <Table
                             components={components}
                             bordered
+                            loading={this.state.isLoading}
                             dataSource={this.state.dataSource}
                             columns={columns}
                             size="small"

@@ -69,6 +69,7 @@ class RoomVCSC extends Component{
             dataSource: [],
             openModal: false,
             editingKey: '',
+            isLoading: true
         };
     }
 
@@ -90,7 +91,7 @@ class RoomVCSC extends Component{
                         "key": i + 1
                     }
                 })
-                this.setState({dataSource: lstTmp, editingKey: '' });
+                this.setState({dataSource: lstTmp, editingKey: '', isLoading: false });
             }
         } catch (error) {
             console.log("err load data " + error);
@@ -116,6 +117,7 @@ class RoomVCSC extends Component{
                 <div className="p-top10" style={{padding: 10}}>
                     <Table
                         bordered
+                        loading={this.state.isLoading}
                         dataSource={this.state.dataSource}
                         size="small"
                         columns={this.columns}

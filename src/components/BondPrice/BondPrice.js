@@ -106,6 +106,7 @@ class BondPriceF extends Component{
         this.state = {
             dataSource: [],
             openModal: false,
+            isLoading: true,
             editingKey: '',
             lstBondsAsset: [],
         };
@@ -144,7 +145,7 @@ class BondPriceF extends Component{
                         "key": i + 1
                     }
                 })
-                this.setState({dataSource: lstTmp, editingKey: '' });
+                this.setState({dataSource: lstTmp, editingKey: '', isLoading: false });
             }
         } catch (error) {
             console.log("err load data " + error);
@@ -266,6 +267,7 @@ class BondPriceF extends Component{
                         <Table
                             components={components}
                             bordered
+                            loading={this.state.isLoading}
                             dataSource={this.state.dataSource}
                             columns={columns}
                             size="small"

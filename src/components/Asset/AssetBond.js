@@ -219,6 +219,7 @@ class AssetBondF extends Component{
 
         this.state = {
             dataSource: [],
+            isLoading: true,
             columns: this.columns,
             openModal: false,
             editingKey: '',
@@ -283,7 +284,7 @@ class AssetBondF extends Component{
                         "key": i + 1
                     }
                 })
-                this.setState({dataSource: lstTmp, editingKey: '' });
+                this.setState({dataSource: lstTmp, editingKey: '', isLoading: false });
             }
         } catch (error) {
             console.log("err load data " + error);
@@ -440,6 +441,7 @@ class AssetBondF extends Component{
                             dataSource={this.state.dataSource}
                             columns={columns}
                             size="small"
+                            loading={this.state.isLoading}
                             pagination={{ pageSize: 15 }}
                             rowClassName="editable-row"
                             scroll={{x: '250%' }}

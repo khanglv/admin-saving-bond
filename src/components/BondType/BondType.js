@@ -80,6 +80,7 @@ class BondTypeF extends Component{
         
         this.state = {
             dataSource: [],
+            isLoading: true,
             count: 2,
             openModal: false,
             editingKey: ''
@@ -102,7 +103,7 @@ class BondTypeF extends Component{
                     "key": i + 1
                 }
             })
-            await this.setState({dataSource: lstTmp, editingKey: '' });
+            await this.setState({dataSource: lstTmp, editingKey: '', isLoading: false });
         } catch (error) {
             console.log("err load data " + error);
         }
@@ -215,6 +216,7 @@ class BondTypeF extends Component{
                         <Table
                             components={components}
                             bordered
+                            loading={this.state.isLoading}
                             dataSource={this.state.dataSource}
                             columns={columns}
                             size="small"
