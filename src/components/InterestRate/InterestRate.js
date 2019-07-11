@@ -1,16 +1,14 @@
 import React, {Component} from 'react';
-import { Table, Icon, Tooltip, Form, Tag, Collapse, Button, Badge} from 'antd';
+import { Table, Icon, Tooltip, Form, Tag, Button, Badge} from 'antd';
 import ModalInterestRate from './ModalInterestRate_2';
+import ModalShowListInterest from './ModalShowListInterest';
 import {updateItemInterestRate, deleteItemInterestRate} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
 import * as common from '../Common/Common';
 
 import {connect} from 'react-redux';
-import {getListInterestRate} from '../../stores/actions/interestRateAction';
+import {getListInterestRate, getListInterestBuyStatus} from '../../stores/actions/interestRateAction';
 import {getListBondsAsset} from '../../stores/actions/bondsAssetAction';
-import {getListBankInterest} from '../../stores/actions/bankInterestAction';
-
-const { Panel } = Collapse;
 
 class InterestRateF extends Component{
     constructor(props) {
@@ -24,7 +22,12 @@ class InterestRateF extends Component{
             {
                 title: 'Trái phiếu', //2
                 dataIndex: 'MSTP',
-                width: 180
+                width: 180,
+                render: (index, record) =>{
+                    return(
+                        <div style={{cursor: 'pointer'}} className="codeBond" onClick={()=>this.onActionInterestStatus(record)}>{record.MSTP}</div>
+                    )
+                }
             },
             {
                 title: 'L.Suất mua', //4
@@ -39,7 +42,7 @@ class InterestRateF extends Component{
                 width: 120
             },
             {
-                title: 'Đ.Khoản l.Suất', //13
+                title: 'Đ.Khoản L.Suất', //13
                 dataIndex: 'DIEUKHOAN_LS',
                 editable: true,
                 width: 200
@@ -119,10 +122,11 @@ class InterestRateF extends Component{
         this.state = {
             dataSource: [],
             openModal: false,
+            openModalListInterest: false,
             isLoading: true,
             editingKey: '',
             lstBondsAsset: [],
-            lstBankInterest: []
+            lstInterestStatus: []
         };
     }
 
@@ -131,11 +135,9 @@ class InterestRateF extends Component{
     async componentDidMount(){
         try {
             const lstBondsAsset = await this.props.getListBondsAsset();
-            const lstBankInterest = await this.props.getListBankInterest();
             this.setState(
                 {
-                    lstBondsAsset: lstBondsAsset.data,
-                    lstBankInterest: lstBankInterest.data
+                    lstBondsAsset: lstBondsAsset.data
                 }
             );
         } catch (error) {
@@ -154,8 +156,9 @@ class InterestRateF extends Component{
                     return {
                         ...item,
                         "NGAYTAO": common.convertDDMMYYYY(item.NGAYTAO),
+                        "NGAYBATDAU": common.convertDDMMYYYY(item.NGAYBATDAU),
+                        "NGAYKETTHUC": common.convertDDMMYYYY(item.NGAYKETTHUC),
                         "lstBondsAssetData": this.props.lstBondsAsset,
-                        "lstBankInterestData": this.props.lstBankInterest,
                         "key": i + 1
                     }
                 })
@@ -163,6 +166,19 @@ class InterestRateF extends Component{
             }
         } catch (error) {
             console.log("err load data " + error);
+            common.notify('error', 'Thao tác thất bại :( ' + error);
+        }
+    }
+
+    onActionInterestStatus = async(record)=>{
+        try {
+            const res = await this.props.getListInterestBuyStatus(record.BOND_ID);
+            if(res.error){
+                common.notify('error', 'Thao tác thất bại :( ' + res.error);
+            }else{
+                this.setState({openModalListInterest: true, lstInterestStatus: res.data});
+            }
+        } catch (error) {
             common.notify('error', 'Thao tác thất bại :( ' + error);
         }
     }
@@ -175,8 +191,16 @@ class InterestRateF extends Component{
         this.setState({openModal: false});
     }
 
+    handleOpenModalListInterest = ()=>{
+        this.setState({openModalListInterest: true});
+    }
+
+    handleCloseModalListInterest = ()=>{
+        this.setState({openModalListInterest: false});
+    }
+
     handleReloadData = ()=>{
-        this.setState({openModal: false});
+        this.setState({openModal: false, openModalListInterest: false});
         this.loadData();
     }
 
@@ -241,28 +265,6 @@ class InterestRateF extends Component{
     onEdit(key) {
         this.setState({ editingKey: key });
     }
-
-    // expandedRowRender = (record)=>{
-    //     let result = [];
-    //     result.push(record);
-    //     return <Table 
-    //             columns={this.columns} 
-    //             dataSource={result} 
-    //             pagination={false}
-    //             showHeader={false}
-    //             size="small"
-    //         />;
-    // }
-
-    expandedRowRender = (record) => {
-        return (
-            <Collapse>
-                <Panel className="customHeaderCollapse" style={styles.customPanelStyle} header={record.MSLS} key="1">
-                    <p>{record.MSTP}</p>
-                </Panel>
-            </Collapse>
-        )
-    }
         
     render() {
         const components = {
@@ -289,8 +291,9 @@ class InterestRateF extends Component{
         });
         return(
             <div>
+                <ModalShowListInterest isOpen={this.state.openModalListInterest} isCloseModal={this.handleCloseModalListInterest} lstInterestStatusData={this.state.lstInterestStatus} reloadData={this.handleReloadData}/>
                 <ModalInterestRate isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}
-                    lstBondsAssetData={this.state.lstBondsAsset} lstBankInterestData={this.state.lstBankInterest}
+                    lstBondsAssetData={this.state.lstBondsAsset}
                 />
                 <div className="p-top10" style={{padding: 10}}>
                     <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
@@ -304,7 +307,6 @@ class InterestRateF extends Component{
                             dataSource={this.state.dataSource}
                             columns={columns}
                             size="small"
-                            expandedRowRender={(record) => this.expandedRowRender(record)}
                             pagination={{ pageSize: 15 }}
                             rowClassName="editable-row"
                         />
@@ -320,22 +322,16 @@ const InterestRate = Form.create()(InterestRateF);
 const mapStateToProps = state =>{
     return{
         lstBondsAsset: state.bondsAsset.data,
-        lstBankInterest: state.bankInterest.data
+        lstInterestBuyStatus: state.interestRate.lstInterestStatus
     }
 }
 
 const mapDispatchToProps = dispatch =>{
     return{
         getListBondsAsset: ()=> dispatch(getListBondsAsset()),
+        getListInterestBuyStatus: (idbond)=> dispatch(getListInterestBuyStatus(idbond)),
         getListInterestRate: ()=> dispatch(getListInterestRate()),
-        getListBankInterest: ()=> dispatch(getListBankInterest())
     }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps) (InterestRate);
-
-const styles = {
-    customPanelStyle: {
-        borderRadius: 4
-    }
-}

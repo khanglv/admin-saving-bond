@@ -38,7 +38,7 @@ class ModalAssetBond extends Component{
             maxRelease: null,
             released: null,
             totalOfCirculate: null,
-            totalRecall: null,
+            totalRecall: 0,
             dateRelease: moment(new Date(), dateFormat),
             dateExpire: moment(new Date(new Date(newDate).setFullYear(newDate.getFullYear()+1)), dateFormat),
             dateBreak: moment(new Date(new Date(newDate).setMonth(newDate.getMonth()+12)), dateFormat),
@@ -80,7 +80,7 @@ class ModalAssetBond extends Component{
     onHandleOk = async()=>{
         try{
             if(!this.state.codeBond || !this.state.contractVCSC || !this.state.company || !this.state.paymentTerm || !this.state.typeBond
-                || !this.state.dayInterestYear || !this.state.buyInterest || !this.state.price || !this.state.totalLevelMobilize || !this.state.levelLoan){
+                || !this.state.dayInterestYear || !this.state.buyInterest || !this.state.price || !this.state.released || !this.state.totalLevelMobilize || !this.state.levelLoan){
                 this.setState({isShowNotice: true});
             }else{
                 let dataTmp = {
@@ -103,7 +103,7 @@ class ModalAssetBond extends Component{
                     "NGAY_KTPH": this.state.dateBreak,
                     "TONGHANMUC_HUYDONG": this.state.totalLevelMobilize,
                     "HANMUC_CHO": this.state.levelLoan,
-                    "KYHAN": formula.diffMonth(this.state.dateRelease, this.state.dateExpire),
+                    "KYHAN": formula.diffYear(this.state.dateRelease, this.state.dateExpire),
                     "TT_NIEMYET": this.state.statusListed,
                     "TS_DAMBAO": this.state.ensureAsset,
                     "SL_LUUKY": this.state.totalDepository,
@@ -121,7 +121,7 @@ class ModalAssetBond extends Component{
                         price: null,
                         maxRelease: null,
                         released: null,
-                        totalRecall: null,
+                        totalRecall: 0,
                         dateRelease: moment(new Date(), dateFormat),
                         dateExpire: moment(new Date(new Date(newDate).setFullYear(newDate.getFullYear()+1)), dateFormat),
                         dateBreak: moment(new Date(new Date(newDate).setMonth(newDate.getMonth()+12)), dateFormat),
@@ -338,7 +338,10 @@ class ModalAssetBond extends Component{
                             >
                                 <Input name="maxRelease" type="number" placeholder="Số lượng phát hành tối đa" value={this.state.maxRelease} onChange={event => this.updateInputValue(event)} />
                             </Form.Item>
-                            <Form.Item label="Số lượng đã phát hành">
+                            <Form.Item label="* Số lượng đã phát hành"
+                                validateStatus={(this.state.released === null && this.state.isShowNotice) ? "error" : null}
+                                help={(this.state.released === null && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                            >
                                 <Input name="released" type="number" placeholder="Số lượng trái phiếu đã phát hành" value={this.state.released} onChange={event => this.updateInputValue(event)} />
                             </Form.Item>
                             <Form.Item label="Số lượng lưu hành">
@@ -359,7 +362,7 @@ class ModalAssetBond extends Component{
                                 validateStatus={(this.state.levelLoan === null && this.state.isShowNotice) ? "error" : null}
                                 help={(this.state.levelLoan === null && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                             >
-                                <Input name="levelLoan" type="number" placeholder="Số lượng trái phiếu phát hành tối đa" value={this.state.levelLoan} onChange={event => this.updateInputValue(event)} />
+                                <Input name="levelLoan" type="number" placeholder="Nhập hạn mức chờ" value={this.state.levelLoan} onChange={event => this.updateInputValue(event)} />
                             </Form.Item>
                             <Form.Item label="Tài sản đảm bảo">
                                 <Input name="ensureAsset" placeholder="Tài sản đảm bảo" value={this.state.ensureAsset} onChange={event => this.updateInputValue(event)} />

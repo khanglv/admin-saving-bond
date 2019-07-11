@@ -7,7 +7,6 @@ import {
     Select,
     Row,
     Col,
-    Tag,
     DatePicker
 } from 'antd';
 import * as common from '../Common/Common';
@@ -60,7 +59,7 @@ class ModalInterestRate extends Component{
 
     updateSelectValue = name => async(event)=>{
         this.setState({[name]: event});
-        if(name === 'codeBond'){
+        if(name === 'bondID'){
             const index = await this.props.lstBondsAssetData.findIndex(item => event === item.BONDID);
             let dateTmp = this.props.lstBondsAssetData[index].NGAYPH;
             this.setState(
@@ -78,17 +77,23 @@ class ModalInterestRate extends Component{
                 bondID,
                 interestAmplitude, 
                 interestRateBuy,
-                note
+                note,
+                statusListed,
+                dateStart,
+                dateEnd
             } = this.state;
 
-            if (!bondID || !interestAmplitude) {
+            if (!bondID || !interestRateBuy) {
                 this.setState({ isShowNotice: true });
             } else {
                 let dataTmp = {
                     "BOND_ID": bondID,
                     "LS_BIENDO": interestAmplitude,
                     "LAISUAT_MUA": interestRateBuy,
-                    "DIEUKHOAN_LS": note
+                    "DIEUKHOAN_LS": note,
+                    "NGAYBATDAU": dateStart,
+                    "NGAYKETTHUC": dateEnd,
+                    "TRANGTHAI": statusListed
                 }
                 const res = await createItemInterestRate(dataTmp);
                 if (res.error) {
@@ -98,6 +103,9 @@ class ModalInterestRate extends Component{
                     this.setState({
                         interestAmplitude: 0,
                         note: '',
+                        statusListed: 1,
+                        dateStart: moment(new Date(), dateFormat),
+                        dateEnd: moment(new Date(new Date(newDate).setMonth(newDate.getMonth()+6)), dateFormat),
                         isShowNotice: false
                     });
                     await common.notify('success', 'Thao tác thành công ^^!');
@@ -122,7 +130,7 @@ class ModalInterestRate extends Component{
 
         return(
             <Modal
-                title="Lãi suất"
+                title="Lãi suất mua"
                 centered
                 visible={this.props.isOpen}
                 onOk={() => this.onHandleOk()}
@@ -133,10 +141,10 @@ class ModalInterestRate extends Component{
                         <Form {...formItemLayout}>
                             <Form.Item
                                 label="* Trái phiếu"
-                                validateStatus={((this.state.codeBond === 0 || this.state.codeBond === null) && this.state.isShowNotice) ? "error" : null}
-                                help={((this.state.codeBond === 0 || this.state.codeBond === null) && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                                validateStatus={((this.state.bondID === 0 || this.state.bondID === null) && this.state.isShowNotice) ? "error" : null}
+                                help={((this.state.bondID === 0 || this.state.bondID === null) && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                             >
-                                <Select showSearch placeholder="Chọn trái phiếu" onChange={this.updateSelectValue('codeBond')}
+                                <Select showSearch placeholder="Chọn trái phiếu" onChange={this.updateSelectValue('bondID')}
                                     filterOption={(input, option) =>
                                     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                                 >
@@ -151,16 +159,16 @@ class ModalInterestRate extends Component{
                             </Form.Item>
                            
                             <Form.Item
-                                label="* Lãi suất biên độ"
-                                validateStatus={(this.state.interestAmplitude === null && this.state.isShowNotice) ? "error" : null}
-                                help={(this.state.interestAmplitude === null && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                                label="Lãi suất biên độ"
                             >
                                 <Input name="interestAmplitude" type="number" placeholder="Lãi suất biên độ" value={this.state.interestAmplitude} onChange={event => this.updateInputValue(event)} />
                             </Form.Item>
                             <Form.Item
-                                label="* Lãi suất"
+                                label="* Lãi suất (%)"
+                                validateStatus={(this.state.interestRateBuy === null && this.state.isShowNotice) ? "error" : null}
+                                help={(this.state.interestRateBuy === null && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                             >
-                                <Tag color="orange">{this.state.interestRateBuy}</Tag>%
+                                <Input name="interestRateBuy" type="number" placeholder="Lãi suất biên độ" value={this.state.interestRateBuy} onChange={event => this.updateInputValue(event)} />
                             </Form.Item>
                             <Form.Item label="Điều khoản lãi suất" >
                                 <Input name="note" placeholder="Điều khoản lãi suất" value={this.state.note} onChange={event => this.updateInputValue(event)} />

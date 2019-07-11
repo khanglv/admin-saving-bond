@@ -667,7 +667,7 @@ export const createItemInterestRate = (data)=>{
 
 export const updateItemInterestRate = (data)=>{
     const options = {
-        url: URL_INTEREST_RATE_BUY,
+        url: `${URL_INTEREST_RATE_BUY}/status`,
         method: "PUT",
         data: data
     }
@@ -679,6 +679,15 @@ export const deleteItemInterestRate = (data)=>{
         url: URL_INTEREST_RATE_BUY,
         method: "DELETE",
         data: data
+    }
+    return callApi(options);
+}
+
+export const getListInterestBuyStatus = (bondID)=>{
+    const options = {
+        url: `${URL_INTEREST_RATE_BUY}/${bondID}`,
+        method: "GET",
+        data: ''
     }
     return callApi(options);
 }

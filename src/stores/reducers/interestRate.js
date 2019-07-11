@@ -1,8 +1,16 @@
-import {INTEREST_RATE_REQUEST, INTEREST_RATE_SUCCESS, INTEREST_RATE_FAILED} from '../actions/actionTypes';
+import {
+    INTEREST_RATE_REQUEST, 
+    INTEREST_RATE_SUCCESS, 
+    INTEREST_RATE_FAILED,
+    GET_LIST_INTEREST_RATE_STATUS_REQUEST,
+    GET_LIST_INTEREST_RATE_STATUS_SUCCESS,
+    GET_LIST_INTEREST_RATE_STATUS_FAILED
+} from '../actions/actionTypes';
 
 const initialState = {
     data: [],
-    message: ''
+    message: '',
+    lstInterestStatus: []
 }
 
 const reducer = (state = initialState, action)=>{
@@ -18,6 +26,21 @@ const reducer = (state = initialState, action)=>{
                 data: action.data,
             }
         case INTEREST_RATE_FAILED:
+            return {
+                ...state,
+                message: action.message,
+            }
+        case GET_LIST_INTEREST_RATE_STATUS_REQUEST:
+            return{
+                ...state,
+                message: '',
+            }
+        case GET_LIST_INTEREST_RATE_STATUS_SUCCESS:
+            return{
+                ...state,
+                lstInterestStatus: action.data
+            }
+        case GET_LIST_INTEREST_RATE_STATUS_FAILED:
             return {
                 ...state,
                 message: action.message,
