@@ -44,7 +44,7 @@ class AssetBondF extends Component{
             },
             {
                 title: 'K.Hạn T.Toán', //5
-                dataIndex: 'MS_KYHANTT',
+                dataIndex: 'LOAI_TT',
                 tmpData: 'MS_KYHANTT',
                 editable: true,
                 width: 150
@@ -64,8 +64,8 @@ class AssetBondF extends Component{
                 width: 150
             },
             {
-                title: 'L.Suất H.Hành', //8
-                dataIndex: 'LAISUAT_HH',
+                title: 'L.Suất mua', //8
+                dataIndex: 'LAISUAT_MUA',
                 editable: true,
                 width: 150
             },
@@ -351,9 +351,9 @@ class AssetBondF extends Component{
                     "MSTP": item.MSTP,
                     "SO_HD": row.SO_HD,
                     "MS_DN": row.TEN_DN,
-                    "MS_KYHANTT": row.MS_KYHANTT,
                     "MS_LTP": row.TENLOAI_TP,
                     "MS_NTLTN": row.SONGAYTINHLAI,
+                    "MS_KYHANTT": row.LOAI_TT,
                     "NGAYPH": common.convertToFormat(item.NGAYPH),
                     "MENHGIA": common.convertDecimalToNumber(row.MENHGIA),
                     "SL_PHTD": common.convertDecimalToNumber(row.SL_PHTD),
@@ -411,7 +411,7 @@ class AssetBondF extends Component{
                 }),
                 onCell: record => ({
                     record,  //setting type input (date, number ...)
-                    inputType: ['NGAYDH', 'NGAY_KTPH'].indexOf(col.dataIndex) > -1 ? 'date' : ['TEN_DN', 'TENTAISANDAMBAO', 'MS_KYHANTT', 'TENLOAI_TP', 'SONGAYTINHLAI', 'SO_HD'].indexOf(col.dataIndex) > -1 ? 'select' : (col.dataIndex === 'TT_NIEMYET' ? 'options' : 'text') ,
+                    inputType: ['NGAYDH', 'NGAY_KTPH'].indexOf(col.dataIndex) > -1 ? 'date' : ['TEN_DN', 'TENTAISANDAMBAO', 'LOAI_TT', 'TENLOAI_TP', 'SONGAYTINHLAI', 'SO_HD'].indexOf(col.dataIndex) > -1 ? 'select' : (col.dataIndex === 'TT_NIEMYET' ? 'options' : 'text') ,
                     dataIndex: col.dataIndex,
                     title: col.title,
                     tmpData: col.tmpData,

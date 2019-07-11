@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import { Table, Button, Popconfirm, Icon, Tooltip, Form, Tag, Collapse} from 'antd';
-import ModalInterestRate from './ModalInterestRate';
+import { Table, Icon, Tooltip, Form, Tag, Collapse, Button, Badge} from 'antd';
+import ModalInterestRate from './ModalInterestRate_2';
 import {updateItemInterestRate, deleteItemInterestRate} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
 import * as common from '../Common/Common';
@@ -17,85 +17,75 @@ class InterestRateF extends Component{
         super(props);
         this.columns = [
             {
-                title: 'MS Lãi suất', //1
-                dataIndex: 'MSLS',
-                width: 150
+                title: 'STT',
+                dataIndex: 'key',
+                width: 30
             },
             {
                 title: 'Trái phiếu', //2
                 dataIndex: 'MSTP',
-                tmpData: 'BOND_ID',
-                editable: true,
-                width: 150
+                width: 180
             },
             {
-                title: 'Lãi suất tối đa', //4
+                title: 'L.Suất mua', //4
                 dataIndex: 'LS_TOIDA',
                 editable: true,
-                width: 150
+                width: 120
             },
             {
-                title: 'LS VCSC thu hồi', //5
-                dataIndex: 'LS_TH',
-                editable: true,
-                width: 150
-            },
-            {
-                title: 'Lãi suất biên độ', //6
+                title: 'L.Suất biên độ', //6
                 dataIndex: 'LS_BIENDO',
                 editable: true,
-                width: 150
+                width: 120
             },
             {
-                title: 'LS bình quân', //7
-                dataIndex: 'LS_BINHQUAN',
-                width: 150
-            },
-            {
-                title: 'Mã N.Hàng 1', //8
-                dataIndex: 'MA_NH01',
-                tmpData: 'MA_NH01',
-                editable: true,
-                width: 150
-            },
-            {
-                title: 'Mã N.Hàng 2', //9
-                dataIndex: 'MA_NH02',
-                tmpData: 'MA_NH02',
-                editable: true,
-                width: 150
-            },
-            {
-                title: 'Mã N.Hàng 3', //10
-                dataIndex: 'MA_NH03',
-                tmpData: 'MA_NH03',
-                editable: true,
-                width: 150
-            },
-            {
-                title: 'Mã N.Hàng 4', //11
-                dataIndex: 'MA_NH04',
-                tmpData: 'MA_NH04',
-                editable: true,
-                width: 150
-            },
-            {
-                title: 'Mã N.Hàng 5', //12
-                dataIndex: 'MA_NH05',
-                tmpData: 'MA_NH05',
-                editable: true,
-                width: 150
-            },
-            {
-                title: 'Điều khoản lãi suất', //13
+                title: 'Đ.Khoản l.Suất', //13
                 dataIndex: 'DIEUKHOAN_LS',
                 editable: true,
-                width: 350
+                width: 200
+            },
+            {
+                title: 'Ngày áp dụng', //4
+                dataIndex: 'NGAYBATDAU',
+                editable: true,
+                width: 120
+            },
+            {
+                title: 'Ngày kết thúc', //4
+                dataIndex: 'NGAYKETTHUC',
+                editable: true,
+                width: 120
+            },
+            {
+                title: 'Trạng thái', //13
+                dataIndex: 'TRANGTHAI',
+                editable: true,
+                width: 120,
+                render: TRANG_THAI => {
+                    let color = 'green';
+                    let text = 'Hoạt động';
+                    if(TRANG_THAI === 0){
+                        color = 'red';
+                        text = 'Đã thay đổi'
+                    }
+                    if(TRANG_THAI === 2){
+                        color = 'orange';
+                        text = 'Đang chờ'
+                    }
+                    return(
+                        <span style={{color: color}}><Badge color={color}/>{text}</span>
+                    )
+                }
+            },
+            {
+                title: 'Ngày tạo',
+                dataIndex: 'NGAYTAO',
+                width: 120
             },
             {
                 title: 'Action',
                 dataIndex: 'operation',
-                width: 150,
+                width: 100,
                 render: (text, record) =>{
                     const { editingKey } = this.state;
                     const editable = this.isEditing(record);
@@ -114,11 +104,11 @@ class InterestRateF extends Component{
                                 <Tooltip title="Chỉnh sửa">
                                     <Icon type="edit" style={{color: editingKey === '' ? '#096dd9' : '#bfbfbf', fontSize: 16}} onClick={() => editingKey === '' && this.onEdit(record.key)}/>
                                 </Tooltip>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.MSLS)}>
+                                {/* <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.MSLS)}>
                                     <Tooltip title="Xóa" className="pointer" placement="right">
                                         <Icon type="delete" style={{color: editingKey === '' ? '#f5222d' : '#bfbfbf', fontSize: 16}}/>
                                     </Tooltip>
-                                </Popconfirm>
+                                </Popconfirm> */}
                             </div>
                          : null
                     )
@@ -289,7 +279,7 @@ class InterestRateF extends Component{
                 ...col,
                 onCell: record => ({
                     record,  //setting type input (date, number ...)
-                    inputType: ['MSTP', 'MA_NH01', 'MA_NH02', 'MA_NH03', 'MA_NH04', 'MA_NH05'].indexOf(col.dataIndex) > -1 ? 'select' : 'text' ,
+                    inputType: ['NGAYBATDAU', 'NGAYKETTHUC'].indexOf(col.dataIndex) > -1 ? 'date' : 'text' ,
                     dataIndex: col.dataIndex,
                     title: col.title,
                     tmpData: col.tmpData,
@@ -303,9 +293,9 @@ class InterestRateF extends Component{
                     lstBondsAssetData={this.state.lstBondsAsset} lstBankInterestData={this.state.lstBankInterest}
                 />
                 <div className="p-top10" style={{padding: 10}}>
-                    {/* <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
-                        <span>Thêm mới</span>
-                    </Button> */}
+                    <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
+                        <span>Tạo mới lãi suất</span>
+                    </Button>
                     <EditableContext.Provider value={this.props.form}>
                         <Table
                             components={components}
@@ -317,7 +307,6 @@ class InterestRateF extends Component{
                             expandedRowRender={(record) => this.expandedRowRender(record)}
                             pagination={{ pageSize: 15 }}
                             rowClassName="editable-row"
-                            scroll={{x: '130%' }}
                         />
                     </EditableContext.Provider>
                 </div>

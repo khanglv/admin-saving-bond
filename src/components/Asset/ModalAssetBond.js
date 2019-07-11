@@ -8,10 +8,7 @@ import {
     Select,
     Row,
     Col, 
-    Tag,
-    Card,
-    Radio,
-    Popover
+    Tag
 } from 'antd';
 import * as common from '../Common/Common';
 import * as formula from '../Common/Formula';
@@ -20,34 +17,6 @@ import moment from 'moment';
 const { Option } = Select;
 const dateFormat = 'DD/MM/YYYY';
 const newDate = new Date();
-
-//Hình ảnh mô tả công thức tính lãi
-const content_1 = (
-    <Card
-        hoverable
-        style={{ width: 240, height: 80 }}
-        cover={<img alt="cover1" src="./ct1.PNG" />}
-    >
-  </Card>
-);
-
-const content_2 = (
-    <Card
-        hoverable
-        style={{ width: 240, height: 80 }}
-        cover={<img alt="cover1" src="./ct2.PNG" />}
-    >
-  </Card>
-);
-
-const content_3 = (
-    <Card
-        hoverable
-        style={{ width: 240, height: 80 }}
-        cover={<img alt="cover1" src="./ct3.PNG" />}
-    >
-  </Card>
-);
 
 class ModalAssetBond extends Component{
 
@@ -62,7 +31,7 @@ class ModalAssetBond extends Component{
             paymentTerm: null,
             typeBond: '',
             dayInterestYear: null,
-            currentInterest: null,
+            buyInterest: null,
             sortName: '',
             infoBond: '',
             price: null,
@@ -71,7 +40,7 @@ class ModalAssetBond extends Component{
             totalOfCirculate: null,
             totalRecall: null,
             dateRelease: moment(new Date(), dateFormat),
-            dateExpire: moment(new Date(new Date(newDate).setMonth(newDate.getMonth()+6)), dateFormat),
+            dateExpire: moment(new Date(new Date(newDate).setFullYear(newDate.getFullYear()+1)), dateFormat),
             dateBreak: moment(new Date(new Date(newDate).setMonth(newDate.getMonth()+12)), dateFormat),
             totalLevelMobilize: null,
             levelLoan: null,
@@ -79,7 +48,6 @@ class ModalAssetBond extends Component{
             statusListed: 1,
             ensureAsset: '',
             totalDepository: null,
-            cycleTime: 3,
             isShowNotice: false
         };
     }
@@ -112,7 +80,7 @@ class ModalAssetBond extends Component{
     onHandleOk = async()=>{
         try{
             if(!this.state.codeBond || !this.state.contractVCSC || !this.state.company || !this.state.paymentTerm || !this.state.typeBond
-                || !this.state.dayInterestYear || !this.state.currentInterest || !this.state.price || !this.state.totalLevelMobilize){
+                || !this.state.dayInterestYear || !this.state.buyInterest || !this.state.price || !this.state.totalLevelMobilize || !this.state.levelLoan){
                 this.setState({isShowNotice: true});
             }else{
                 let dataTmp = {
@@ -122,7 +90,7 @@ class ModalAssetBond extends Component{
                     "MS_KYHANTT": this.state.paymentTerm,
                     "MS_LTP": this.state.typeBond,
                     "MS_NTLTN": this.state.dayInterestYear,
-                    "LAISUAT_HH": this.state.currentInterest,
+                    "LAISUAT_MUA": this.state.buyInterest,
                     "MAVIETTAT": this.state.sortName,
                     "TT_TRAIPHIEU": this.state.infoBond,
                     "MENHGIA": this.state.price,
@@ -139,7 +107,6 @@ class ModalAssetBond extends Component{
                     "TT_NIEMYET": this.state.statusListed,
                     "TS_DAMBAO": this.state.ensureAsset,
                     "SL_LUUKY": this.state.totalDepository,
-                    "CONGTHUC": this.state.cycleTime
                 }
                 const res = await createItemBondsAsset(dataTmp);
                 if(res.error){
@@ -148,7 +115,7 @@ class ModalAssetBond extends Component{
                     await this.props.reloadData();
                     this.setState({
                         codeBond: '',
-                        currentInterest: null,
+                        buyInterest: null,
                         sortName: '',
                         infoBond: '',
                         price: null,
@@ -156,13 +123,12 @@ class ModalAssetBond extends Component{
                         released: null,
                         totalRecall: null,
                         dateRelease: moment(new Date(), dateFormat),
-                        dateExpire: moment(new Date(new Date(newDate).setMonth(newDate.getMonth()+6)), dateFormat),
+                        dateExpire: moment(new Date(new Date(newDate).setFullYear(newDate.getFullYear()+1)), dateFormat),
                         dateBreak: moment(new Date(new Date(newDate).setMonth(newDate.getMonth()+12)), dateFormat),
                         totalLevelMobilize: null,
                         levelLoan: null,
                         statusListed: 1,
                         ensureAsset: '',
-                        cycleTime: 3,
                         totalDepository: null,
                         isShowNotice: false
                     });
@@ -310,11 +276,11 @@ class ModalAssetBond extends Component{
                                 </Select>
                             </Form.Item>
                             <Form.Item
-                                label="* Lãi suất hợp đồng"
-                                validateStatus={(this.state.currentInterest === null && this.state.isShowNotice) ? "error" : null}
-                                help={(this.state.currentInterest === null && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                                label="* Lãi suất mua (%)"
+                                validateStatus={(this.state.buyInterest === null && this.state.isShowNotice) ? "error" : null}
+                                help={(this.state.buyInterest === null && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                             >
-                                <Input name="currentInterest" type="number" placeholder="Lãi suất theo hợp đồng" value={this.state.currentInterest} onChange={event => this.updateInputValue(event)} />
+                                <Input name="buyInterest" type="number" placeholder="Lãi suất mua theo hợp đồng" value={this.state.buyInterest} onChange={event => this.updateInputValue(event)} />
                             </Form.Item>
                             <Form.Item
                                 label="Mã viết tắt"
@@ -343,22 +309,6 @@ class ModalAssetBond extends Component{
                                     <Option value={0}>Không</Option>
                                 </Select>
                             </Form.Item>
-                            <Form.Item
-                                label="* Công thức tính"
-                            >
-                                <Tag color="geekblue">Chọn công thức tính giá trị trái phiếu</Tag>
-                                <Radio.Group name="cycleTime" defaultValue={3} onChange={event => this.updateInputValue(event)}>
-                                    <Popover placement="top" content={content_3} title="Trả lãi định kì 3 tháng/ lần">
-                                        <Radio value={3}>3 tháng</Radio>
-                                    </Popover>
-                                    <Popover placement="top" content={content_2} title="Trả lãi định kì 6 tháng/ lần">
-                                        <Radio value={6}>6 tháng</Radio>
-                                    </Popover>
-                                    <Popover placement="top" content={content_1} title="Trả lãi định kì 12 tháng/ lần">
-                                        <Radio value={12}>12 tháng</Radio>
-                                    </Popover>
-                                </Radio.Group>
-                            </Form.Item>
                         </Form>
                     </Col>
                     
@@ -381,7 +331,7 @@ class ModalAssetBond extends Component{
                             </Form.Item>
                             <Form.Item label="Kỳ hạn"
                             >
-                                <Tag color="green" style={{fontSize: 15}}>{formula.diffMonth(this.state.dateRelease, this.state.dateExpire)}</Tag>tháng
+                                <Tag color="green" style={{fontSize: 15}}>{formula.diffYear(this.state.dateRelease, this.state.dateExpire)}</Tag>năm
                             </Form.Item>
                             <Form.Item
                                 label="S.Lượng P.Hành tối đa"
@@ -405,7 +355,10 @@ class ModalAssetBond extends Component{
                             >
                                 <Input name="totalLevelMobilize" type="number" placeholder="Tổng hạn mức huy động" value={this.state.totalLevelMobilize} onChange={event => this.updateInputValue(event)} />
                             </Form.Item>
-                            <Form.Item label="Hạn mức chờ">
+                            <Form.Item label="* Hạn mức chờ"
+                                validateStatus={(this.state.levelLoan === null && this.state.isShowNotice) ? "error" : null}
+                                help={(this.state.levelLoan === null && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                            >
                                 <Input name="levelLoan" type="number" placeholder="Số lượng trái phiếu phát hành tối đa" value={this.state.levelLoan} onChange={event => this.updateInputValue(event)} />
                             </Form.Item>
                             <Form.Item label="Tài sản đảm bảo">

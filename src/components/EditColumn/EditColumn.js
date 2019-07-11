@@ -85,7 +85,7 @@ export class EditableCell extends React.Component {
                         })
                     }
                 </Select>
-                case 'MS_KYHANTT':
+                case 'LOAI_TT':
                     return <Select showSearch style={{ width: '100%' }}
                         filterOption={(input, option) =>
                         option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
@@ -93,7 +93,7 @@ export class EditableCell extends React.Component {
                     {
                         this.props.record.lstPaymentTermData.map((item) => {
                             return (
-                                item.FLAG === 1 ? <Option key={item.MSKYHANTT} value={item.MSKYHANTT}>{`${item.MSKYHANTT}`}</Option> : null
+                                item.FLAG === 1 ? <Option key={item.MSKYHANTT} value={item.MSKYHANTT}>{item.LOAI_TT}</Option> : null
                             )
                         })
                     }

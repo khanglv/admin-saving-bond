@@ -20,6 +20,12 @@ export const diffMonth = (dateFrom, dateTo)=>{
     return dateTo.getMonth() - dateFrom.getMonth() +  (12 * (dateTo.getFullYear() - dateFrom.getFullYear()));
 }
 
+export const diffYear = (dateFrom, dateTo)=>{
+    dateFrom = new Date(dateFrom);
+    dateTo = new Date(dateTo);
+    return dateTo.getFullYear() - dateFrom.getFullYear();
+}
+
 const diffDate = (firstDate, secondDate)=>{
     let oneDay = 24*60*60*1000;
     firstDate = new Date(firstDate);

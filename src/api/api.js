@@ -19,7 +19,7 @@ const URL_ENSURE_ASSETS = `${BASE_URL}/ensureAssets`;
 const URL_DAY_INTEREST_YEAR = `${BASE_URL}/dateInterestYear`;
 const URL_BOND_ASSET = `${BASE_URL}/bonds`;
 const URL_CONTRACT_VCSC = `${BASE_URL}/contractVCSC`;
-const URL_INTEREST_RATE = `${BASE_URL}/interestRate`;
+const URL_INTEREST_RATE_BUY = `${BASE_URL}/interestRateBuy`;
 const URL_BOND_PRICE = `${BASE_URL}/bondPrice`;
 const URL_ROOM_VCSC = `${BASE_URL}/roomVCSC`;
 const URL_SET_COMMAND = `${BASE_URL}/setCommand`;
@@ -650,7 +650,7 @@ export const deleteItemBondsAsset = (data)=>{
 //Lãi suất
 export const getListInterestRate = ()=>{
     const options = {
-        url: URL_INTEREST_RATE,
+        url: URL_INTEREST_RATE_BUY,
         method: "GET",
     }
     return callApi(options);
@@ -658,7 +658,7 @@ export const getListInterestRate = ()=>{
 
 export const createItemInterestRate = (data)=>{
     const options = {
-        url: URL_INTEREST_RATE,
+        url: URL_INTEREST_RATE_BUY,
         method: "POST",
         data: data
     }
@@ -667,7 +667,7 @@ export const createItemInterestRate = (data)=>{
 
 export const updateItemInterestRate = (data)=>{
     const options = {
-        url: URL_INTEREST_RATE,
+        url: URL_INTEREST_RATE_BUY,
         method: "PUT",
         data: data
     }
@@ -676,7 +676,7 @@ export const updateItemInterestRate = (data)=>{
 
 export const deleteItemInterestRate = (data)=>{
     const options = {
-        url: URL_INTEREST_RATE,
+        url: URL_INTEREST_RATE_BUY,
         method: "DELETE",
         data: data
     }

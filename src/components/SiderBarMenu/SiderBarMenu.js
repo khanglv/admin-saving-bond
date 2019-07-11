@@ -161,7 +161,7 @@ class SiderBarMenu extends Component {
                                 <span>D.Sách nhà đầu tư</span>
                             </Menu.Item>
                             <Menu.Item key="/interest-rate">
-                                <span>Lãi suất</span>
+                                <span>Lãi suất mua</span>
                             </Menu.Item>
                             <Menu.Item key="/contract-vcsc">
                                 <span>Hợp đồng phát hành</span>
