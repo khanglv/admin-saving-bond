@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SiderBarMenu from '../components/SiderBarMenu/SiderBarMenu';
 import {removeStorageToken} from '../api/storage';
+
 import Home from '../components/Home/Home';
 import AssetBond from '../components/Asset/AssetBond';
 import EnsureAsset from '../components/Asset/EnsureAsset';
@@ -22,6 +23,7 @@ import BondPrice from '../components/BondPrice/BondPrice';
 import RoomVCSC from '../components/RoomVCSC/RoomVCSC';
 import SetCommand from '../components/SetCommand/SetCommand';
 import BondHolder from '../components/BondHolder/BondHolder';
+import InterestRateSale from '../components/InterestRateSale/InterestRateSale';
 
 import { Layout, Avatar, Card, Button } from 'antd';
 const { Meta } = Card;
@@ -63,6 +65,7 @@ export const FBondPrice = ()=> withSidebar(BondPrice)
 export const FRoomVCSC = ()=> withSidebar(RoomVCSC)
 export const FSetCommand = ()=> withSidebar(SetCommand)
 export const FBondHolder = ()=> withSidebar(BondHolder)
+export const FInterestRateSale = ()=> withSidebar(InterestRateSale)
 
 class HeaderCom extends Component{
     constructor(props){

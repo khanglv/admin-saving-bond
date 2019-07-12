@@ -18,6 +18,7 @@ import setCommand from './setCommand';
 import bankInterest from './bankInterest';
 import investor from './investor';
 import listAssets from './listAssets';
+import interestRateSale from './interestRateSale';
 
 export default combineReducers({
     login: login,
@@ -37,5 +38,6 @@ export default combineReducers({
     setCommand: setCommand,
     bankInterest: bankInterest,
     investor: investor,
-    listAssets: listAssets
+    listAssets: listAssets,
+    interestRateSale: interestRateSale
 });

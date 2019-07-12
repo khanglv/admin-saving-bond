@@ -4,15 +4,8 @@ import {
     Modal,
     Form,
     Input,
-    notification
 } from 'antd';
-
-const openNotificationWithIcon = (type, data) => {
-    notification[type]({
-        message: 'Thông báo',
-        description: data,
-    });
-};
+import * as common from '../Common/Common';
 
 class ModalFrefix extends Component{
 
@@ -51,15 +44,15 @@ class ModalFrefix extends Component{
                 }
                 const res = await createItemFrefix(dataTmp);
                 if (res.error) {
-                    openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
+                    common.notify('error', 'Thao tác thất bại :( ' + res.error);
                 } else {
                     await this.props.reloadData();
                     this.setState({codeFrefix: '', noteFrefix: '', isShowNotice: false});
-                    await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
+                    await common.notify('success', 'Thao tác thành công ^^!');
                 }
             }
         }catch(err){
-            openNotificationWithIcon('error', 'Thao tác thất bại :( ' + err);
+            common.notify('error', 'Thao tác thất bại :( ' + err);
         }
     }
 

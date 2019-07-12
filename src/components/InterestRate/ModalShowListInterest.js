@@ -116,7 +116,7 @@ class ModalShowListInterest extends Component{
         });
         return(
             <Modal
-                title="Danh sách lãi suất"
+                title="Danh sách lãi suất mua"
                 centered
                 visible={this.props.isOpen}
                 onOk={() => this.onHandleOk()}

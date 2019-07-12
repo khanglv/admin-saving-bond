@@ -1,11 +1,14 @@
 import React, {Component} from 'react';
 import { Table, Button, Popconfirm, Icon, Tooltip, Form, Tag} from 'antd';
-import ModalFrefix from './ModalFrefix';
-import {getListFrefix, deleteItemFrefix, updateItemFrefix} from '../../api/api';
+import ModalInterestRateSale from './ModalInterestRateSale';
+import {deleteItemInterestRateSale, updateItemInterestRateSale} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
 import * as common from '../Common/Common';
 
-class FrefixModal extends Component{
+import {connect} from 'react-redux';
+import {getListInterestRateSale} from '../../stores/actions/interestRateSaleAction';
+
+class InterestRateSaleF extends Component{
     constructor(props) {
         super(props);
         this.columns = [
@@ -16,14 +19,31 @@ class FrefixModal extends Component{
                 color: 'red'
             },
             {
-                title: 'Ký tự Frefix', //2
-                dataIndex: 'KYTU_PREFIX',
+                title: 'Mã số lãi suất', //2
+                dataIndex: 'MSLS',
                 width: 100,
-                editable: true,
             },  
             {
-                title: 'Ghi chú', //3
-                dataIndex: 'GHICHU',
+                title: 'Lãi suất bán (%)', //3
+                dataIndex: 'LS_TOIDA',
+                editable: true,
+                width: 100
+            },
+            {
+                title: 'Ngày áp dụng', //4
+                dataIndex: 'NGAYBATDAU',
+                editable: true,
+                width: 100
+            },
+            {
+                title: 'Ngày kết thúc', //4
+                dataIndex: 'NGAYKETTHUC',
+                width: 100,
+                editable: true,
+            },
+            {
+                title: 'Điều khoản lãi suất', //3
+                dataIndex: 'DIEUKHOAN_LS',
                 editable: true,
                 width: 200
             },
@@ -53,7 +73,7 @@ class FrefixModal extends Component{
                                 <Tooltip title="Chỉnh sửa">
                                     <Icon type="edit" style={{color: editingKey === '' ? '#096dd9' : '#bfbfbf', fontSize: 16}} onClick={() => editingKey === '' && this.onEdit(record.key)}/>
                                 </Tooltip>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.PREFIX_ID)}>
+                                <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.MSLS)}>
                                     <Tooltip title="Xóa" className="pointer" placement="right">
                                         <Icon type="delete" style={{color: editingKey === '' ? '#f5222d' : '#bfbfbf', fontSize: 16}}/>
                                     </Tooltip>
@@ -83,15 +103,21 @@ class FrefixModal extends Component{
 
     loadData = async()=>{
         try {
-            const res = await getListFrefix();
-            const lstTmp = await (res.filter(item => item.FLAG === 1)).map((item, i) => {
-                return {
-                    ...item,
-                    "NGAYTAO": common.convertDDMMYYYY(item.NGAYTAO),
-                    "key": i + 1
-                }
-            })
-            await this.setState({dataSource: lstTmp, editingKey: '', isLoading: false });
+            const res = await this.props.getListInterestRateSale();
+            if(res.error){
+                common.notify('error', 'Thao tác thất bại :( ' + res.error);
+            }else{
+                const lstTmp = await (res.data.filter(item => item.FLAG === 1)).map((item, i) => {
+                    return {
+                        ...item,
+                        "NGAYTAO": common.convertDDMMYYYY(item.NGAYTAO),
+                        "NGAYBATDAU": common.convertDDMMYYYY(item.NGAYBATDAU),
+                        "NGAYKETTHUC": common.convertDDMMYYYY(item.NGAYKETTHUC),
+                        "key": i + 1
+                    }
+                })
+                this.setState({dataSource: lstTmp, editingKey: '', isLoading: false });
+            }
         } catch (error) {
             console.log("err load data " + error);
         }
@@ -112,12 +138,7 @@ class FrefixModal extends Component{
 
     handleSaveEdit = async(data)=>{
         try {
-            let dataTmp = {
-                "PREFIX_ID": data.PREFIX_ID,
-                "KYTU_PREFIX": data.KYTU_PREFIX,
-                "GHICHU": data.GHICHU
-            }
-            const res = await updateItemFrefix(dataTmp);
+            const res = await updateItemInterestRateSale(data);
             if(res.error){
                 this.loadData();
                 common.notify('error', 'Thao tác thất bại :( ' + res.error);
@@ -130,12 +151,12 @@ class FrefixModal extends Component{
         }
     }
 
-    handleDelete = async(idFrefix) => {
+    handleDelete = async(code) => {
         try{
             let dataTmp = {
-                "PREFIX_ID": idFrefix
+                "MSLS": code
             }
-            const res = await deleteItemFrefix(dataTmp);
+            const res = await deleteItemInterestRateSale(dataTmp);
             if(res.error){
                 common.notify('error', 'Thao tác thất bại :( ' + res.error);
             }else{
@@ -158,7 +179,7 @@ class FrefixModal extends Component{
                 const item = newData[index];
                 row = {
                     ...row,
-                    "PREFIX_ID": item.PREFIX_ID
+                    "MSLS": item.MSLS
                 }
                 this.handleSaveEdit(row);
             } else {
@@ -191,6 +212,7 @@ class FrefixModal extends Component{
                 ...col,
                 onCell: record => ({
                     record,
+                    inputType: ['NGAYBATDAU', 'NGAYKETTHUC'].indexOf(col.dataIndex) > -1 ? 'date' : 'text' ,
                     dataIndex: col.dataIndex,
                     title: col.title,
                     editing: this.isEditing(record),
@@ -200,7 +222,7 @@ class FrefixModal extends Component{
 
         return(
             <div>
-                <ModalFrefix isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}/>
+                <ModalInterestRateSale isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}/>
                 <div className="p-top10" style={{padding: 10}}>
                     <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
                         <span>Thêm mới</span>
@@ -223,6 +245,18 @@ class FrefixModal extends Component{
     }
 }
 
-const Frefix = Form.create()(FrefixModal);
+const InterestRateSale = Form.create()(InterestRateSaleF);
 
-export default Frefix;
+const mapStateToProps = state =>{
+    return{
+        lstInterestRateSale: state.interestRateSale.data,
+    }
+}
+
+const mapDispatchToProps = dispatch =>{
+    return{
+        getListInterestRateSale: ()=> dispatch(getListInterestRateSale()),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (InterestRateSale);

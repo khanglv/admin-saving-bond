@@ -12,6 +12,7 @@ import {getListCompany} from '../../stores/actions/companyAction';
 import {getListPaymentTerm} from '../../stores/actions/paymentTermAction';
 import {getListDayInterestYear} from '../../stores/actions/dayInterestYearAction';
 import {getListBondType} from '../../stores/actions/bondTypeAction';
+import {getListInterestRateSale} from '../../stores/actions/interestRateSaleAction';
 
 class AssetBondF extends Component{
     constructor(props) {
@@ -66,6 +67,13 @@ class AssetBondF extends Component{
             {
                 title: 'L.Suất mua', //8
                 dataIndex: 'LAISUAT_MUA',
+                editable: true,
+                width: 150
+            },
+            {
+                title: 'L.Suất bán', //8
+                dataIndex: 'LAISUAT_BAN',
+                tmpData: 'MS_LSB',
                 editable: true,
                 width: 150
             },
@@ -230,6 +238,7 @@ class AssetBondF extends Component{
             lstPaymentTerm: [],
             lstBondType: [],
             lstDayInterestYear: [],
+            lstInterestRateSale: []
         };
     }
 
@@ -242,6 +251,7 @@ class AssetBondF extends Component{
             const lstPaymentTerm = await this.props.getListPaymentTerm();
             const lstBondType = await this.props.getListBondType();
             const lstDayInterestYear = await this.props.getListDayInterestYear();
+            const lstInterestRateSale = await this.props.getListInterestRateSale();
             this.setState(
                 {
                     lstContractVCSC: lstContractVCSC.data,
@@ -249,6 +259,7 @@ class AssetBondF extends Component{
                     lstPaymentTerm: lstPaymentTerm.data,
                     lstBondType: lstBondType.data,
                     lstDayInterestYear: lstDayInterestYear.data,
+                    lstInterestRateSale: lstInterestRateSale.data
                 }
             );
         } catch (error) {
@@ -281,6 +292,7 @@ class AssetBondF extends Component{
                         "lstPaymentTermData": this.props.lstPaymentTerm,
                         "lstBondTypeData": this.props.lstBondType,
                         "lstDayInterestYearData": this.props.lstDayInterestYear,
+                        "lstInterestRateSaleData": this.props.lstInterestRateSale,
                         "key": i + 1
                     }
                 })
@@ -354,6 +366,7 @@ class AssetBondF extends Component{
                     "MS_LTP": row.TENLOAI_TP,
                     "MS_NTLTN": row.SONGAYTINHLAI,
                     "MS_KYHANTT": row.LOAI_TT,
+                    "MS_LSB": row.LAISUAT_BAN,
                     "NGAYPH": common.convertToFormat(item.NGAYPH),
                     "MENHGIA": common.convertDecimalToNumber(row.MENHGIA),
                     "SL_PHTD": common.convertDecimalToNumber(row.SL_PHTD),
@@ -411,7 +424,7 @@ class AssetBondF extends Component{
                 }),
                 onCell: record => ({
                     record,  //setting type input (date, number ...)
-                    inputType: ['NGAYDH', 'NGAY_KTPH'].indexOf(col.dataIndex) > -1 ? 'date' : ['TEN_DN', 'TENTAISANDAMBAO', 'LOAI_TT', 'TENLOAI_TP', 'SONGAYTINHLAI', 'SO_HD'].indexOf(col.dataIndex) > -1 ? 'select' : (col.dataIndex === 'TT_NIEMYET' ? 'options' : 'text') ,
+                    inputType: ['NGAYDH', 'NGAY_KTPH'].indexOf(col.dataIndex) > -1 ? 'date' : ['TEN_DN', 'TENTAISANDAMBAO', 'LOAI_TT', 'TENLOAI_TP', 'SONGAYTINHLAI', 'SO_HD', 'LAISUAT_BAN'].indexOf(col.dataIndex) > -1 ? 'select' : (col.dataIndex === 'TT_NIEMYET' ? 'options' : 'text') ,
                     dataIndex: col.dataIndex,
                     title: col.title,
                     tmpData: col.tmpData,
@@ -429,6 +442,7 @@ class AssetBondF extends Component{
                     lstPaymentTermData={this.state.lstPaymentTerm}
                     lstBondTypeData={this.state.lstBondType}
                     lstDayInterestYearData={this.state.lstDayInterestYear}
+                    lstInterestRateSaleData={this.state.lstInterestRateSale}
                 />
                 <div className="p-top10" style={{padding: 10}}>
                     <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
@@ -463,6 +477,7 @@ const mapStateToProps = state =>{
         lstPaymentTerm: state.paymentTerm.data,
         lstBondType: state.bondType.data,
         lstDayInterestYear: state.dayInterestYear.data,
+        lstInterestRateSale: state.interestRateSale.data,
     }
 }
 
@@ -474,6 +489,7 @@ const mapDispatchToProps = dispatch =>{
         getListPaymentTerm: ()=> dispatch(getListPaymentTerm()),
         getListBondType: ()=> dispatch(getListBondType()),
         getListDayInterestYear: ()=> dispatch(getListDayInterestYear()),
+        getListInterestRateSale: ()=> dispatch(getListInterestRateSale()),
     }
 }
 

@@ -32,6 +32,7 @@ class ModalAssetBond extends Component{
             typeBond: '',
             dayInterestYear: null,
             buyInterest: null,
+            interestRateSale: null,
             sortName: '',
             infoBond: '',
             price: null,
@@ -79,7 +80,7 @@ class ModalAssetBond extends Component{
     
     onHandleOk = async()=>{
         try{
-            if(!this.state.codeBond || !this.state.contractVCSC || !this.state.company || !this.state.paymentTerm || !this.state.typeBond
+            if(!this.state.codeBond || !this.state.contractVCSC || !this.state.company || !this.state.paymentTerm || !this.state.typeBond || !this.state.interestRateSale
                 || !this.state.dayInterestYear || !this.state.buyInterest || !this.state.price || !this.state.released || !this.state.totalLevelMobilize || !this.state.levelLoan){
                 this.setState({isShowNotice: true});
             }else{
@@ -91,6 +92,7 @@ class ModalAssetBond extends Component{
                     "MS_LTP": this.state.typeBond,
                     "MS_NTLTN": this.state.dayInterestYear,
                     "LAISUAT_MUA": this.state.buyInterest,
+                    "MS_LSB": this.state.interestRateSale,
                     "MAVIETTAT": this.state.sortName,
                     "TT_TRAIPHIEU": this.state.infoBond,
                     "MENHGIA": this.state.price,
@@ -223,11 +225,11 @@ class ModalAssetBond extends Component{
                                 </Select>
                             </Form.Item> */}
                             <Form.Item
-                                label="* Kì hạn thanh toán"
+                                label="* Kì hạn tính lãi"
                                 validateStatus={(this.state.paymentTerm === null && this.state.isShowNotice) ? "error" : null}
                                 help={(this.state.paymentTerm === null && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                             >
-                                <Select showSearch placeholder="Kỳ hạn thanh toán" onChange={this.updateSelectValue('paymentTerm')}
+                                <Select showSearch placeholder="Kỳ hạn tính lãi" onChange={this.updateSelectValue('paymentTerm')}
                                     filterOption={(input, option) =>
                                     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                                 >
@@ -281,6 +283,24 @@ class ModalAssetBond extends Component{
                                 help={(this.state.buyInterest === null && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                             >
                                 <Input name="buyInterest" type="number" placeholder="Lãi suất mua theo hợp đồng" value={this.state.buyInterest} onChange={event => this.updateInputValue(event)} />
+                            </Form.Item>
+                            <Form.Item
+                                label="* Lãi suất bán (%)"
+                                validateStatus={(this.state.interestRateSale === null && this.state.isShowNotice) ? "error" : null}
+                                help={(this.state.interestRateSale === null && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                            >
+                                <Select showSearch placeholder="lãi suất bán" onChange={this.updateSelectValue('interestRateSale')}
+                                    filterOption={(input, option) =>
+                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                >
+                                    {
+                                        this.props.lstInterestRateSaleData.filter(item => item.FLAG === 1).map((item) => {
+                                            return (
+                                                <Option key={item.MSLS} value={item.MSLS}>{item.LS_TOIDA}</Option>
+                                            )
+                                        })
+                                    }
+                                </Select>
                             </Form.Item>
                             <Form.Item
                                 label="Mã viết tắt"
