@@ -314,6 +314,9 @@ class BondHolderF extends Component{
                 <div className="p-top10" style={{padding: 10}}>
                     <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
                         <span>Thêm mới</span>
+                    </Button>&nbsp;&nbsp;&nbsp;
+                    <Button style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', color: 'green'}}>
+                        <Icon type="upload" /> Import Excel
                     </Button>
                     <EditableContext.Provider value={this.props.form}>
                         <Table

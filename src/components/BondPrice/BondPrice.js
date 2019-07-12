@@ -30,13 +30,13 @@ class BondPriceF extends Component{
             },
             {
                 title: 'Ngày áp dụng',
-                dataIndex: 'NGAY_AP',
+                dataIndex: 'NGAYBATDAU',
                 editable: true,
                 width: 150
             },
             {
-                title: 'Ngày hiện hành',
-                dataIndex: 'NGAY_HH',
+                title: 'Ngày kết thúc',
+                dataIndex: 'NGAYKETTHUC',
                 editable: true,
                 width: 150
             },
@@ -138,8 +138,8 @@ class BondPriceF extends Component{
                     return {
                         ...item,
                         "NGAYTAO": common.convertDDMMYYYY(item.NGAYTAO),
-                        "NGAY_AP": common.convertDDMMYYYY(item.NGAY_AP),
-                        "NGAY_HH": common.convertDDMMYYYY(item.NGAY_HH),
+                        "NGAYBATDAU": common.convertDDMMYYYY(item.NGAYBATDAU),
+                        "NGAYKETTHUC": common.convertDDMMYYYY(item.NGAYKETTHUC),
                         "GIATRI_HIENTAI": common.convertTextDecimal(item.GIATRI_HIENTAI),
                         "lstBondsAssetData": this.props.lstBondsAsset,
                         "key": i + 1
