@@ -88,6 +88,7 @@ class RouteURL extends Component{
                         <Route exact path="/set-command" component={FSetCommand} />
                         <Route exact path="/bond-holder" component={FBondHolder} />
                         <Route exact path="/interest-rate-sale" component={FInterestRateSale} />
+                        <Route exact path="/test" component={Test} />
                         <Route exact path="*" component={Error404} />
                     </Switch>
                 </BrowserRouter>

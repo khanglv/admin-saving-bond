@@ -5,12 +5,19 @@ import {
     Badge,
     Icon,
     Popconfirm,
-    Tooltip
+    Tooltip,
+    Tag,
+    Form
 } from 'antd';
-import { updateItemInterestRate } from '../../api/api';
+import { updateItemInterestRate, updateListInterestBuyStatus } from '../../api/api';
+import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
 import * as common from '../Common/Common';
+import * as formula from '../Common/Formula';
 
-class ModalShowListInterest extends Component{
+import {connect} from 'react-redux';
+import {getListInterestBuyStatus} from '../../stores/actions/interestRateAction';
+
+class ModalShowListInterestF extends Component{
 
     constructor(props) {
         super(props);
@@ -23,22 +30,24 @@ class ModalShowListInterest extends Component{
             {
                 title: 'Ngày áp dụng', //1
                 dataIndex: 'NGAYBATDAU',
+                editable: true,
                 width: 200
             },
             {
                 title: 'Ngày kết thúc', //1
                 dataIndex: 'NGAYKETTHUC',
+                editable: true,
                 width: 200
             },
             {
                 title: 'Lãi suất (%)', //1
                 dataIndex: 'LS_TOIDA',
+                editable: true,
                 width: 100
             },
             {
                 title: 'Trạng thái', //13
                 dataIndex: 'TRANGTHAI',
-                editable: true,
                 width: 120,
                 render: TRANG_THAI => {
                     let color = 'green';
@@ -59,14 +68,31 @@ class ModalShowListInterest extends Component{
             {
                 title: 'Action', //1
                 dataIndex: 'Action',
-                width: 80,
+                width: 100,
                 render: (text, record)=>{
-                    return (
-                        record.TRANGTHAI === 2 ? <Popconfirm title="Duyệt lãi suất này?" onConfirm={() => this.handleOk(record)}>
-                            <Tooltip title="Duyệt" className="pointer" placement="left">
-                                <Icon type="check" style={{ color: '#1cd356', fontSize: 16 }} />
+                    const { editingKey } = this.state;
+                    const editable = this.isEditing(record);
+                    return editable ? (
+                        <div>
+                            <EditableContext.Consumer>
+                                {form => (
+                                    <Tag color="green" className="customTag" onClick={() => this.save(form, record)}>Lưu</Tag>                                
+                                )}
+                            </EditableContext.Consumer>
+                            <Tag color="volcano" className="customTag" onClick={() => this.cancel(record.key)}>Hủy bỏ</Tag>
+                        </div>
+                    ): (
+                        record.TRANGTHAI === 2 ? 
+                        <div>
+                            <Popconfirm title="Duyệt lãi suất này?" onConfirm={() => this.handleOk(record)}>
+                                <Tooltip title="Duyệt" className="pointer" placement="left">
+                                    <Icon type="check" style={{ color: '#1cd356', fontSize: 16 }} />
+                                </Tooltip>
+                            </Popconfirm>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <Tooltip title="Chỉnh sửa">
+                                <Icon type="edit" style={{color: editingKey === '' ? '#096dd9' : '#bfbfbf', fontSize: 16}} onClick={() => editingKey === '' && this.onEdit(record.key)}/>
                             </Tooltip>
-                        </Popconfirm> : null
+                        </div> : null
                     )
                 }
             }
@@ -75,29 +101,94 @@ class ModalShowListInterest extends Component{
 
         this.state = {
             currency: value.currency || 'Open',
+            editingKey: '',
         };
     }
 
+    isEditing = record => record.key === this.state.editingKey;
+
     setModal2Visible =()=> {
         this.props.isCloseModal();
+        this.setState({ editingKey: '' });
     }
 
     handleOk = async(record)=> {
-        try {
-            const req = await updateItemInterestRate({
-                TRANGTHAI: 1,
-                MSLS: record.MSLS,
-                BOND_ID: record.BONDID
-            });
-            if(!req.error) {
-                this.props.reloadData();
-                common.notify("success", "Thao tác thành công !!!");
-            }else{
+        if(formula.dateToTime(common.convertDDMMYYYY(new Date())) < formula.dateToTime(record.NGAYBATDAU)){
+            common.notify("warning", "Chưa tới thời gian, không thể hoạt động lãi suất này");
+        }else if(formula.dateToTime(common.convertDDMMYYYY(new Date())) > formula.dateToTime(record.NGAYKETTHUC)){
+            common.notify("warning", "Đã quá hạn bạn không thể hoạt động lãi suất này");
+        }else{
+            try {
+                const req = await updateItemInterestRate({
+                    TRANGTHAI: 1,
+                    MSLS: record.MSLS,
+                    BOND_ID: record.BOND_ID
+                });
+                if(!req.error) {
+                    this.props.reloadData();
+                    common.notify("success", "Thao tác thành công !!!");
+                }else{
+                    common.notify("error", "Thao tác thất bại :(");
+                }
+            } catch (err) {
                 common.notify("error", "Thao tác thất bại :(");
             }
-        } catch (err) {
-            common.notify("error", "Thao tác thất bại :(");
         }
+    }
+
+    handleSaveEdit = async(data)=>{
+        try {
+            const res = await updateListInterestBuyStatus(data);
+            if(res.error){
+                common.notify('error', 'Thao tác thất bại :( ' + res.error);
+            }else{
+                this.setState({ editingKey: '' });
+                await this.props.getListInterestBuyStatus(data.BONDID);
+                await common.notify('success', 'Thao tác thành công ^^!');
+            }
+        } catch (error) {
+            common.notify('error', 'Thao tác thất bại :( ' + error);
+        }
+    }
+
+    save = (form, record)=> {
+        form.validateFields((error, row) => {
+            if (error) {
+                return;
+            }
+            const dataTmp = this.props.lstInterestStatusData.map((item, i)=>{
+                return {
+                    ...item,
+                    "NGAYTAO": common.convertDDMMYYYY(item.NGAYTAO),
+                    "NGAYBATDAU": common.convertDDMMYYYY(item.NGAYBATDAU),
+                    "NGAYKETTHUC": common.convertDDMMYYYY(item.NGAYKETTHUC),
+                    "key": i + 1
+                }
+            });
+            const newData = [...dataTmp];
+            const index = newData.findIndex(item => record.key === item.key);
+            if (index > -1) {
+                const item = newData[index];
+                row = {
+                    ...row,
+                    "MSLS": item.MSLS,
+                    "BONDID": item.BOND_ID,
+                    "LAISUAT_MUA": row.LS_TOIDA
+                }
+                this.handleSaveEdit(row);
+            } else {
+                newData.push(row);
+                this.setState({ dataSource: newData, editingKey: '' });
+            }
+        });
+    }
+
+    cancel = () => {
+        this.setState({ editingKey: '' });
+    };
+
+    onEdit(key) {
+        this.setState({ editingKey: key });
     }
 
     handleCurrencyChange = currency => {
@@ -105,6 +196,27 @@ class ModalShowListInterest extends Component{
     };
 
     render(){
+        const components = {
+            body: {
+                cell: EditableCell,
+            },
+        };
+
+        const columns = this.columns.map(col => {
+            if (!col.editable) {
+                return col;
+            }
+            return {
+                ...col,
+                onCell: record => ({
+                    record,  //setting type input (date, number ...)
+                    inputType: ['NGAYBATDAU', 'NGAYKETTHUC'].indexOf(col.dataIndex) > -1 ? 'date' : 'text' ,
+                    dataIndex: col.dataIndex,
+                    title: col.title,
+                    editing: this.isEditing(record),
+                }),
+            };
+        });
         const dataTmp = this.props.lstInterestStatusData.map((item, i)=>{
             return {
                 ...item,
@@ -125,17 +237,34 @@ class ModalShowListInterest extends Component{
                 width='70%'
             >
                 <div className="p-top10" style={{ padding: 10 }}>
+                <EditableContext.Provider value={this.props.form}>
                     <Table
+                        components={components}
                         bordered
                         dataSource={dataTmp}
                         size="small"
-                        columns={this.columns}
+                        columns={columns}
                         pagination={false}
                     />
+                </EditableContext.Provider>
                 </div>
             </Modal>
         )
     }
 }
 
-export default ModalShowListInterest;
+const ModalShowListInterest = Form.create()(ModalShowListInterestF);
+
+const mapStateToProps = state =>{
+    return{
+        lstInterestStatusData: state.interestRate.lstInterestStatus
+    }
+}
+
+const mapDispatchToProps = dispatch =>{
+    return{
+        getListInterestBuyStatus: (idbond)=> dispatch(getListInterestBuyStatus(idbond))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (ModalShowListInterest);

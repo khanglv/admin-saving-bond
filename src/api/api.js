@@ -20,6 +20,7 @@ const URL_DAY_INTEREST_YEAR = `${BASE_URL}/dateInterestYear`;
 const URL_BOND_ASSET = `${BASE_URL}/bonds`;
 const URL_CONTRACT_VCSC = `${BASE_URL}/contractVCSC`;
 const URL_INTEREST_RATE_BUY = `${BASE_URL}/interestRateBuy`;
+const URL_UPDATE_INTEREST_RATE_BUY_STATUS = `${URL_INTEREST_RATE_BUY}/updateItemInterest`;
 const URL_INTEREST_RATE_SALE = `${BASE_URL}/interestRateSales`;
 const URL_BOND_PRICE = `${BASE_URL}/bondPrice`;
 const URL_ROOM_VCSC = `${BASE_URL}/roomVCSC`;
@@ -689,6 +690,15 @@ export const getListInterestBuyStatus = (bondID)=>{
         url: `${URL_INTEREST_RATE_BUY}/${bondID}`,
         method: "GET",
         data: ''
+    }
+    return callApi(options);
+}
+
+export const updateListInterestBuyStatus = (data)=>{ //update list interest status
+    const options = {
+        url: URL_UPDATE_INTEREST_RATE_BUY_STATUS,
+        method: "PUT",
+        data: data
     }
     return callApi(options);
 }
