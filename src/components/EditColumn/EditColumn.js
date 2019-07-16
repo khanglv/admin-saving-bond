@@ -32,15 +32,15 @@ export class EditableCell extends React.Component {
         }
         if (this.props.inputType === 'options') {
             return <Select style={{width: '100%'}}>
-                <Option value="1">Hoạt động</Option>
-                <Option value="0">Ngừng hoạt động</Option>
+                <Option value={1}>Hoạt động</Option>
+                <Option value={0}>Ngừng hoạt động</Option>
             </Select>
         }
         if (this.props.inputType === 'option_2') {
             return <Select style={{ width: '100%' }}>
-                <Option value="1">Phát hành</Option>
-                <Option value="2">Huy động</Option>
-                <Option value="0">Hết huy động</Option>
+                <Option value={1}>Phát hành</Option>
+                <Option value={2}>Huy động</Option>
+                <Option value={0}>Hết huy động</Option>
             </Select>
         }
         if (this.props.inputType === 'select') {

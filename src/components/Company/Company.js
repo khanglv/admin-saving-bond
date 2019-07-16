@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Table, Button, Popconfirm, notification, Icon, Tooltip, Form, Tag} from 'antd';
+import { Table, Button, Popconfirm, notification, Icon, Tooltip, Form, Tag, Badge} from 'antd';
 import ModalCompany from './ModalCompany';
 import {getListCompany, updateItemCompany, deleteItemCompany} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
@@ -69,16 +69,14 @@ class CompanyForm extends Component{
                 width: 70,
                 editable: true,
                 render: TRANGTHAI =>{
-                    let type = "check-circle";
                     let color = "green";
+                    let text ="Hoạt động";
                     if(TRANGTHAI === 0){
-                        type="stop";
-                        color="#faad14"
+                        text ="Ngừng hoạt động";
+                        color="#bfbfbf"
                     }
                     return(
-                        <div type="flex" align="middle">
-                            <Icon type={type} style={{color: color}} theme="filled" />
-                        </div>
+                        <Badge color={color} text={text} />
                     )
                 }
             },

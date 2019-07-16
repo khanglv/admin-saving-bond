@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Table, Icon, Tooltip, Popconfirm, Tabs} from 'antd';
+import { Table, Icon, Tooltip, Popconfirm, Tabs, Badge} from 'antd';
 import * as common from '../Common/Common';
 import ModalShowDateInterest from './ModalShowDateInterest';
 import {ResizeableTitle} from '../EditColumn/EditColumn';
@@ -116,20 +116,18 @@ class SetCommand extends Component{
                 editable: true,
                 width: 100,
                 render: TRANGTHAI_LENH =>{
-                    let type = "check-circle";
+                    let text = "Đã duyệt";
                     let color = "green";
                     if(TRANGTHAI_LENH === 0){
-                        type="stop";
+                        text = "Chờ duyệt";
                         color="#faad14"
                     }
                     if(TRANGTHAI_LENH === 2){
-                        type="close-circle";
+                        text = "Đã hủy";
                         color="red"
                     }
                     return(
-                        <div type="flex" align="middle">
-                            <Icon type={type} style={{color: color}} theme="filled" />
-                        </div>
+                        <Badge color={color} text={text} />
                     )
                 }
             },

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Table, Popconfirm, Icon, Tooltip, Form, Tag} from 'antd';
+import { Table, Popconfirm, Icon, Tooltip, Form, Tag, Badge} from 'antd';
 // import ModalBondPrice from './ModalBondPrice';
 import {updateItemBondPrice, deleteItemBondPrice} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
@@ -32,47 +32,45 @@ class BondPriceF extends Component{
                 title: 'Ngày áp dụng',
                 dataIndex: 'NGAYBATDAU',
                 editable: true,
-                width: 150
+                width: 100
             },
             {
                 title: 'Ngày kết thúc',
                 dataIndex: 'NGAYKETTHUC',
                 editable: true,
-                width: 150
+                width: 100
             },
             {
                 title: 'Ghi chú', //13
                 dataIndex: 'GHICHU',
                 editable: true,
-                width: 200
+                width: 180
             },
             {
                 title: 'Trạng thái',
                 dataIndex: 'TRANGTHAI',
-                width: 70,
+                width: 100,
                 editable: true,
                 render: TRANGTHAI =>{
-                    let type = "check-circle";
+                    let text = "Huy động";
                     let color = "green";
                     if(TRANGTHAI === 0){
-                        type="close-circle";
+                        text="Phát hành";
                         color="#faad14"
                     }
                     if(TRANGTHAI === 2){
-                        type="stop";
-                        color="#1890ff"
+                        text="Hết huy động";
+                        color="#bfbfbf"
                     }
                     return(
-                        <div type="flex" align="middle">
-                            <Icon type={type} style={{color: color}} theme="filled" />
-                        </div>
+                        <Badge color={color} text={text} />
                     )
                 }
             },
             {
                 title: 'Action',
                 dataIndex: 'operation',
-                width: 150,
+                width: 100,
                 render: (text, record) =>{
                     const { editingKey } = this.state;
                     const editable = this.isEditing(record);

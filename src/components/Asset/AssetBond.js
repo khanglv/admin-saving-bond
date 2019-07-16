@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Table, Button, Popconfirm, Icon, Tooltip, Form, Tag} from 'antd';
+import { Table, Button, Popconfirm, Icon, Tooltip, Form, Tag, Badge} from 'antd';
 import ModalAssetBond from './ModalAssetBond';
 import {updateItemBondsAsset, deleteItemBondsAsset} from '../../api/api';
 import {EditableContext, EditableCell, ResizeableTitle} from '../EditColumn/EditColumn';
@@ -41,7 +41,7 @@ class AssetBondF extends Component{
                 dataIndex: 'TEN_DN',
                 tmpData: 'MS_DN',
                 editable: true,
-                width: 250
+                width: 300
             },
             {
                 title: 'K.Hạn T.Toán', //5
@@ -160,16 +160,14 @@ class AssetBondF extends Component{
                 editable: true,
                 width: 100,
                 render: TT_NIEMYET =>{
-                    let type = "check-circle";
+                    let text = "Có";
                     let color = "green";
                     if(TT_NIEMYET === 0){
-                        type="stop";
+                        text = "Không";
                         color="#faad14"
                     }
                     return(
-                        <div type="flex" align="middle">
-                            <Icon type={type} style={{color: color}} theme="filled" />
-                        </div>
+                        <Badge color={color} text={text} />
                     )
                 }
             },
@@ -458,7 +456,7 @@ class AssetBondF extends Component{
                             loading={this.state.isLoading}
                             pagination={{ pageSize: 15 }}
                             rowClassName="editable-row"
-                            scroll={{x: '250%' }}
+                            scroll={{x: '260%' }}
                         />
                     </EditableContext.Provider>
                 </div>

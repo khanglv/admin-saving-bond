@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Table, Icon} from 'antd';
+import { Table, Icon, Badge} from 'antd';
 import * as common from '../Common/Common';
 
 import {connect} from 'react-redux';
@@ -20,7 +20,7 @@ class RoomVCSC extends Component{
                 width: 200
             },
             {
-                title: 'Lái suất năm', //2
+                title: 'Lãi suất năm', //2
                 dataIndex: 'LAISUATNAM',
                 width: 150
             },
@@ -43,18 +43,16 @@ class RoomVCSC extends Component{
                 title: 'Trạng thái',
                 dataIndex: 'TT_NIEMYET',
                 editable: true,
-                width: 70,
+                width: 100,
                 render: TT_NIEMYET =>{
-                    let type = "check-circle";
+                    let text = "Niêm yết";
                     let color = "green";
                     if(TT_NIEMYET === 0){
-                        type="stop";
+                        text = "Không niêm yết";
                         color="#faad14"
                     }
                     return(
-                        <div type="flex" align="middle">
-                            <Icon type={type} style={{color: color}} theme="filled" />
-                        </div>
+                        <Badge color={color} text={text} />
                     )
                 }
             },

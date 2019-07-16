@@ -46,7 +46,7 @@ class ModalAssetBond extends Component{
             totalLevelMobilize: null,
             levelLoan: null,
             periodRemain: null,
-            statusListed: 1,
+            statusListed: 0,
             ensureAsset: '',
             totalDepository: null,
             isShowNotice: false
@@ -129,7 +129,7 @@ class ModalAssetBond extends Component{
                         dateBreak: moment(new Date(new Date(newDate).setMonth(newDate.getMonth()+12)), dateFormat),
                         totalLevelMobilize: null,
                         levelLoan: null,
-                        statusListed: 1,
+                        statusListed: 0,
                         ensureAsset: '',
                         totalDepository: null,
                         isShowNotice: false
