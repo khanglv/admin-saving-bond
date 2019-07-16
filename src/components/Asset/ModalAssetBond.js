@@ -321,7 +321,7 @@ class ModalAssetBond extends Component{
                             </Form.Item>
                             <Form.Item label="* Trạng thái niêm yết" hasFeedback validateStatus={this.state.statusListed === 1 ? "success" : "warning"}>
                                 <Select
-                                    defaultValue={1}
+                                    defaultValue={0}
                                     placeholder="Chọn trạng thái niêm yết"
                                     onChange={this.updateSelectValue('statusListed')}
                                 >

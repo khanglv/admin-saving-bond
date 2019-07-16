@@ -233,7 +233,7 @@ class FeeTradeF extends Component{
                 ...col,
                 onCell: record => ({
                     record, //setting type input(date, number ...)
-                    inputType: col.dataIndex === 'NGAYAPDUNG' ? 'date' : 'text',
+                    inputType: col.dataIndex === 'NGAYAPDUNG' ? 'date' : col.dataIndex === 'TRANGTHAI' ? 'options' : 'text',
                     dataIndex: col.dataIndex,
                     title: col.title,
                     editing: this.isEditing(record),
