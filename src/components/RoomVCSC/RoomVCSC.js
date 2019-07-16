@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Table, Icon, Badge} from 'antd';
+import { Table, Badge} from 'antd';
 import * as common from '../Common/Common';
 
 import {connect} from 'react-redux';
