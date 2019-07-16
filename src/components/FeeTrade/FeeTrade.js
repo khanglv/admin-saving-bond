@@ -24,7 +24,6 @@ class FeeTradeF extends Component{
             {
                 title: 'Loại phí', //13
                 dataIndex: 'LOAIGIAODICH',
-                editable: true,
                 width: 100,
                 render: LOAIGIAODICH => {
                     let color = 'green';
@@ -200,7 +199,8 @@ class FeeTradeF extends Component{
                 const item = newData[index];
                 row = {
                     ...row,
-                    "MSPHI": item.MSPHI
+                    "MSPHI": item.MSPHI,
+                    "LOAIGIAODICH": item.LOAIGIAODICH
                 }
                 this.handleSaveEdit(row);
             } else {
