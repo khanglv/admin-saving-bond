@@ -32,3 +32,7 @@ export const convertTextDecimal = (number)=>{
 export const convertDecimalToNumber = (text)=>{
     return parseInt(text.split(',').join(''));
 }
+
+export const convertInputNumberDecimal = (value)=>{
+    return value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}

@@ -5,10 +5,13 @@ import {
     Form,
     Input,
     notification,
-    DatePicker
+    DatePicker, 
+    Select
 } from 'antd';
 
 import moment from 'moment';
+
+const { Option } = Select;
 const dateFormat = 'DD/MM/YYYY';
 
 const openNotificationWithIcon = (type, data) => {
@@ -29,6 +32,8 @@ class ModalFeeTrade extends Component{
             ratio: '',
             dateOfApplication: moment(new Date(), dateFormat),
             note: '',
+            status: 1,
+            typeOfFeeTrace: 1,
             isShowNotice: false
         };
     }
@@ -50,6 +55,10 @@ class ModalFeeTrade extends Component{
         this.setState({dateOfApplication: value});
     }
 
+    updateSelectValue = name => (event)=>{
+        this.setState({[name]: event});
+    }
+
     onHandleOk = async()=>{
         try {
             if(!this.state.nameFeeTrade || !this.state.ratio){
@@ -59,7 +68,9 @@ class ModalFeeTrade extends Component{
                     "TENPHI": this.state.nameFeeTrade,
                     "TYLETINH": this.state.ratio,
                     "NGAYAPDUNG": this.state.dateOfApplication,
-                    "GHICHU": this.state.note
+                    "GHICHU": this.state.note,
+                    "TRANGTHAI": this.state.status,
+                    "LOAIGIAODICH": this.state.typeOfFeeTrace
                 }
                 const res = await createItemFeeTrade(dataTmp);
                 if (res.error) {
@@ -70,6 +81,8 @@ class ModalFeeTrade extends Component{
                         ratio: '',
                         dateOfApplication: moment(new Date(), dateFormat),
                         note: '',
+                        status: 1,
+                        typeOfFeeTrace: 1,
                         isShowNotice: false
                     });
                     await this.props.reloadData();
@@ -124,6 +137,26 @@ class ModalFeeTrade extends Component{
                     </Form.Item>
                     <Form.Item label="Ghi chú">
                         <Input name="note" placeholder="Ghi chú" value={this.state.note} onChange={event => this.updateInputValue(event)}/>
+                    </Form.Item>
+                    <Form.Item label="Trạng thái" hasFeedback validateStatus={this.state.status === 1 ? "success" : "warning"}>
+                        <Select
+                            defaultValue={1}
+                            placeholder="* Chọn trạng thái"
+                            onChange={this.updateSelectValue('status')}
+                        >
+                            <Option value={1}>Active</Option>
+                            <Option value={0}>Disabled</Option>
+                        </Select>
+                    </Form.Item>
+                    <Form.Item label="* Loại chi phí">
+                        <Select
+                            defaultValue={1}
+                            placeholder="Chọn loại phí giao dịch"
+                            onChange={this.updateSelectValue('typeOfFeeTrace')}
+                        >
+                            <Option value={1}>Phí giao dịch</Option>
+                            <Option value={2}>Thuế</Option>
+                        </Select>
                     </Form.Item>
                 </Form>
             </Modal>

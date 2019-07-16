@@ -229,12 +229,12 @@ class ModalBondHolder extends Component{
                             </Form.Item>
                             <Form.Item label="Giấy chứng nhận" >
                                 <Select
-                                    defaultValue="1"
+                                    defaultValue={1}
                                     placeholder="Giấy chứng nhận"
                                     onChange={this.updateSelectValue('certificate')}
                                 >
-                                    <Option value="1">Có</Option>
-                                    <Option value="0">Không</Option>
+                                    <Option value={1}>Có</Option>
+                                    <Option value={0}>Không</Option>
                                 </Select>
                             </Form.Item>
                             <Form.Item label="Trạng thái" hasFeedback validateStatus={this.state.statusListed === 1 ? "success" : "warning"}>

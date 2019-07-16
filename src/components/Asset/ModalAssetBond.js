@@ -296,7 +296,7 @@ class ModalAssetBond extends Component{
                                     {
                                         this.props.lstInterestRateSaleData.filter(item => item.FLAG === 1).map((item) => {
                                             return (
-                                                <Option key={item.MSLS} value={item.MSLS}>{item.LS_TOIDA}</Option>
+                                                <Option key={item.MSLS} value={item.MSLS}>{`${item.LS_TOIDA}`}</Option>
                                             )
                                         })
                                     }

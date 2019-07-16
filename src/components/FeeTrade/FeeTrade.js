@@ -1,16 +1,9 @@
 import React, {Component} from 'react';
-import { Table, Button, Popconfirm, notification, Icon, Tooltip, Form, Tag} from 'antd';
+import { Table, Button, Popconfirm, Icon, Tooltip, Form, Tag, Badge} from 'antd';
 import ModalFeeTrade from './ModalFeeTrade';
 import {getListFeeTrade, deleteItemFeeTrade, updateItemFeeTrade} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
 import * as common from '../Common/Common';
-
-const openNotificationWithIcon = (type, data) => {
-    notification[type]({
-        message: 'Thông báo',
-        description: data,
-    });
-};
 
 class FeeTradeF extends Component{
     constructor(props) {
@@ -27,7 +20,24 @@ class FeeTradeF extends Component{
                 dataIndex: 'TENPHI',
                 width: 100,
                 editable: true,
-            },  
+            },
+            {
+                title: 'Loại phí', //13
+                dataIndex: 'LOAIGIAODICH',
+                editable: true,
+                width: 100,
+                render: LOAIGIAODICH => {
+                    let color = 'green';
+                    let text = 'Phí giao dịch';
+                    if(LOAIGIAODICH === 2){
+                        color = '#4b79a1';
+                        text = 'Thuế';
+                    }
+                    return(
+                        <span style={{color: color}}>{text}</span>
+                    )
+                }
+            },
             {
                 title: 'Tỉ lệ tính', //3
                 dataIndex: 'TYLETINH',
@@ -45,6 +55,23 @@ class FeeTradeF extends Component{
                 dataIndex: 'GHICHU',
                 editable: true,
                 width: 200
+            },
+            {
+                title: 'Trạng thái', //13
+                dataIndex: 'TRANGTHAI',
+                editable: true,
+                width: 100,
+                render: TRANGTHAI => {
+                    let color = 'green';
+                    let text = 'Hoạt động';
+                    if(TRANGTHAI === 0){
+                        color = '#bfbfbf';
+                        text = 'Ngừng hoạt động'
+                    }
+                    return(
+                        <span style={{color: color}}><Badge color={color}/>{text}</span>
+                    )
+                }
             },
             {
                 title: 'Ngày tạo', //4
@@ -135,13 +162,13 @@ class FeeTradeF extends Component{
             const res = await updateItemFeeTrade(data);
             if(res.error){
                 this.loadData();
-                openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
+                common.notify('error', 'Thao tác thất bại :( ' + res.error);
             }else{
                 await this.loadData();
-                await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
+                await common.notify('success', 'Thao tác thành công ^^!');
             }
         } catch (error) {
-            openNotificationWithIcon('error', 'Thao tác thất bại :( ' + error);
+            common.notify('error', 'Thao tác thất bại :( ' + error);
         }
     }
 
@@ -152,13 +179,13 @@ class FeeTradeF extends Component{
             }
             const res = await deleteItemFeeTrade(dataTmp);
             if(res.error){
-                openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
+                common.notify('error', 'Thao tác thất bại :( ' + res.error);
             }else{
                 await this.loadData();
-                await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
+                await common.notify('success', 'Thao tác thành công ^^!');
             }
         }catch(err){
-            openNotificationWithIcon('error', 'Thao tác thất bại :( ' + err);
+            common.notify('error', 'Thao tác thất bại :( ' + err);
         }
     };
 
