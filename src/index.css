@@ -12,6 +12,29 @@ code {
     monospace;
 }
 
+input[type="file"] {
+  display: none;
+}
+
+.custom-import-excel{
+  position: fixed;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  color: green;
+  cursor: pointer;
+  height: 32px;
+  padding: 0 15px;
+  border: 1px solid rgba(0, 128, 0, 0.377);
+  border-radius: 4px;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+  touch-action: manipulation;
+}
+
+.custom-import-excel:hover{
+  background: rgba(133, 226, 133, 0.1);
+}
+
 .setBackgroundLogin {
   background-image: linear-gradient(rgba(199, 205, 229,0.5), rgba(103, 95, 95,0.5)), url("/background.jpg");
 }

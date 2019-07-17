@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Table, Button, Popconfirm, notification, Icon, Tooltip, Form, Tag} from 'antd';
+import { Table, Button, Popconfirm, notification, Icon, Tooltip, Form, Tag, Input} from 'antd';
 import ModalBondHolder from './ModalBondHolder';
 import {updateListAssets, deleteListAssets} from '../../api/api';
 import {EditableContext, EditableCell, ResizeableTitle} from '../EditColumn/EditColumn';
@@ -8,6 +8,7 @@ import {connect} from 'react-redux';
 import {getListAssets} from '../../stores/actions/listAssetsAction';
 import {getListBondsAsset} from '../../stores/actions/bondsAssetAction';
 import {getListInvestor} from '../../stores/actions/investorAction';
+import {ExcelRenderer} from 'react-excel-renderer';
 
 const openNotificationWithIcon = (type, data) => {
     notification[type]({
@@ -274,6 +275,24 @@ class BondHolderF extends Component{
         });
     };
 
+    fileHandler = (event) => {
+        let fileObj = event.target.files[0];
+        ExcelRenderer(fileObj, (err, resp) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                this.setState({
+                    dataLoaded: true,
+                    cols: resp.cols,
+                    rows: resp.rows
+                });
+                console.log(resp);
+                console.log('fileObj ' + JSON.stringify(fileObj));
+            }
+        });
+    }
+
     render() {
         const components = {
             header: {
@@ -315,9 +334,11 @@ class BondHolderF extends Component{
                     <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
                         <span>Thêm mới</span>
                     </Button>&nbsp;&nbsp;&nbsp;
-                    <Button style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', color: 'green'}}>
-                        <Icon type="upload" /> Import Excel
-                    </Button>
+                    <label id="file-upload-excel" className="custom-import-excel" style={{ marginBottom: 16 }}>
+                        <Icon type="upload" />&nbsp;Import Excel
+                        <Input id="file-upload-excel" onChange={this.fileHandler.bind(this)} type="file"/>
+                    </label>
+                        
                     <EditableContext.Provider value={this.props.form}>
                         <Table
                             components={components}
