@@ -5,14 +5,11 @@ import {
     Form,
     Input,
     notification,
-    DatePicker, 
-    Select
+    Select,
+    InputNumber
 } from 'antd';
 
-import moment from 'moment';
-
 const { Option } = Select;
-const dateFormat = 'DD/MM/YYYY';
 
 const openNotificationWithIcon = (type, data) => {
     notification[type]({
@@ -30,9 +27,9 @@ class ModalFeeTrade extends Component{
             currency: value.currency || 'Open',
             nameFeeTrade: '',
             ratio: '',
-            dateOfApplication: moment(new Date(), dateFormat),
             note: '',
-            status: 1,
+            feeMin: null,
+            feeMax: null,
             typeOfFeeTrace: 1,
             isShowNotice: false
         };
@@ -61,15 +58,15 @@ class ModalFeeTrade extends Component{
 
     onHandleOk = async()=>{
         try {
-            if(!this.state.nameFeeTrade || !this.state.ratio){
+            if(!this.state.nameFeeTrade || !this.state.ratio || !this.state.feeMin || !this.state.feeMax){
                 this.setState({isShowNotice: true});
             }else{
                 let dataTmp = {
                     "TENPHI": this.state.nameFeeTrade,
                     "TYLETINH": this.state.ratio,
-                    "NGAYAPDUNG": this.state.dateOfApplication,
+                    "PHIMIN": this.state.feeMin,
+                    "PHIMAX": this.state.feeMax,
                     "GHICHU": this.state.note,
-                    "TRANGTHAI": this.state.status,
                     "LOAIGIAODICH": this.state.typeOfFeeTrace
                 }
                 const res = await createItemFeeTrade(dataTmp);
@@ -79,9 +76,9 @@ class ModalFeeTrade extends Component{
                     this.setState({
                         nameFeeTrade: '',
                         ratio: '',
-                        dateOfApplication: moment(new Date(), dateFormat),
                         note: '',
-                        status: 1,
+                        feeMin: null,
+                        feeMax: null,
                         typeOfFeeTrace: 1,
                         isShowNotice: false
                     });
@@ -131,22 +128,33 @@ class ModalFeeTrade extends Component{
                         <Input name="ratio" placeholder="Tỉ lệ tính" value={this.state.ratio} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
                     <Form.Item
-                        label="* Ngày áp dụng"
+                        label="* Mức tiền min"
+                        validateStatus = {((this.state.feeMin === 0 || this.state.feeMin === null) && this.state.isShowNotice)  ? "error" : null}
+                        help = {((this.state.feeMin === 0 || this.state.feeMin === null) && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                     >
-                        <DatePicker name="dateOfApplication" placeholder="Chọn ngày" value={this.state.dateOfApplication} format={dateFormat} onChange={this.updateInputDate}/>
+                        <InputNumber
+                            name="feeMin"
+                            style={{width: '100%'}}
+                            formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                            parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                            onChange={this.updateSelectValue("feeMin")}
+                        />
+                    </Form.Item>
+                    <Form.Item
+                        label="* Mức tiền max"
+                        validateStatus = {((this.state.feeMax === 0 || this.state.feeMax === null) && this.state.isShowNotice)  ? "error" : null}
+                        help = {((this.state.feeMax === 0 || this.state.feeMax === null) && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                    >
+                        <InputNumber
+                            name="feeMax"
+                            style={{width: '100%'}}
+                            formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                            parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                            onChange={this.updateSelectValue("feeMax")}
+                        />
                     </Form.Item>
                     <Form.Item label="Ghi chú">
                         <Input name="note" placeholder="Ghi chú" value={this.state.note} onChange={event => this.updateInputValue(event)}/>
-                    </Form.Item>
-                    <Form.Item label="Trạng thái" hasFeedback validateStatus={this.state.status === 1 ? "success" : "warning"}>
-                        <Select
-                            defaultValue={1}
-                            placeholder="* Chọn trạng thái"
-                            onChange={this.updateSelectValue('status')}
-                        >
-                            <Option value={1}>Active</Option>
-                            <Option value={0}>Disabled</Option>
-                        </Select>
                     </Form.Item>
                     <Form.Item label="* Loại chi phí">
                         <Select
@@ -156,6 +164,7 @@ class ModalFeeTrade extends Component{
                         >
                             <Option value={1}>Phí giao dịch</Option>
                             <Option value={2}>Thuế</Option>
+                            <Option value={3}>Thuế lãi</Option>
                         </Select>
                     </Form.Item>
                 </Form>

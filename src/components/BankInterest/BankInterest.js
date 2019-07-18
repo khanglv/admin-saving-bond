@@ -25,7 +25,7 @@ class BankInterestF extends Component{
             {
                 title: 'Mã ngân hàng', //2
                 dataIndex: 'MA_NH',
-                width: 200,
+                width: 100,
                 editable: true,
             },
             {

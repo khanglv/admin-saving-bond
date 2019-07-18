@@ -1,9 +1,13 @@
 import React, {Component} from 'react';
-import { Table, Button, Popconfirm, Icon, Tooltip, Form, Tag, Badge} from 'antd';
+import { Table, Button, Popconfirm, Icon, Tooltip, Form, Tag, Badge, Tabs} from 'antd';
 import ModalFeeTrade from './ModalFeeTrade';
-import {getListFeeTrade, deleteItemFeeTrade, updateItemFeeTrade} from '../../api/api';
+import {deleteItemFeeTrade, updateItemFeeTrade} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
 import * as common from '../Common/Common';
+import {connect} from 'react-redux';
+import {getListFeeTrade} from '../../stores/actions/feeTradeAction';
+
+const TabPane = Tabs.TabPane;
 
 class FeeTradeF extends Component{
     constructor(props) {
@@ -22,30 +26,20 @@ class FeeTradeF extends Component{
                 editable: true,
             },
             {
-                title: 'Loại phí', //13
-                dataIndex: 'LOAIGIAODICH',
-                width: 100,
-                render: LOAIGIAODICH => {
-                    let color = 'green';
-                    let text = 'Phí giao dịch';
-                    if(LOAIGIAODICH === 2){
-                        color = '#4b79a1';
-                        text = 'Thuế';
-                    }
-                    return(
-                        <span style={{color: color}}>{text}</span>
-                    )
-                }
-            },
-            {
                 title: 'Tỉ lệ tính', //3
                 dataIndex: 'TYLETINH',
                 editable: true,
                 width: 100
             },
             {
-                title: 'Ngày áp dụng', //3
-                dataIndex: 'NGAYAPDUNG',
+                title: 'Mức tiền (min)', //3
+                dataIndex: 'PHIMIN',
+                editable: true,
+                width: 100
+            },
+            {
+                title: 'Mức tiền (max)', //3
+                dataIndex: 'PHIMAX',
                 editable: true,
                 width: 100
             },
@@ -58,7 +52,6 @@ class FeeTradeF extends Component{
             {
                 title: 'Trạng thái', //13
                 dataIndex: 'TRANGTHAI',
-                editable: true,
                 width: 100,
                 render: TRANGTHAI => {
                     let color = 'green';
@@ -96,7 +89,7 @@ class FeeTradeF extends Component{
                         this.state.dataSource.length >= 1 ?
                             <div>
                                 <Tooltip title="Chỉnh sửa">
-                                    <Icon type="edit" style={{color: editingKey === '' ? '#096dd9' : '#bfbfbf', fontSize: 16}} onClick={() => editingKey === '' && this.onEdit(record.key)}/>
+                                    <Icon type="edit" style={{color: editingKey === '' ? '#096dd9' : '#bfbfbf', fontSize: 16}} onClick={() => editingKey === '' && this.onEdit(record.MSPHI)}/>
                                 </Tooltip>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.MSPHI)}>
                                     <Tooltip title="Xóa" className="pointer" placement="right">
@@ -113,6 +106,8 @@ class FeeTradeF extends Component{
         
         this.state = {
             dataSource: [],
+            dataSource_2: [],
+            dataSource_3: [],
             count: 2,
             isLoading: true,
             openModal: false,
@@ -120,7 +115,7 @@ class FeeTradeF extends Component{
         };
     }
 
-    isEditing = record => record.key === this.state.editingKey;
+    isEditing = record => record.MSPHI === this.state.editingKey;
 
     componentDidMount(){
         this.loadData();
@@ -128,16 +123,48 @@ class FeeTradeF extends Component{
 
     loadData = async()=>{
         try {
-            const res = await getListFeeTrade();
-            const lstTmp = await (res.filter(item => item.FLAG === 1)).map((item, i) => {
-                return {
-                    ...item,
-                    "NGAYTAO": common.convertDDMMYYYY(item.NGAYTAO),
-                    "NGAYAPDUNG": common.convertDDMMYYYY(item.NGAYAPDUNG),
-                    "key": i + 1
-                }
-            })
-            await this.setState({dataSource: lstTmp, editingKey: '', isLoading: false });
+            const res = await this.props.getListFeeTrade();
+            if(res.data){
+                const lstTmp = await (res.data.filter(item => item.FLAG === 1 && item.LOAIGIAODICH === 1)).map((item, i) => {
+                    return {
+                        ...item,
+                        "NGAYTAO": common.convertDDMMYYYY(item.NGAYTAO),
+                        "PHIMIN": common.convertTextDecimal(item.PHIMIN),
+                        "PHIMAX": common.convertTextDecimal(item.PHIMAX),
+                        "NGAYAPDUNG": common.convertDDMMYYYY(item.NGAYAPDUNG),
+                        "key": i + 1
+                    }
+                })
+                const lstTmp_2 = await (res.data.filter(item => item.FLAG === 1 && item.LOAIGIAODICH === 2)).map((item, i) => {
+                    return {
+                        ...item,
+                        "NGAYTAO": common.convertDDMMYYYY(item.NGAYTAO),
+                        "PHIMIN": common.convertTextDecimal(item.PHIMIN),
+                        "PHIMAX": common.convertTextDecimal(item.PHIMAX),
+                        "NGAYAPDUNG": common.convertDDMMYYYY(item.NGAYAPDUNG),
+                        "key": i + 1
+                    }
+                })
+                const lstTmp_3 = await (res.data.filter(item => item.FLAG === 1 && item.LOAIGIAODICH === 3)).map((item, i) => {
+                    return {
+                        ...item,
+                        "NGAYTAO": common.convertDDMMYYYY(item.NGAYTAO),
+                        "PHIMIN": common.convertTextDecimal(item.PHIMIN),
+                        "PHIMAX": common.convertTextDecimal(item.PHIMAX),
+                        "NGAYAPDUNG": common.convertDDMMYYYY(item.NGAYAPDUNG),
+                        "key": i + 1
+                    }
+                })
+                await this.setState({
+                    dataSource: lstTmp, 
+                    editingKey: '', 
+                    dataSource_2: lstTmp_2,
+                    dataSource_3: lstTmp_3,
+                    isLoading: false 
+                });
+            }else{
+                common.notify("error", "Thao tác thất bại :(");
+            }
         } catch (error) {
             console.log("err load data " + error);
         }
@@ -193,14 +220,16 @@ class FeeTradeF extends Component{
             if (error) {
                 return;
             }
-            const newData = [...this.state.dataSource];
-            const index = newData.findIndex(item => record.key === item.key);
+            const newData = [...this.props.lstFeeTrade];
+            const index = newData.findIndex(item => record.MSPHI === item.MSPHI);
             if (index > -1) {
                 const item = newData[index];
                 row = {
                     ...row,
                     "MSPHI": item.MSPHI,
-                    "LOAIGIAODICH": item.LOAIGIAODICH
+                    "LOAIGIAODICH": item.LOAIGIAODICH,
+                    "PHIMIN": common.convertDecimalToNumber(row.PHIMIN),
+                    "PHIMAX": common.convertDecimalToNumber(row.PHIMAX),
                 }
                 this.handleSaveEdit(row);
             } else {
@@ -214,8 +243,8 @@ class FeeTradeF extends Component{
         this.setState({ editingKey: '' });
     };
 
-    onEdit(key) {
-        this.setState({ editingKey: key });
+    onEdit(MSPHI) {
+        this.setState({ editingKey: MSPHI });
     }
 
     render() {
@@ -245,21 +274,57 @@ class FeeTradeF extends Component{
             <div>
                 <ModalFeeTrade isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}/>
                 <div className="p-top10" style={{padding: 10}}>
-                    <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
+                    <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16, position: 'absolute', right: '1rem', zIndex: 1000 }}>
                         <span>Thêm mới</span>
                     </Button>
-                    <EditableContext.Provider value={this.props.form}>
-                        <Table
-                            components={components}
-                            bordered
-                            loading={this.state.isLoading}
-                            dataSource={this.state.dataSource}
-                            columns={columns}
-                            size="small"
-                            pagination={{ pageSize: 15 }}
-                            rowClassName="editable-row"
-                        />
-                    </EditableContext.Provider>
+                    <Tabs>
+                        <TabPane tab="Chi phí giao dịch" key="1">
+                            <div className="p-top10" style={{padding: 10}}>
+                            <EditableContext.Provider value={this.props.form}>
+                                <Table
+                                    components={components}
+                                    bordered
+                                    loading={this.state.isLoading}
+                                    dataSource={this.state.dataSource}
+                                    columns={columns}
+                                    size="small"
+                                    pagination={{ pageSize: 15 }}
+                                    rowClassName="editable-row"
+                                />
+                            </EditableContext.Provider>
+                            </div>
+                        </TabPane>
+                        <TabPane tab="Thuế mua" key="2">
+                            <div className="p-top10" style={{padding: 10}}>
+                                <EditableContext.Provider value={this.props.form}>
+                                    <Table
+                                        components={components}
+                                        bordered
+                                        loading={this.state.isLoading}
+                                        dataSource={this.state.dataSource_2}
+                                        columns={columns}
+                                        size="small"
+                                        pagination={{ pageSize: 15 }}
+                                        rowClassName="editable-row"
+                                    />
+                                </EditableContext.Provider>
+                            </div>
+                        </TabPane>
+                        <TabPane tab="Thuế tính lãi" key="3">
+                            <EditableContext.Provider value={this.props.form}>
+                                <Table
+                                    components={components}
+                                    bordered
+                                    loading={this.state.isLoading}
+                                    dataSource={this.state.dataSource_3}
+                                    columns={columns}
+                                    size="small"
+                                    pagination={{ pageSize: 15 }}
+                                    rowClassName="editable-row"
+                                />
+                            </EditableContext.Provider>
+                        </TabPane>
+                    </Tabs>
                 </div>
             </div>
         )
@@ -268,4 +333,16 @@ class FeeTradeF extends Component{
 
 const FeeTrade = Form.create()(FeeTradeF);
 
-export default FeeTrade;
+const mapStateToProps = state =>{
+    return{
+        lstFeeTrade: state.feeTrade.data,
+    }
+}
+
+const mapDispatchToProps = dispatch =>{
+    return{
+        getListFeeTrade: ()=> dispatch(getListFeeTrade())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (FeeTrade);

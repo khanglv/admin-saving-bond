@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './style.css';
 import { Layout, Menu, Icon } from 'antd';
 import { withRouter } from "react-router";
+import * as common from '../Common/Common';
 
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -39,6 +40,10 @@ class SiderBarMenu extends Component {
             current: window.location.pathname,
             openDefaultKey: checkRouteOpenDefaultKey()
         };
+    }
+
+    componentDidMount(){
+        common.warningConsole();
     }
     
     onCloseAlert = ()=>{
@@ -152,7 +157,7 @@ class SiderBarMenu extends Component {
                                 <span>Lãi suất ngân hàng</span>
                             </Menu.Item>
                             <Menu.Item key="/fee-trade">
-                                <span>Chi phí giao dịch</span>
+                                <span>Chi phí, thuế giao dịch</span>
                             </Menu.Item>
                             <Menu.Item key="/payment-term">
                                 <span>Kỳ hạn thanh toán</span>

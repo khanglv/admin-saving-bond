@@ -16,6 +16,22 @@ input[type="file"] {
   display: none;
 }
 
+.bodyFormAccount{
+  display: none;
+}
+
+.bodyFormAccount:hover{
+  display: block;
+}
+
+.mainFromAccount:hover{
+  background: #265261!important;
+}
+
+.mainFromAccount:hover .bodyFormAccount{
+  display: block;
+}
+
 .custom-import-excel{
   position: fixed;
   display: inline-flex;

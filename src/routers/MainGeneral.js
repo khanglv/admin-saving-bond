@@ -71,12 +71,8 @@ class HeaderCom extends Component{
     constructor(props){
         super(props);
         this.state = {
-            isShowCardAccount: false,
             accountInfo: JSON.parse(localStorage.getItem('accountInfoKey'))
         }
-    }
-    onActionAccount = ()=>{
-        this.setState((prew)=>({isShowCardAccount: !prew.isShowCardAccount}));
     }
     onHome = ()=>{
         window.location.href = "/home";   
@@ -85,8 +81,10 @@ class HeaderCom extends Component{
         return (
             <Header style={{ display: 'flex', alignItems: 'center', color: '#fff' }}>
                 <div className="pointer" style={{padding: 10}} onClick={this.onHome}><b style={{ fontFamily: 'initial', fontSize: 18 }}>V-BONDS</b></div>
-                <div className="pointer" onClick={this.onActionAccount} style={styles.accountHeader}><Avatar style={{ backgroundColor: '#438599' }} icon="user" />&nbsp;&nbsp;{this.state.accountInfo ? this.state.accountInfo.USERNAME : "Admin"}</div>
-                {this.state.isShowCardAccount ? <CardAccount visible={true}/> : null}
+                <div className="pointer mainFromAccount" onClick={this.onActionAccount} style={styles.accountHeader}>
+                    <Avatar style={{ backgroundColor: '#438599' }} icon="user" />&nbsp;&nbsp;{this.state.accountInfo ? this.state.accountInfo.USERNAME : "Admin"}
+                    <div className="bodyFormAccount"><CardAccount /></div>
+                </div>
             </Header>
         )
     }
@@ -126,15 +124,15 @@ const styles = {
         height: '7vh',
         display: 'flex',
         alignItems: 'center',
-        paddingLeft: 20,
-        paddingRight: 20,
+        paddingLeft: 30,
+        paddingRight: 30,
         backgroundColor: '#0e303a'
     },
     customFormAccount: {
         width: '17rem',
         position: 'absolute', 
         right: '1rem', 
-        top: '7.3vh', 
+        top: '7vh', 
         zIndex: '10000',
         boxShadow: '0 5px 6px rgba(0,0,0,0.23)'
     }

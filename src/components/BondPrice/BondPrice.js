@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Table, Popconfirm, Icon, Tooltip, Form, Tag, Badge} from 'antd';
+import { Table, Form, Badge} from 'antd';
 // import ModalBondPrice from './ModalBondPrice';
 import {updateItemBondPrice, deleteItemBondPrice} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
@@ -66,39 +66,7 @@ class BondPriceF extends Component{
                         <Badge color={color} text={text} />
                     )
                 }
-            },
-            {
-                title: 'Action',
-                dataIndex: 'operation',
-                width: 100,
-                render: (text, record) =>{
-                    const { editingKey } = this.state;
-                    const editable = this.isEditing(record);
-                    return editable ? (
-                        <div>
-                            <EditableContext.Consumer>
-                                {form => (
-                                    <Tag color="green" className="customTag" onClick={() => this.save(form, record)}>Lưu</Tag>                                
-                                )}
-                            </EditableContext.Consumer>
-                            <Tag color="volcano" className="customTag" onClick={() => this.cancel(record.key)}>Hủy bỏ</Tag>
-                        </div>
-                    ): (
-                        this.state.dataSource.length >= 1 ?
-                            <div>
-                                <Tooltip title="Chỉnh sửa">
-                                    <Icon type="edit" style={{color: editingKey === '' ? '#096dd9' : '#bfbfbf', fontSize: 16}} onClick={() => editingKey === '' && this.onEdit(record.key)}/>
-                                </Tooltip>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.MSGIATRI)}>
-                                    <Tooltip title="Xóa" className="pointer" placement="right">
-                                        <Icon type="delete" style={{color: editingKey === '' ? '#f5222d' : '#bfbfbf', fontSize: 16}}/>
-                                    </Tooltip>
-                                </Popconfirm>
-                            </div>
-                         : null
-                    )
-                }
-            },
+            }
         ];
 
         this.state = {

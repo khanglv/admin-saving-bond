@@ -36,3 +36,7 @@ export const convertDecimalToNumber = (text)=>{
 export const convertInputNumberDecimal = (value)=>{
     return value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+export const warningConsole = ()=>{
+    console.log("%cStop!!! You are unauthorized acces", "color: red; font-size: 40px; font-weight: bold;");
+}

@@ -38,8 +38,8 @@ export class EditableCell extends React.Component {
         }
         if (this.props.inputType === 'option_2') {
             return <Select style={{ width: '100%' }}>
-                <Option value={1}>Phát hành</Option>
-                <Option value={2}>Huy động</Option>
+                <Option value={2}>Phát hành</Option>
+                <Option value={1}>Huy động</Option>
                 <Option value={0}>Hết huy động</Option>
             </Select>
         }

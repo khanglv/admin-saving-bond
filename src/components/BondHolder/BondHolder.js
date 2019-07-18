@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Table, Button, Popconfirm, notification, Icon, Tooltip, Form, Tag, Input} from 'antd';
+import { Table, Button, Popconfirm, notification, Icon, Tooltip, Form, Tag, Input, Spin} from 'antd';
 import ModalBondHolder from './ModalBondHolder';
 import {updateListAssets, deleteListAssets} from '../../api/api';
 import {EditableContext, EditableCell, ResizeableTitle} from '../EditColumn/EditColumn';
@@ -144,6 +144,7 @@ class BondHolderF extends Component{
             openModal: false,
             isLoading: true,
             editingKey: '',
+            dataExelLoader: false,
             columns: this.columns
         };
     }
@@ -277,18 +278,18 @@ class BondHolderF extends Component{
 
     fileHandler = (event) => {
         let fileObj = event.target.files[0];
+        this.setState({dataExelLoader: true});
         ExcelRenderer(fileObj, (err, resp) => {
             if (err) {
                 console.log(err);
             }
             else {
                 this.setState({
-                    dataLoaded: true,
+                    dataExelLoader: false,
                     cols: resp.cols,
                     rows: resp.rows
                 });
                 console.log(resp);
-                console.log('fileObj ' + JSON.stringify(fileObj));
             }
         });
     }
@@ -338,6 +339,7 @@ class BondHolderF extends Component{
                         <Icon type="upload" />&nbsp;Import Excel
                         <Input id="file-upload-excel" onChange={this.fileHandler.bind(this)} type="file"/>
                     </label>
+                    <Spin tip="Loading..." style={{marginLeft: '9rem'}} spinning={this.state.dataExelLoader}/>
                         
                     <EditableContext.Provider value={this.props.form}>
                         <Table
