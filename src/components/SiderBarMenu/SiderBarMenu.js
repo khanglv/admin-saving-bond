@@ -7,7 +7,7 @@ import * as common from '../Common/Common';
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 const LIST_ROUTE_DATABASE = ['/frefix', '/company', '/payment-term', '/bank-interest', '/fee-trade', '/bond-type', '/command-type', '/bond-price',
-                           '/trade-status', '/branch-vcsc', '/investor-type', '/investor', '/interest-rate', '/interest-rate-sale', '/contract-vcsc', '/day-interest-year'];
+                           '/trade-status', '/branch-vcsc', '/investor-type', '/investor', '/interest-rate', '/interest-rate-sale', '/interest-return', '/contract-vcsc', '/day-interest-year'];
 const LIST_ROUTE_GENERAL = ['/asset-bond', '/ensure-asset', '/set-command', '/bond-holder', '/room-vcsc'];
 const LIST_ROUTE_CONFIG = ['/frefix', '/command-type', '/trade-status', '/branch-vcsc'];
 
@@ -109,6 +109,9 @@ class SiderBarMenu extends Component {
             case "/interest-rate-sale":
                 this.props.history.push('/interest-rate-sale');
                 break;
+            case "/interest-return":
+                this.props.history.push('/interest-return');
+                break;
             case "/bond-price":
                 this.props.history.push('/bond-price');
                 break;
@@ -173,6 +176,9 @@ class SiderBarMenu extends Component {
                             </Menu.Item>
                             <Menu.Item key="/interest-rate-sale">
                                 <span>Lãi suất bán</span>
+                            </Menu.Item>
+                            <Menu.Item key="/interest-return">
+                                <span>Lãi tái đầu tư</span>
                             </Menu.Item>
                             <Menu.Item key="/bond-price">
                                 <span>Giá trị trái phiếu</span>

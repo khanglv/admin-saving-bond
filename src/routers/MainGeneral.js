@@ -24,6 +24,7 @@ import RoomVCSC from '../components/RoomVCSC/RoomVCSC';
 import SetCommand from '../components/SetCommand/SetCommand';
 import BondHolder from '../components/BondHolder/BondHolder';
 import InterestRateSale from '../components/InterestRateSale/InterestRateSale';
+import InterestReturn from '../components/InterestReturn/InterestReturn';
 
 import { Layout, Avatar, Card, Button } from 'antd';
 const { Meta } = Card;
@@ -66,6 +67,7 @@ export const FRoomVCSC = ()=> withSidebar(RoomVCSC)
 export const FSetCommand = ()=> withSidebar(SetCommand)
 export const FBondHolder = ()=> withSidebar(BondHolder)
 export const FInterestRateSale = ()=> withSidebar(InterestRateSale)
+export const FInterestReturn = ()=> withSidebar(InterestReturn)
 
 class HeaderCom extends Component{
     constructor(props){

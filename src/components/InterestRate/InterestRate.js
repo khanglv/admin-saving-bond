@@ -296,7 +296,7 @@ class InterestRateF extends Component{
                     lstBondsAssetData={this.state.lstBondsAsset}
                 />
                 <div className="p-top10" style={{padding: 10}}>
-                    <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
+                    <Button className="btn-add-right" onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 10 }}>
                         <span>Tạo mới lãi suất</span>
                     </Button>
                     <EditableContext.Provider value={this.props.form}>

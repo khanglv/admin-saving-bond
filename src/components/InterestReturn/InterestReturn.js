@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { Table, Button, Popconfirm, Icon, Tooltip, Form, Tag} from 'antd';
-import ModalInterestRateSale from './ModalInterestRateSale';
+import ModalInterestReturn from './ModalInterestReturn';
 import {deleteItemInterestRateSale, updateItemInterestRateSale} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
 import * as common from '../Common/Common';
@@ -8,7 +8,7 @@ import * as common from '../Common/Common';
 import {connect} from 'react-redux';
 import {getListInterestRateSale} from '../../stores/actions/interestRateSaleAction';
 
-class InterestRateSaleF extends Component{
+class InterestReturnF extends Component{
     constructor(props) {
         super(props);
         this.columns = [
@@ -222,11 +222,12 @@ class InterestRateSaleF extends Component{
 
         return(
             <div>
-                <ModalInterestRateSale isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}/>
+                <ModalInterestReturn isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}/>
                 <div className="p-top10" style={{padding: 10}}>
-                    <Button className="btn-add-right" onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 10 }}>
+                    <Button className="right" onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 10, zIndex: 1000 }}>
                         <span>Thêm mới</span>
                     </Button>
+                    
                     <EditableContext.Provider value={this.props.form}>
                         <Table
                             components={components}
@@ -245,7 +246,7 @@ class InterestRateSaleF extends Component{
     }
 }
 
-const InterestRateSale = Form.create()(InterestRateSaleF);
+const InterestReturn = Form.create()(InterestReturnF);
 
 const mapStateToProps = state =>{
     return{
@@ -259,4 +260,4 @@ const mapDispatchToProps = dispatch =>{
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps) (InterestRateSale);
+export default connect(mapStateToProps, mapDispatchToProps) (InterestReturn);

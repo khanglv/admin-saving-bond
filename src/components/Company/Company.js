@@ -252,7 +252,7 @@ class CompanyForm extends Component{
             <div>
                 <ModalCompany isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}/>
                 <div className="p-top10" style={{padding: 10}}>
-                    <Button onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 16 }}>
+                    <Button className="btn-add-right" onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 10 }}>
                         <span>Thêm mới</span>
                     </Button>
                     <EditableContext.Provider value={this.props.form}>

@@ -63,6 +63,11 @@ input[type="file"] {
   float: right;
 }
 
+.btn-add-right{
+  float: right;
+  z-index: 1000;
+}
+
 .p-top10{
   padding-top: 10px;
 }
