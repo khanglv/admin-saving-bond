@@ -26,6 +26,7 @@ const URL_BOND_PRICE = `${BASE_URL}/bondPrice`;
 const URL_ROOM_VCSC = `${BASE_URL}/roomVCSC`;
 const URL_SET_COMMAND = `${BASE_URL}/setCommand`;
 const URL_ASSETS = `${BASE_URL}/assets`;
+const URL_INTEREST_RETURN = `${BASE_URL}/interestReturn`;
 
 const TIME_OUT = 10000;
 
@@ -832,6 +833,42 @@ export const updateListAssets = (data)=>{
 export const deleteListAssets = (data)=>{
     const options = {
         url: URL_ASSETS,
+        method: "DELETE",
+        data: data
+    }
+    return callApi(options);
+}
+
+//Lãi tái đầu tư
+export const getListInterestReturn = ()=>{
+    const options = {
+        url: URL_INTEREST_RETURN,
+        method: "GET",
+    }
+    return callApi(options);
+}
+
+export const createListInterestReturn = (data)=>{
+    const options = {
+        url: URL_INTEREST_RETURN,
+        method: "POST",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const updateListInterestReturn = (data)=>{
+    const options = {
+        url: URL_INTEREST_RETURN,
+        method: "PUT",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const deleteListInterestReturn = (data)=>{
+    const options = {
+        url: URL_INTEREST_RETURN,
         method: "DELETE",
         data: data
     }

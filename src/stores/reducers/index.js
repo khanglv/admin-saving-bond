@@ -20,6 +20,7 @@ import investor from './investor';
 import listAssets from './listAssets';
 import interestRateSale from './interestRateSale';
 import feeTrade from './feeTrade';
+import interestReturn from './interestReturn';
 
 export default combineReducers({
     login: login,
@@ -41,5 +42,6 @@ export default combineReducers({
     investor: investor,
     listAssets: listAssets,
     interestRateSale: interestRateSale,
-    feeTrade: feeTrade
+    feeTrade: feeTrade,
+    interestReturn: interestReturn
 });

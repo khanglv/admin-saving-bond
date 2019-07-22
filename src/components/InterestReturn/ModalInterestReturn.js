@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {createItemInterestRateSale} from '../../api/api';
+import {createListInterestReturn} from '../../api/api';
 import { 
     Modal,
     Form,
@@ -65,7 +65,7 @@ class ModalInterestReturn extends Component{
                     "NGAYKETTHUC": dateEnd,
                     "DIEUKHOAN_LS": note
                 }
-                const res = await createItemInterestRateSale(dataTmp);
+                const res = await createListInterestReturn(dataTmp);
                 if (res.error) {
                     common.notify('error', 'Thao tác thất bại :( ' + res.error);
                 } else {
@@ -99,7 +99,7 @@ class ModalInterestReturn extends Component{
 
         return(
             <Modal
-                title="Lãi suất bán"
+                title="Lãi tái đầu tư"
                 centered
                 visible={this.props.isOpen}
                 onOk={() => this.onHandleOk()}
@@ -113,7 +113,7 @@ class ModalInterestReturn extends Component{
                     >
                         <Input name="codeInterestRateSale" placeholder="Nhập mã số lãi suất" value={this.state.codeInterestRateSale} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
-                    <Form.Item label="* Lãi suất bán (%)"
+                    <Form.Item label="* Lãi tái đầu tư (%)"
                         validateStatus = {((this.state.interestRateSale === null || this.state.interestRateSale === 0) && this.state.isShowNotice)  ? "error" : null}
                         help = {((this.state.interestRateSale === null || this.state.interestRateSale === 0) && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                     >

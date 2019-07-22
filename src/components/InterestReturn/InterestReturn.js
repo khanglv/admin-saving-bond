@@ -6,7 +6,7 @@ import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
 import * as common from '../Common/Common';
 
 import {connect} from 'react-redux';
-import {getListInterestRateSale} from '../../stores/actions/interestRateSaleAction';
+import {getListInterestReturn} from '../../stores/actions/interestReturnAction';
 
 class InterestReturnF extends Component{
     constructor(props) {
@@ -24,7 +24,7 @@ class InterestReturnF extends Component{
                 width: 100,
             },  
             {
-                title: 'Lãi suất bán (%)', //3
+                title: 'Lãi tái đầu tư (%)', //3
                 dataIndex: 'LS_TOIDA',
                 editable: true,
                 width: 100
@@ -103,7 +103,7 @@ class InterestReturnF extends Component{
 
     loadData = async()=>{
         try {
-            const res = await this.props.getListInterestRateSale();
+            const res = await this.props.getListInterestReturn();
             if(res.error){
                 common.notify('error', 'Thao tác thất bại :( ' + res.error);
             }else{
@@ -250,13 +250,13 @@ const InterestReturn = Form.create()(InterestReturnF);
 
 const mapStateToProps = state =>{
     return{
-        lstInterestRateSale: state.interestRateSale.data,
+        lstInterestReturn: state.interestReturn.data,
     }
 }
 
 const mapDispatchToProps = dispatch =>{
     return{
-        getListInterestRateSale: ()=> dispatch(getListInterestRateSale()),
+        getListInterestReturn: ()=> dispatch(getListInterestReturn()),
     }
 }
 
