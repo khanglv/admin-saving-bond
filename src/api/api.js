@@ -26,7 +26,7 @@ const URL_BOND_PRICE = `${BASE_URL}/bondPrice`;
 const URL_ROOM_VCSC = `${BASE_URL}/roomVCSC`;
 const URL_SET_COMMAND = `${BASE_URL}/setCommand`;
 const URL_ASSETS = `${BASE_URL}/assets`;
-const URL_INTEREST_RETURN = `${BASE_URL}/interestReturn`;
+const URL_INTEREST_RETURN = `${BASE_URL}/interestRateReturn`;
 
 const TIME_OUT = 10000;
 

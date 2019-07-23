@@ -4,11 +4,13 @@ import {
     Modal,
     Form,
     Input,
-    DatePicker
+    DatePicker,
+    Select
 } from 'antd';
 import * as common from '../Common/Common';
 import moment from 'moment';
 
+const { Option } = Select;
 const dateFormat = 'DD/MM/YYYY';
 const newDate = new Date();
 
@@ -19,11 +21,10 @@ class ModalInterestReturn extends Component{
         const value = props.value || {};
         this.state = {
             currency: value.currency || 'Open',
-            codeInterestRateSale: '',
             interestRateSale: null,
             dateStart: moment(new Date(), dateFormat),
             dateEnd: moment(new Date(new Date(newDate).setMonth(newDate.getMonth()+3)), dateFormat),
-            note: '',
+            status: 1,
             isShowNotice: false
         };
     }
@@ -48,22 +49,20 @@ class ModalInterestReturn extends Component{
     onHandleOk = async()=>{
         try{
             const {
-                codeInterestRateSale,
                 interestRateSale,
                 dateStart,
                 dateEnd,
-                note
+                status
             } = this.state;
 
-            if(!codeInterestRateSale || !interestRateSale){
+            if(!interestRateSale){
                 this.setState({isShowNotice: true});
             }else{
                 let dataTmp = {
-                    "MSLS": codeInterestRateSale,
                     "LS_TOIDA": interestRateSale,
                     "NGAYBATDAU": dateStart,
                     "NGAYKETTHUC": dateEnd,
-                    "DIEUKHOAN_LS": note
+                    "TRANGTHAI": status
                 }
                 const res = await createListInterestReturn(dataTmp);
                 if (res.error) {
@@ -107,12 +106,6 @@ class ModalInterestReturn extends Component{
                 size="lg"
             >
                 <Form {...formItemLayout}>
-                    <Form.Item label="* Mã số lãi suất" 
-                        validateStatus = {(this.state.codeInterestRateSale.length === 0 && this.state.isShowNotice)  ? "error" : null}
-                        help = {(this.state.codeInterestRateSale.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
-                    >
-                        <Input name="codeInterestRateSale" placeholder="Nhập mã số lãi suất" value={this.state.codeInterestRateSale} onChange={event => this.updateInputValue(event)}/>
-                    </Form.Item>
                     <Form.Item label="* Lãi tái đầu tư (%)"
                         validateStatus = {((this.state.interestRateSale === null || this.state.interestRateSale === 0) && this.state.isShowNotice)  ? "error" : null}
                         help = {((this.state.interestRateSale === null || this.state.interestRateSale === 0) && this.state.isShowNotice) ? "Không được bỏ trống" : null}
@@ -129,8 +122,15 @@ class ModalInterestReturn extends Component{
                     >
                         <DatePicker name="dateEnd" value={this.state.dateEnd} format={dateFormat} onChange={this.updateSelectValue('dateEnd')} />
                     </Form.Item>
-                    <Form.Item label="Điều khoản lãi suất" >
-                        <Input name="note" placeholder="Điều khoản lãi suất" value={this.state.note} onChange={event => this.updateInputValue(event)} />
+                    <Form.Item label="* Trạng thái" hasFeedback validateStatus={this.state.status === 1 ? "success" : "warning"}>
+                        <Select
+                            defaultValue={1}
+                            placeholder="Chọn trạng thái niêm yết"
+                            onChange={this.updateSelectValue('status')}
+                        >
+                            <Option value={1}>Active</Option>
+                            <Option value={0}>Disabled</Option>
+                        </Select>
                     </Form.Item>
                 </Form>
             </Modal>

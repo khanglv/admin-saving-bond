@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import { Table, Button, Popconfirm, Icon, Tooltip, Form, Tag} from 'antd';
+import { Table, Button, Popconfirm, Icon, Tooltip, Form, Tag, Badge} from 'antd';
 import ModalInterestReturn from './ModalInterestReturn';
-import {deleteItemInterestRateSale, updateItemInterestRateSale} from '../../api/api';
+import {deleteListInterestReturn, updateListInterestReturn} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
 import * as common from '../Common/Common';
 
@@ -19,11 +19,6 @@ class InterestReturnF extends Component{
                 color: 'red'
             },
             {
-                title: 'Mã số lãi suất', //2
-                dataIndex: 'MSLS',
-                width: 100,
-            },  
-            {
                 title: 'Lãi tái đầu tư (%)', //3
                 dataIndex: 'LS_TOIDA',
                 editable: true,
@@ -31,7 +26,7 @@ class InterestReturnF extends Component{
             },
             {
                 title: 'Ngày áp dụng', //4
-                dataIndex: 'NGAYBATDAU',
+                dataIndex: 'NGAYAPDUNG',
                 editable: true,
                 width: 100
             },
@@ -42,10 +37,21 @@ class InterestReturnF extends Component{
                 editable: true,
             },
             {
-                title: 'Điều khoản lãi suất', //3
-                dataIndex: 'DIEUKHOAN_LS',
+                title: 'Trang thái', //22
+                dataIndex: 'TRANGTHAI',
                 editable: true,
-                width: 200
+                width: 100,
+                render: TRANGTHAI =>{
+                    let text = "Hoạt động";
+                    let color = "green";
+                    if(TRANGTHAI === 0){
+                        text = "Không hoạt động";
+                        color="#faad14"
+                    }
+                    return(
+                        <Badge color={color} text={text} />
+                    )
+                }
             },
             {
                 title: 'Ngày tạo', //4
@@ -73,7 +79,7 @@ class InterestReturnF extends Component{
                                 <Tooltip title="Chỉnh sửa">
                                     <Icon type="edit" style={{color: editingKey === '' ? '#096dd9' : '#bfbfbf', fontSize: 16}} onClick={() => editingKey === '' && this.onEdit(record.key)}/>
                                 </Tooltip>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.MSLS)}>
+                                <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.MSLSTDT)}>
                                     <Tooltip title="Xóa" className="pointer" placement="right">
                                         <Icon type="delete" style={{color: editingKey === '' ? '#f5222d' : '#bfbfbf', fontSize: 16}}/>
                                     </Tooltip>
@@ -111,7 +117,7 @@ class InterestReturnF extends Component{
                     return {
                         ...item,
                         "NGAYTAO": common.convertDDMMYYYY(item.NGAYTAO),
-                        "NGAYBATDAU": common.convertDDMMYYYY(item.NGAYBATDAU),
+                        "NGAYAPDUNG": common.convertDDMMYYYY(item.NGAYAPDUNG),
                         "NGAYKETTHUC": common.convertDDMMYYYY(item.NGAYKETTHUC),
                         "key": i + 1
                     }
@@ -138,7 +144,7 @@ class InterestReturnF extends Component{
 
     handleSaveEdit = async(data)=>{
         try {
-            const res = await updateItemInterestRateSale(data);
+            const res = await updateListInterestReturn(data);
             if(res.error){
                 this.loadData();
                 common.notify('error', 'Thao tác thất bại :( ' + res.error);
@@ -154,9 +160,9 @@ class InterestReturnF extends Component{
     handleDelete = async(code) => {
         try{
             let dataTmp = {
-                "MSLS": code
+                "MSLSTDT": code
             }
-            const res = await deleteItemInterestRateSale(dataTmp);
+            const res = await deleteListInterestReturn(dataTmp);
             if(res.error){
                 common.notify('error', 'Thao tác thất bại :( ' + res.error);
             }else{
@@ -179,7 +185,7 @@ class InterestReturnF extends Component{
                 const item = newData[index];
                 row = {
                     ...row,
-                    "MSLS": item.MSLS
+                    "MSLSTDT": item.MSLSTDT
                 }
                 this.handleSaveEdit(row);
             } else {
@@ -212,7 +218,7 @@ class InterestReturnF extends Component{
                 ...col,
                 onCell: record => ({
                     record,
-                    inputType: ['NGAYBATDAU', 'NGAYKETTHUC'].indexOf(col.dataIndex) > -1 ? 'date' : 'text' ,
+                    inputType: ['NGAYAPDUNG', 'NGAYKETTHUC'].indexOf(col.dataIndex) > -1 ? 'date' : col.dataIndex === 'TRANGTHAI' ? 'options' : 'text' ,
                     dataIndex: col.dataIndex,
                     title: col.title,
                     editing: this.isEditing(record),
