@@ -143,7 +143,7 @@ class SiderBarMenu extends Component {
                         onClick={this.toggle}
                     />
                     <Menu theme="dark" mode="inline"
-                     defaultOpenKeys={[this.state.openDefaultKey]} selectedKeys={[this.state.current]} onClick={this.handleClick}>
+                        defaultOpenKeys={[this.state.openDefaultKey]} selectedKeys={[this.state.current]} onClick={this.handleClick}>
                          <SubMenu
                             key="database"
                             title={

@@ -70,6 +70,10 @@ class ModalInterestRate extends Component{
                 });
         }
     }
+
+    disabledDate = (current)=> {
+        return current && current < this.state.dateStart.endOf('day');
+    }
     
     onHandleOk = async()=>{
         try{
@@ -181,7 +185,7 @@ class ModalInterestRate extends Component{
                             <Form.Item
                                 label="* Ngày kết thúc"
                             >
-                                <DatePicker name="dateEnd" value={this.state.dateEnd} format={dateFormat} onChange={this.updateSelectValue('dateEnd')} />
+                                <DatePicker name="dateEnd" disabledDate={this.disabledDate} value={this.state.dateEnd} format={dateFormat} onChange={this.updateSelectValue('dateEnd')} />
                             </Form.Item>
                             <Form.Item label="* Trạng thái" hasFeedback validateStatus={this.state.statusListed === 1 ? "success" : "warning"}>
                                 <Select

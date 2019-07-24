@@ -46,6 +46,10 @@ class ModalInterestReturn extends Component{
         this.setState({[name]: event});
     }
 
+    disabledDate = (current)=> {
+        return current && current < this.state.dateStart.endOf('day');
+    }
+
     onHandleOk = async()=>{
         try{
             const {
@@ -106,6 +110,24 @@ class ModalInterestReturn extends Component{
                 size="lg"
             >
                 <Form {...formItemLayout}>
+                    <Form.Item
+                        label="* Trái phiếu"
+                        validateStatus={((this.state.bondID === 0 || this.state.bondID === null) && this.state.isShowNotice) ? "error" : null}
+                        help={((this.state.bondID === 0 || this.state.bondID === null) && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                    >
+                        <Select showSearch placeholder="Chọn trái phiếu" onChange={this.updateSelectValue('bondID')}
+                            filterOption={(input, option) =>
+                                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                        >
+                            {
+                                this.props.lstBondsAssetData.map((item) => {
+                                    return (
+                                        item.FLAG === 1 ? <Option key={item.BONDID} value={item.BONDID}>{item.MSTP}</Option> : null
+                                    )
+                                })
+                            }
+                        </Select>
+                    </Form.Item>
                     <Form.Item label="* Lãi tái đầu tư (%)"
                         validateStatus = {((this.state.interestRateSale === null || this.state.interestRateSale === 0) && this.state.isShowNotice)  ? "error" : null}
                         help = {((this.state.interestRateSale === null || this.state.interestRateSale === 0) && this.state.isShowNotice) ? "Không được bỏ trống" : null}
@@ -120,7 +142,7 @@ class ModalInterestReturn extends Component{
                     <Form.Item
                         label="* Ngày kết thúc"
                     >
-                        <DatePicker name="dateEnd" value={this.state.dateEnd} format={dateFormat} onChange={this.updateSelectValue('dateEnd')} />
+                        <DatePicker name="dateEnd" disabledDate={this.disabledDate} value={this.state.dateEnd} format={dateFormat} onChange={this.updateSelectValue('dateEnd')} />
                     </Form.Item>
                     <Form.Item label="* Trạng thái" hasFeedback validateStatus={this.state.status === 1 ? "success" : "warning"}>
                         <Select

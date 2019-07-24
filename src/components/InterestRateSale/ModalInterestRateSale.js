@@ -45,6 +45,10 @@ class ModalInterestRateSale extends Component{
         this.setState({[name]: event});
     }
 
+    disabledDate = (current)=> {
+        return current && current < this.state.dateStart.endOf('day');
+    }
+
     onHandleOk = async()=>{
         try{
             const {
@@ -127,7 +131,7 @@ class ModalInterestRateSale extends Component{
                     <Form.Item
                         label="* Ngày kết thúc"
                     >
-                        <DatePicker name="dateEnd" value={this.state.dateEnd} format={dateFormat} onChange={this.updateSelectValue('dateEnd')} />
+                        <DatePicker name="dateEnd" disabledDate={this.disabledDate} value={this.state.dateEnd} format={dateFormat} onChange={this.updateSelectValue('dateEnd')} />
                     </Form.Item>
                     <Form.Item label="Điều khoản lãi suất" >
                         <Input name="note" placeholder="Điều khoản lãi suất" value={this.state.note} onChange={event => this.updateInputValue(event)} />

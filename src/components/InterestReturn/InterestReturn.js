@@ -7,6 +7,7 @@ import * as common from '../Common/Common';
 
 import {connect} from 'react-redux';
 import {getListInterestReturn} from '../../stores/actions/interestReturnAction';
+import {getListBondsAsset} from '../../stores/actions/bondsAssetAction';
 
 class InterestReturnF extends Component{
     constructor(props) {
@@ -79,6 +80,9 @@ class InterestReturnF extends Component{
                                 <Tooltip title="Chỉnh sửa">
                                     <Icon type="edit" style={{color: editingKey === '' ? '#096dd9' : '#bfbfbf', fontSize: 16}} onClick={() => editingKey === '' && this.onEdit(record.key)}/>
                                 </Tooltip>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <Tooltip title="Điều chỉnh lãi suất">
+                                    <Icon type="line-chart" style={{color: editingKey === '' ? 'green' : '#bfbfbf', fontSize: 16}} onClick={() => editingKey === '' && this.onEdit(record.key)}/>
+                                </Tooltip>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.MSLSTDT)}>
                                     <Tooltip title="Xóa" className="pointer" placement="right">
                                         <Icon type="delete" style={{color: editingKey === '' ? '#f5222d' : '#bfbfbf', fontSize: 16}}/>
@@ -124,6 +128,7 @@ class InterestReturnF extends Component{
                 })
                 this.setState({dataSource: lstTmp, editingKey: '', isLoading: false });
             }
+            await this.props.getListBondsAsset();
         } catch (error) {
             console.log("err load data " + error);
         }
@@ -228,7 +233,7 @@ class InterestReturnF extends Component{
 
         return(
             <div>
-                <ModalInterestReturn isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}/>
+                <ModalInterestReturn isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData} lstBondsAssetData={this.props.lstBondsAsset}/>
                 <div className="p-top10" style={{padding: 10}}>
                     <Button className="right" onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 10, zIndex: 1000 }}>
                         <span>Thêm mới</span>
@@ -257,12 +262,14 @@ const InterestReturn = Form.create()(InterestReturnF);
 const mapStateToProps = state =>{
     return{
         lstInterestReturn: state.interestReturn.data,
+        lstBondsAsset: state.bondsAsset.data,
     }
 }
 
 const mapDispatchToProps = dispatch =>{
     return{
         getListInterestReturn: ()=> dispatch(getListInterestReturn()),
+        getListBondsAsset: ()=> dispatch(getListBondsAsset()),
     }
 }
 

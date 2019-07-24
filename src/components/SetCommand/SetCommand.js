@@ -47,19 +47,32 @@ class SetCommand extends Component{
                 }
             },
             {
-                title: 'Trái Phiếu', //1
+                title: 'Trái Phiếu',
                 dataIndex: 'MSTP',
-                width: 250,
+                width: 200,
                 editable: true,
             },
             {
-                title: 'Nhà đầu tư', //2
+                title: 'Loại đầu tư',
+                dataIndex: 'TRANGTHAI_MUA',
+                width: 180,
+                render: (TRANGTHAI_MUA, record)=>{
+                    return(
+                        record.TRANGTHAI_MUA === 3 ?
+                        <span style={{color: '#643dc3'}}>Không giữ đến đáo hạn</span> : record.TRANGTHAI_MUA === 2 ?
+                        <span style={{color: '#a80f0f'}}>Tái đầu tư</span> : 
+                        <span style={{color: '#17a2b8'}}>Chưa tái đầu tư</span>
+                    )
+                }
+            },
+            {
+                title: 'Nhà đầu tư',
                 dataIndex: 'TENNDT',
                 width: 250,
                 editable: true
             },
             {
-                title: 'MS Người giới thiệu', //3
+                title: 'MS NGT', //3
                 dataIndex: 'MS_NGUOI_GT',
                 width: 150,
                 editable: true
@@ -114,7 +127,7 @@ class SetCommand extends Component{
                 title: 'Trạng thái',
                 dataIndex: 'TRANGTHAI_LENH',
                 editable: true,
-                width: 100,
+                width: 120,
                 render: TRANGTHAI_LENH =>{
                     let text = "Đã duyệt";
                     let color = "green";
