@@ -84,30 +84,6 @@ class SetCommand extends Component{
                 editable: true
             },
             {
-                title: 'Đơn giá',
-                dataIndex: 'DONGIA',
-                width: 120,
-                editable: true
-            },
-            {
-                title: 'Tổng giá trị',
-                dataIndex: 'TONGGIATRI',
-                width: 180,
-                editable: true
-            },
-            {
-                title: 'Lãi suất',
-                dataIndex: 'LAISUAT_DH',
-                width: 100,
-                editable: true
-            },
-            {
-                title: 'Ngày giao dịch',
-                dataIndex: 'NGAY_GD',
-                width: 150,
-                editable: true
-            },
-            {
                 title: 'Ngày trái tức',
                 dataIndex: 'NGAY_TRAITUC',
                 editable: true,
@@ -122,6 +98,36 @@ class SetCommand extends Component{
                         // <Button className="middle-div" icon="exclamation-circle" onClick={()=>this.onDetailDateInterest(NGAY_TRAITUC)}>Xem chi tiết</Button>
                     )
                 }
+            },
+            {
+                title: 'Đơn giá',
+                dataIndex: 'DONGIA',
+                width: 120,
+                editable: true
+            },
+            {
+                title: 'Tổng giá trị',
+                dataIndex: 'TONGGIATRI',
+                width: 180,
+                editable: true
+            },
+            {
+                title: 'TGT trước phí',
+                dataIndex: 'TONGGIATRITRUOCPHI',
+                width: 180,
+                editable: true
+            },
+            {
+                title: 'Lãi suất',
+                dataIndex: 'LAISUAT_DH',
+                width: 100,
+                editable: true
+            },
+            {
+                title: 'Ngày giao dịch',
+                dataIndex: 'NGAY_GD',
+                width: 150,
+                editable: true
             },
             {
                 title: 'Trạng thái',
@@ -236,6 +242,7 @@ class SetCommand extends Component{
                         "NGAY_GD": common.convertDDMMYYYY(item.NGAY_GD),
                         "DONGIA": common.convertTextDecimal(item.DONGIA),
                         "TONGGIATRI": common.convertTextDecimal(item.TONGGIATRI),
+                        "TONGGIATRITRUOCPHI": common.convertTextDecimal(item.TONGGIATRITRUOCPHI),
                         "key": i + 1
                     }
                 })
@@ -328,7 +335,7 @@ class SetCommand extends Component{
                                 size="small"
                                 columns={columns}
                                 pagination={{ pageSize: 15 }}
-                                scroll={{x: '130%'}}
+                                scroll={{x: '150%'}}
                             />
                         </TabPane>
                         <TabPane tab="Danh sách đã duyệt" key="2">
@@ -341,7 +348,7 @@ class SetCommand extends Component{
                                     size="small"
                                     columns={columns}
                                     pagination={{ pageSize: 15 }}
-                                    scroll={{x: '130%'}}
+                                    scroll={{x: '150%'}}
                                 />
                             </div>
                         </TabPane>
@@ -355,7 +362,7 @@ class SetCommand extends Component{
                                     size="small"
                                     columns={columns}
                                     pagination={{ pageSize: 15 }}
-                                    scroll={{x: '130%'}}
+                                    scroll={{x: '150%'}}
                                 />
                             </div>
                         </TabPane>

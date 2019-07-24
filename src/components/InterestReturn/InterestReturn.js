@@ -78,10 +78,10 @@ class InterestReturnF extends Component{
                         this.state.dataSource.length >= 1 ?
                             <div>
                                 <Tooltip title="Chỉnh sửa">
-                                    <Icon type="edit" style={{color: editingKey === '' ? '#096dd9' : '#bfbfbf', fontSize: 16}} onClick={() => editingKey === '' && this.onEdit(record.key)}/>
+                                    <Icon type="edit" style={{color: editingKey === '' ? '#096dd9' : '#bfbfbf', fontSize: 16}} onClick={() => editingKey === '' && this.onEdit(record.key, 1)}/>
                                 </Tooltip>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <Tooltip title="Điều chỉnh lãi suất">
-                                    <Icon type="line-chart" style={{color: editingKey === '' ? 'green' : '#bfbfbf', fontSize: 16}} onClick={() => editingKey === '' && this.onEdit(record.key)}/>
+                                    <Icon type="tool" style={{color: editingKey === '' ? '#17ac17' : '#bfbfbf', fontSize: 16}} onClick={() => editingKey === '' && this.onEdit(record.key, 2)}/>
                                 </Tooltip>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <Popconfirm title="Xóa dòng này?" onConfirm={() => editingKey === '' && this.handleDelete(record.MSLSTDT)}>
                                     <Tooltip title="Xóa" className="pointer" placement="right">
@@ -101,7 +101,8 @@ class InterestReturnF extends Component{
             count: 2,
             isLoading: true,
             openModal: false,
-            editingKey: ''
+            editingKey: '',
+            statusEdit: 1
         };
     }
 
@@ -190,7 +191,8 @@ class InterestReturnF extends Component{
                 const item = newData[index];
                 row = {
                     ...row,
-                    "MSLSTDT": item.MSLSTDT
+                    "MSLSTDT": item.MSLSTDT,
+                    "TRANGTHAI": this.state.statusEdit
                 }
                 this.handleSaveEdit(row);
             } else {
@@ -204,8 +206,8 @@ class InterestReturnF extends Component{
         this.setState({ editingKey: '' });
     };
 
-    onEdit(key) {
-        this.setState({ editingKey: key });
+    onEdit(key, status) {
+        this.setState({ editingKey: key, statusEdit: status });
     }
 
     render() {

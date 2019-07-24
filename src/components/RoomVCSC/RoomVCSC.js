@@ -20,8 +20,8 @@ class RoomVCSC extends Component{
                 width: 200
             },
             {
-                title: 'Lãi suất năm', //2
-                dataIndex: 'LAISUATNAM',
+                title: 'Lãi suất năm (%)', //2
+                dataIndex: 'LAISUAT_BAN',
                 width: 150
             },
             {
