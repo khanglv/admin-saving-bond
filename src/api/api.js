@@ -27,6 +27,7 @@ const URL_ROOM_VCSC = `${BASE_URL}/roomVCSC`;
 const URL_SET_COMMAND = `${BASE_URL}/setCommand`;
 const URL_ASSETS = `${BASE_URL}/assets`;
 const URL_INTEREST_RETURN = `${BASE_URL}/interestRateReturn`;
+const URL_LIST_BONDS_INTEREST_RETURN = `${BASE_URL}/bonds/exceptBondExistsInterestRateReturn`;
 
 const TIME_OUT = 10000;
 
@@ -871,6 +872,15 @@ export const deleteListInterestReturn = (data)=>{
         url: URL_INTEREST_RETURN,
         method: "DELETE",
         data: data
+    }
+    return callApi(options);
+}
+
+//get list bond exceptBondExistsInterestRateReturn
+export const getListBondsInterestReturn = ()=>{
+    const options = {
+        url: URL_LIST_BONDS_INTEREST_RETURN,
+        method: "GET"
     }
     return callApi(options);
 }

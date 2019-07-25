@@ -7,7 +7,7 @@ import * as common from '../Common/Common';
 
 import {connect} from 'react-redux';
 import {getListInterestReturn} from '../../stores/actions/interestReturnAction';
-import {getListBondsAsset} from '../../stores/actions/bondsAssetAction';
+import {getListBondsInterestReturn} from '../../stores/actions/listBondsInterestReturnAction';
 
 class InterestReturnF extends Component{
     constructor(props) {
@@ -197,6 +197,7 @@ class InterestReturnF extends Component{
                 row = {
                     ...row,
                     "MSLSTDT": item.MSLSTDT,
+                    "BOND_ID": item.BOND_ID,
                     "KIEUDULIEU": this.state.statusEdit
                 }
                 this.handleSaveEdit(row);
@@ -230,7 +231,7 @@ class InterestReturnF extends Component{
                 ...col,
                 onCell: record => ({
                     record,
-                    inputType: ['NGAYAPDUNG', 'NGAYKETTHUC'].indexOf(col.dataIndex) > -1 ? 'date' : col.dataIndex === 'TRANGTHAI' ? 'options' : 'text' ,
+                    inputType: ['NGAYBATDAU', 'NGAYKETTHUC'].indexOf(col.dataIndex) > -1 ? 'date' : col.dataIndex === 'TRANGTHAI' ? 'options' : 'text' ,
                     dataIndex: col.dataIndex,
                     title: col.title,
                     editing: this.isEditing(record),
@@ -269,14 +270,14 @@ const InterestReturn = Form.create()(InterestReturnF);
 const mapStateToProps = state =>{
     return{
         lstInterestReturn: state.interestReturn.data,
-        lstBondsAsset: state.bondsAsset.data,
+        lstBondsAsset: state.listBondsInterestReturn.data,
     }
 }
 
 const mapDispatchToProps = dispatch =>{
     return{
         getListInterestReturn: ()=> dispatch(getListInterestReturn()),
-        getListBondsAsset: ()=> dispatch(getListBondsAsset()),
+        getListBondsAsset: ()=> dispatch(getListBondsInterestReturn()),
     }
 }
 

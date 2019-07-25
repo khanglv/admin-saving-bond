@@ -21,7 +21,7 @@ class ModalInterestReturn extends Component{
         const value = props.value || {};
         this.state = {
             currency: value.currency || 'Open',
-            bondId: null,
+            bondID: null,
             interestRateSale: null,
             dateStart: moment(new Date(), dateFormat),
             dateEnd: moment(new Date(new Date(newDate).setMonth(newDate.getMonth()+3)), dateFormat),
@@ -61,7 +61,7 @@ class ModalInterestReturn extends Component{
                 bondID
             } = this.state;
 
-            if(!interestRateSale || !this.state.bondId){
+            if(!interestRateSale || !bondID){
                 this.setState({isShowNotice: true});
             }else{
                 let dataTmp = {
@@ -78,8 +78,10 @@ class ModalInterestReturn extends Component{
                     await this.props.reloadData();
                     this.setState(
                         {
-                            codeFrefix: '', 
-                            noteFrefix: '', 
+                            interestRateSale: null,
+                            dateStart: moment(new Date(), dateFormat),
+                            dateEnd: moment(new Date(new Date(newDate).setMonth(newDate.getMonth()+3)), dateFormat),
+                            status: 1,
                             isShowNotice: false
                         }
                     );
@@ -125,7 +127,7 @@ class ModalInterestReturn extends Component{
                             {
                                 this.props.lstBondsAssetData.map((item) => {
                                     return (
-                                        item.FLAG === 1 ? <Option key={item.BONDID} value={item.BONDID}>{item.MSTP}</Option> : null
+                                        <Option key={item.BONDID} value={item.BONDID}>{item.MSTP}</Option>
                                     )
                                 })
                             }
