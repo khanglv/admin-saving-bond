@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Table, Button, Popconfirm, Icon, Tooltip, Form, Tag} from 'antd';
 import ModalInterestRateSale from './ModalInterestRateSale';
+import ModalShowHistory from './ModalShowHistory';
 import {deleteItemInterestRateSale, updateItemInterestRateSale} from '../../api/api';
 import {EditableContext, EditableCell} from '../EditColumn/EditColumn';
 import * as common from '../Common/Common';
@@ -22,6 +23,11 @@ class InterestRateSaleF extends Component{
                 title: 'Mã số lãi suất', //2
                 dataIndex: 'MSLS',
                 width: 100,
+                render: (index, record) =>{
+                    return(
+                        <div style={{cursor: 'pointer'}} className="codeBond" onClick={()=>this.onActionInterestStatus(record.LICHSUCAPNHAT)}>{record.MSLS}</div>
+                    )
+                }
             },  
             {
                 title: 'Lãi suất bán (%)', //3
@@ -94,6 +100,8 @@ class InterestRateSaleF extends Component{
             count: 2,
             isLoading: true,
             openModal: false,
+            openModalHistory: false,
+            lstDataHistory: [],
             editingKey: '',
             statusEdit: 1,
         };
@@ -135,9 +143,21 @@ class InterestRateSaleF extends Component{
         this.setState({openModal: false});
     }
 
+    handleOpenModalHistory = ()=>{
+        this.setState({openModalHistory: true});
+    }
+
+    handleCloseModalHistory = ()=>{
+        this.setState({openModalHistory: false});
+    }
+
     handleReloadData = ()=>{
         this.setState({openModal: false});
         this.loadData();
+    }
+
+    onActionInterestStatus = (dataHistory)=>{
+        this.setState({openModalHistory: true, lstDataHistory: JSON.parse(dataHistory)});
     }
 
     handleSaveEdit = async(data)=>{
@@ -227,6 +247,7 @@ class InterestRateSaleF extends Component{
 
         return(
             <div>
+                <ModalShowHistory isOpen={this.state.openModalHistory} isCloseModal={this.handleCloseModalHistory} data={this.state.lstDataHistory}/>
                 <ModalInterestRateSale isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} reloadData={this.handleReloadData}/>
                 <div className="p-top10" style={{padding: 10}}>
                     <Button className="btn-add-right" onClick={this.handleOpenModal} type="primary" style={{ marginBottom: 10 }}>

@@ -76,6 +76,12 @@ input[type="file"] {
   vertical-align: middle;
 }
 
+.midle-icon-ant{
+  display: inline-flex;
+  justify-content: center;
+  align-items: center
+}
+
 .middle-div{
   display: flex!important;
   align-items: center;
