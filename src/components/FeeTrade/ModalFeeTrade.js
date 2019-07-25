@@ -8,6 +8,7 @@ import {
     Select,
     InputNumber
 } from 'antd';
+import * as common from '../Common/Common';
 
 const { Option } = Select;
 
@@ -135,8 +136,8 @@ class ModalFeeTrade extends Component{
                         <InputNumber
                             name="feeMin"
                             style={{width: '100%'}}
-                            formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                            parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                            formatter={value => common.formatterNumber(value)}
+                            parser={value => common.parserNumber(value)}
                             onChange={this.updateSelectValue("feeMin")}
                         />
                     </Form.Item>
@@ -148,8 +149,8 @@ class ModalFeeTrade extends Component{
                         <InputNumber
                             name="feeMax"
                             style={{width: '100%'}}
-                            formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                            parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                            formatter={value => common.formatterNumber(value)}
+                            parser={value => common.parserNumber(value)}
                             onChange={this.updateSelectValue("feeMax")}
                         />
                     </Form.Item>

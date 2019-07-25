@@ -284,6 +284,7 @@ class AssetBondF extends Component{
                         "SL_DPH": common.convertTextDecimal(item.SL_DPH),
                         "SL_LH": common.convertTextDecimal(item.SL_LH),
                         "SL_TH": common.convertTextDecimal(item.SL_TH),
+                        "HANMUC_CHO": common.convertTextDecimal(item.HANMUC_CHO),
                         "TONGHANMUC_HUYDONG": common.convertTextDecimal(item.TONGHANMUC_HUYDONG),
                         "lstContractVCSCData": this.props.lstContractVCSC,
                         "lstCompanyData": this.props.lstCompany,
@@ -371,6 +372,7 @@ class AssetBondF extends Component{
                     "SL_DPH": common.convertDecimalToNumber(row.SL_DPH),
                     "SL_LH": common.convertDecimalToNumber(row.SL_LH),
                     "SL_TH": common.convertDecimalToNumber(row.SL_TH),
+                    "HANMUC_CHO": common.convertDecimalToNumber(row.HANMUC_CHO),
                     "TONGHANMUC_HUYDONG": common.convertDecimalToNumber(row.TONGHANMUC_HUYDONG),
                 }
                 this.handleSaveEdit(row);

@@ -8,7 +8,8 @@ import {
     Select,
     Row,
     Col, 
-    Tag
+    Tag,
+    InputNumber
 } from 'antd';
 import * as common from '../Common/Common';
 import * as formula from '../Common/Formula';
@@ -317,7 +318,14 @@ class ModalAssetBond extends Component{
                                 validateStatus={(this.state.price === null && this.state.isShowNotice) ? "error" : null}
                                 help={(this.state.price === null && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                             >
-                                <Input name="price" type="number" placeholder="Mệnh giá trái phiếu" value={this.state.price} onChange={event => this.updateInputValue(event)} />
+                                <InputNumber
+                                    name="price"
+                                    style={{width: '100%'}}
+                                    placeholder="Mệnh giá trái phiếu"
+                                    formatter={value => common.formatterNumber(value)}
+                                    parser={value => common.parserNumber(value)}
+                                    onChange={this.updateSelectValue("price")}
+                                />
                             </Form.Item>
                             <Form.Item label="* Trạng thái niêm yết" hasFeedback validateStatus={this.state.statusListed === 1 ? "success" : "warning"}>
                                 <Select
@@ -356,13 +364,27 @@ class ModalAssetBond extends Component{
                             <Form.Item
                                 label="S.Lượng P.Hành tối đa"
                             >
-                                <Input name="maxRelease" type="number" placeholder="Số lượng phát hành tối đa" value={this.state.maxRelease} onChange={event => this.updateInputValue(event)} />
+                                <InputNumber
+                                    name="maxRelease"
+                                    style={{width: '100%'}}
+                                    placeholder="Số lượng phát hành tối đa"
+                                    formatter={value => common.formatterNumber(value)}
+                                    parser={value => common.parserNumber(value)}
+                                    onChange={this.updateSelectValue("maxRelease")}
+                                />
                             </Form.Item>
                             <Form.Item label="* Số lượng đã phát hành"
                                 validateStatus={(this.state.released === null && this.state.isShowNotice) ? "error" : null}
                                 help={(this.state.released === null && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                             >
-                                <Input name="released" type="number" placeholder="Số lượng trái phiếu đã phát hành" value={this.state.released} onChange={event => this.updateInputValue(event)} />
+                                <InputNumber
+                                    name="released"
+                                    style={{width: '100%'}}
+                                    placeholder="Số lượng trái phiếu đã phát hành"
+                                    formatter={value => common.formatterNumber(value)}
+                                    parser={value => common.parserNumber(value)}
+                                    onChange={this.updateSelectValue("released")}
+                                />
                             </Form.Item>
                             <Form.Item label="Số lượng lưu hành">
                                 <Tag color="green" style={{fontSize: 15}}>{this.state.released - this.state.totalRecall}</Tag>
@@ -370,25 +392,53 @@ class ModalAssetBond extends Component{
                             <Form.Item
                                 label="Số lượng thu hồi"
                             >
-                                <Input name="totalRecall" type="number" placeholder="Số lượng trái phiếu thu hồi" value={this.state.totalRecall} onChange={event => this.updateInputValue(event)} />
+                                <InputNumber
+                                    name="totalRecall"
+                                    style={{width: '100%'}}
+                                    placeholder="Số lượng trái phiếu thu hồi"
+                                    formatter={value => common.formatterNumber(value)}
+                                    parser={value => common.parserNumber(value)}
+                                    onChange={this.updateSelectValue("totalRecall")}
+                                />
                             </Form.Item>
                             <Form.Item label="* Hạn mức huy động"
                                 validateStatus={(this.state.totalLevelMobilize === null && this.state.isShowNotice) ? "error" : null}
                                 help={(this.state.totalLevelMobilize === null && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                             >
-                                <Input name="totalLevelMobilize" type="number" placeholder="Tổng hạn mức huy động" value={this.state.totalLevelMobilize} onChange={event => this.updateInputValue(event)} />
+                                <InputNumber
+                                    name="totalLevelMobilize"
+                                    style={{width: '100%'}}
+                                    placeholder="Tổng hạn mức huy động"
+                                    formatter={value => common.formatterNumber(value)}
+                                    parser={value => common.parserNumber(value)}
+                                    onChange={this.updateSelectValue("totalLevelMobilize")}
+                                />
                             </Form.Item>
                             <Form.Item label="* Hạn mức chờ"
                                 validateStatus={(this.state.levelLoan === null && this.state.isShowNotice) ? "error" : null}
                                 help={(this.state.levelLoan === null && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                             >
-                                <Input name="levelLoan" type="number" placeholder="Nhập hạn mức chờ" value={this.state.levelLoan} onChange={event => this.updateInputValue(event)} />
+                                <InputNumber
+                                    name="levelLoan"
+                                    style={{width: '100%'}}
+                                    placeholder="Nhập hạn mức chờ"
+                                    formatter={value => common.formatterNumber(value)}
+                                    parser={value => common.parserNumber(value)}
+                                    onChange={this.updateSelectValue("levelLoan")}
+                                />
                             </Form.Item>
                             <Form.Item label="Tài sản đảm bảo">
                                 <Input name="ensureAsset" placeholder="Tài sản đảm bảo" value={this.state.ensureAsset} onChange={event => this.updateInputValue(event)} />
                             </Form.Item>
                             <Form.Item label="Số lượng lưu ký">
-                                <Input name="totalDepository" placeholder="Số lượng lưu ký" type="number" value={this.state.totalDepository} onChange={event => this.updateInputValue(event)} />
+                            <InputNumber
+                                    name="totalDepository"
+                                    style={{width: '100%'}}
+                                    placeholder="Số lượng lưu ký"
+                                    formatter={value => common.formatterNumber(value)}
+                                    parser={value => common.parserNumber(value)}
+                                    onChange={this.updateSelectValue("totalDepository")}
+                                />
                             </Form.Item>
                         </Form>
                     </Col>

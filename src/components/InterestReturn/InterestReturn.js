@@ -20,6 +20,11 @@ class InterestReturnF extends Component{
                 color: 'red'
             },
             {
+                title: 'Trái phiếu', //3
+                dataIndex: 'MSTP',
+                width: 130
+            },
+            {
                 title: 'Lãi tái đầu tư (%)', //3
                 dataIndex: 'LS_TOIDA',
                 editable: true,
@@ -27,14 +32,14 @@ class InterestReturnF extends Component{
             },
             {
                 title: 'Ngày áp dụng', //4
-                dataIndex: 'NGAYAPDUNG',
+                dataIndex: 'NGAYBATDAU',
                 editable: true,
-                width: 100
+                width: 130
             },
             {
                 title: 'Ngày kết thúc', //4
                 dataIndex: 'NGAYKETTHUC',
-                width: 100,
+                width: 130,
                 editable: true,
             },
             {
@@ -92,7 +97,7 @@ class InterestReturnF extends Component{
                          : null
                     )
                 },
-                width: 100
+                width: 130
             },
         ];
         
@@ -122,7 +127,7 @@ class InterestReturnF extends Component{
                     return {
                         ...item,
                         "NGAYTAO": common.convertDDMMYYYY(item.NGAYTAO),
-                        "NGAYAPDUNG": common.convertDDMMYYYY(item.NGAYAPDUNG),
+                        "NGAYBATDAU": common.convertDDMMYYYY(item.NGAYBATDAU),
                         "NGAYKETTHUC": common.convertDDMMYYYY(item.NGAYKETTHUC),
                         "key": i + 1
                     }
@@ -192,7 +197,7 @@ class InterestReturnF extends Component{
                 row = {
                     ...row,
                     "MSLSTDT": item.MSLSTDT,
-                    "TRANGTHAI": this.state.statusEdit
+                    "KIEUDULIEU": this.state.statusEdit
                 }
                 this.handleSaveEdit(row);
             } else {

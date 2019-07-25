@@ -21,6 +21,7 @@ class ModalInterestReturn extends Component{
         const value = props.value || {};
         this.state = {
             currency: value.currency || 'Open',
+            bondId: null,
             interestRateSale: null,
             dateStart: moment(new Date(), dateFormat),
             dateEnd: moment(new Date(new Date(newDate).setMonth(newDate.getMonth()+3)), dateFormat),
@@ -56,13 +57,15 @@ class ModalInterestReturn extends Component{
                 interestRateSale,
                 dateStart,
                 dateEnd,
-                status
+                status,
+                bondID
             } = this.state;
 
-            if(!interestRateSale){
+            if(!interestRateSale || !this.state.bondId){
                 this.setState({isShowNotice: true});
             }else{
                 let dataTmp = {
+                    "BOND_ID": bondID,
                     "LS_TOIDA": interestRateSale,
                     "NGAYBATDAU": dateStart,
                     "NGAYKETTHUC": dateEnd,

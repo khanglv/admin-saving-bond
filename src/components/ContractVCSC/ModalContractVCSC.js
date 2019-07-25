@@ -5,10 +5,11 @@ import {
     Form,
     Input,
     DatePicker,
-    Select
+    Select,
+    InputNumber
 } from 'antd';
 import moment from 'moment';
-import {notify} from '../Common/Common';
+import * as common from '../Common/Common';
 
 const { Option } = Select;
 const dateFormat = 'DD/MM/YYYY';
@@ -79,7 +80,7 @@ class ModalContractVCSC extends Component{
                 }
                 const res = await createItemContractVCSC(dataTmp);
                 if(res.error){
-                    notify('error', 'Thao tác thất bại :( ' + res.error);
+                    common.notify('error', 'Thao tác thất bại :( ' + res.error);
                 }else{
                     await this.props.reloadData();
                     this.setState({
@@ -95,11 +96,11 @@ class ModalContractVCSC extends Component{
                         totalRelease: null,
                         isShowNotice: false
                     });
-                    await notify('success', 'Thao tác thành công ^^!');
+                    await common.notify('success', 'Thao tác thành công ^^!');
                 }
             }
         }catch(err){
-            notify('error', 'Thao tác thất bại :( ' + err );
+            common.notify('error', 'Thao tác thất bại :( ' + err );
         }
     }
 
@@ -200,12 +201,25 @@ class ModalContractVCSC extends Component{
                         validateStatus = {(this.state.priceBond === null && this.state.isShowNotice)  ? "error" : null}
                         help = {(this.state.priceBond === null && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                     >
-                        <Input name="priceBond" type="number" placeholder="Mệnh giá trái phiếu" value={this.state.priceBond}
-                        onChange={event => this.updateInputValue(event)}/>
+                        <InputNumber
+                            name="priceBond"
+                            style={{ width: '100%' }}
+                            placeholder="Mệnh giá trái phiếu"
+                            formatter={value => common.formatterNumber(value)}
+                            parser={value => common.parserNumber(value)}
+                            onChange={this.updateSelectValue("priceBond")}
+                        />
                     </Form.Item>
                     <Form.Item label="Số lượng phát hành"
                     >
-                        <Input name="totalRelease" type="number" placeholder="Số lượng phát hành" value={this.state.totalRelease} onChange={event => this.updateInputValue(event)}/>
+                        <InputNumber
+                            name="totalRelease"
+                            style={{ width: '100%' }}
+                            placeholder="Số lượng phát hành"
+                            formatter={value => common.formatterNumber(value)}
+                            parser={value => common.parserNumber(value)}
+                            onChange={this.updateSelectValue("totalRelease")}
+                        />
                     </Form.Item>
                 </Form>
             </Modal>

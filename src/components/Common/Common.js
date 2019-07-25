@@ -44,3 +44,12 @@ export const convertInputNumberDecimal = (value)=>{
 export const warningConsole = ()=>{
     console.log("%cStop!!! You are unauthorized acces", "color: red; font-size: 40px; font-weight: bold;");
 }
+
+//Định dạng input number ngăn cách dấu phẩy
+export const formatterNumber = (value)=>{
+    return `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+export const parserNumber = (value)=>{
+    return value.replace(/\$\s?|(,*)/g, '');
+}
