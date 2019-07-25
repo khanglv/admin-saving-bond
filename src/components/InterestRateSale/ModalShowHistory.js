@@ -12,32 +12,30 @@ class ModalShowHistory extends Component{
         super(props);
         this.columns = [
             {
-                title: 'Ngày áp dụng', //1
-                dataIndex: 'NGAYBATDAU',
+                title: 'Ngày cập nhật', //1
+                dataIndex: 'NT',
                 width: 200,
-                render: NGAYBATDAU=>{
+                render: (i, record)=>{
                     return(
                         <div className="midle-icon-ant">
-                            <Icon style={{color: 'orange'}} type="clock-circle" />&nbsp; {NGAYBATDAU}
+                            <Icon style={{color: 'orange'}} type="history" />&nbsp;{record.NT}&nbsp;<i>lúc</i>&nbsp;{record.HNT}
                         </div>
                     )
                 }
+            },
+            {
+                title: 'Ngày áp dụng', //1
+                dataIndex: 'NBD',
+                width: 150
             },
             {
                 title: 'Ngày kết thúc', //1
-                dataIndex: 'NGAYKETTHUC',
-                width: 200,
-                render: NGAYKETTHUC=>{
-                    return(
-                        <div className="midle-icon-ant">
-                            <Icon style={{color: 'orange'}} type="clock-circle" />&nbsp; {NGAYKETTHUC}
-                        </div>
-                    )
-                }
+                dataIndex: 'NKT',
+                width: 150
             },
             {
                 title: 'Lãi suất (%)', //1
-                dataIndex: 'LS_TOIDA',
+                dataIndex: 'LS',
                 width: 100
             }
         ]
@@ -57,8 +55,10 @@ class ModalShowHistory extends Component{
         const dataTmp = this.props.data ? this.props.data.map((item, i)=>{
             return {
                 ...item,
-                "NGAYBATDAU": common.convertDDMMYYYY(item.NGAYBATDAU),
-                "NGAYKETTHUC": common.convertDDMMYYYY(item.NGAYKETTHUC),
+                "NT": common.convertDDMMYYYY(item.NT),
+                "HNT": common.convertTime(item.NT),
+                "NBD": common.convertDDMMYYYY(item.NBD),
+                "NKT": common.convertDDMMYYYY(item.NKT),
                 "key": i + 1
             }
         }) : null;
@@ -72,6 +72,7 @@ class ModalShowHistory extends Component{
                 footer={null}
                 width='50%'
             >
+                <i style={{color: '#4b79a1', paddingLeft: 10}}>Danh sách các lãi suất đã bị cập nhật</i>
                 <div className="p-top10" style={{ padding: 10 }}>
                     <Table
                         bordered
