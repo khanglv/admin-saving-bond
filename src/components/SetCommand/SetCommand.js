@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Table, Icon, Tooltip, Popconfirm, Tabs, Badge} from 'antd';
 import * as common from '../Common/Common';
 import ModalShowDateInterest from './ModalShowDateInterest';
+import ModalCommand from './ModalCommand';
 import {ResizeableTitle} from '../EditColumn/EditColumn';
 import {connect} from 'react-redux';
 import {getListSetCommand} from '../../stores/actions/setCommandAction';
@@ -50,7 +51,11 @@ class SetCommand extends Component{
                 title: 'Trái Phiếu',
                 dataIndex: 'MSTP',
                 width: 200,
-                editable: true,
+                render: (index, record) =>{
+                    return(
+                        <div style={{cursor: 'pointer'}} className="codeBond" onClick={()=>this.onActionShowDetailCommand(record)}>{record.MSTP}</div>
+                    )
+                }
             },
             {
                 title: 'Loại đầu tư',
@@ -78,12 +83,6 @@ class SetCommand extends Component{
                 editable: true
             },
             {
-                title: 'Số lượng',
-                dataIndex: 'SOLUONG',
-                width: 100,
-                editable: true
-            },
-            {
                 title: 'Ngày trái tức',
                 dataIndex: 'NGAY_TRAITUC',
                 editable: true,
@@ -98,6 +97,12 @@ class SetCommand extends Component{
                         // <Button className="middle-div" icon="exclamation-circle" onClick={()=>this.onDetailDateInterest(NGAY_TRAITUC)}>Xem chi tiết</Button>
                     )
                 }
+            },
+            {
+                title: 'Số lượng',
+                dataIndex: 'SOLUONG',
+                width: 100,
+                editable: true
             },
             {
                 title: 'Đơn giá',
@@ -175,6 +180,8 @@ class SetCommand extends Component{
             dataSource_3: [],
             openModal: false,
             lstSetCommand: [],
+            openModalCommand: false,
+            lstDataCommand: [],
             isLoading: true
         };
     }
@@ -220,12 +227,20 @@ class SetCommand extends Component{
         }
     }
 
+    onActionShowDetailCommand = (data)=>{
+        this.setState({openModalCommand: true, lstDataCommand: data});
+    }
+
     onDetailDateInterest = (data)=>{
         this.setState({openModal: true, lstSetCommand: data});
     }
 
     handleCloseModal = ()=>{
         this.setState({openModal: false});
+    }
+
+    handleCloseModalCommand = ()=>{
+        this.setState({openModalCommand: false});
     }
 
     loadData = async()=>{
@@ -323,6 +338,7 @@ class SetCommand extends Component{
 
         return(
             <div>
+                <ModalCommand isOpen={this.state.openModalCommand} isCloseModal={this.handleCloseModalCommand} lstDataCommand={this.state.lstDataCommand}/>
                 <ModalShowDateInterest isOpen={this.state.openModal} isCloseModal={this.handleCloseModal} lstSetCommand={this.state.lstSetCommand}/>
                 <div className="p-top10" style={{padding: 10}}>
                     <Tabs>

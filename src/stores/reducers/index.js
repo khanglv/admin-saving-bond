@@ -22,6 +22,7 @@ import interestRateSale from './interestRateSale';
 import feeTrade from './feeTrade';
 import interestReturn from './interestReturn';
 import listBondsInterestReturn from './listBondsInterestReturn';
+import interestRateNoReturn from './interestRateNoReturn';
 
 export default combineReducers({
     login: login,
@@ -45,5 +46,6 @@ export default combineReducers({
     interestRateSale: interestRateSale,
     feeTrade: feeTrade,
     interestReturn: interestReturn,
-    listBondsInterestReturn: listBondsInterestReturn
+    listBondsInterestReturn: listBondsInterestReturn,
+    interestRateNoReturn: interestRateNoReturn
 });

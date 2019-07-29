@@ -28,6 +28,7 @@ const URL_SET_COMMAND = `${BASE_URL}/setCommand`;
 const URL_ASSETS = `${BASE_URL}/assets`;
 const URL_INTEREST_RETURN = `${BASE_URL}/interestRateReturn`;
 const URL_LIST_BONDS_INTEREST_RETURN = `${BASE_URL}/bonds/exceptBondExistsInterestRateReturn`;
+const URL_INTEREST_RATE_NO_RETURN = `${BASE_URL}/interestRateNoReturn`;
 
 const TIME_OUT = 10000;
 
@@ -881,6 +882,42 @@ export const getListBondsInterestReturn = ()=>{
     const options = {
         url: URL_LIST_BONDS_INTEREST_RETURN,
         method: "GET"
+    }
+    return callApi(options);
+}
+
+//Lãi suất bán trước đáo hạn
+export const getListInterestRateNoReturn = ()=>{
+    const options = {
+        url: URL_INTEREST_RATE_NO_RETURN,
+        method: "GET",
+    }
+    return callApi(options);
+}
+
+export const createListInterestRateNoReturn = (data)=>{
+    const options = {
+        url: URL_INTEREST_RATE_NO_RETURN,
+        method: "POST",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const updateListInterestRateNoReturn = (data)=>{
+    const options = {
+        url: URL_INTEREST_RATE_NO_RETURN,
+        method: "PUT",
+        data: data
+    }
+    return callApi(options);
+}
+
+export const deleteListInterestRateNoReturn = (data)=>{
+    const options = {
+        url: URL_INTEREST_RATE_NO_RETURN,
+        method: "DELETE",
+        data: data
     }
     return callApi(options);
 }

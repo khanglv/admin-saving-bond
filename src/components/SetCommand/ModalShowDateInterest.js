@@ -31,7 +31,7 @@ class ModalShowDateInterest extends Component{
                 }
             },
             {
-                title: 'Lợi tức chưa tái', //1
+                title: 'Lợi tức chưa tái đầu tư', //1
                 dataIndex: 'moneyReceived',
                 width: 200
             },
@@ -41,7 +41,7 @@ class ModalShowDateInterest extends Component{
                 width: 200,
                 render: moneyReceivedReturn =>{
                     return(
-                        <div>{moneyReceivedReturn ? common.convertTextDecimal(moneyReceivedReturn) : null}</div>
+                        <div>{moneyReceivedReturn ? common.convertTextDecimal(moneyReceivedReturn) : <i style={{color: 'orange'}}>Không có</i>}</div>
                     )
                 }
             },

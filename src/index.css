@@ -91,6 +91,10 @@ input[type="file"] {
   background: #4b79a1;
 }
 
+.index-color{
+  color: #4b79a1;
+}
+
 .ant-table-thead > tr{
   background: #4b79a1!important;
 }
@@ -119,8 +123,9 @@ input[type="file"] {
 }
 
 .codeBond:hover{
-  color: green;
+  color: rgb(238, 104, 15);
   text-decoration: underline;
+  font-size: 15px
 }
 
 .customHeaderCollapse{

@@ -31,7 +31,8 @@ import {
     FSetCommand,
     FBondHolder,
     FInterestRateSale,
-    FInterestReturn
+    FInterestReturn,
+    FInterestRateNoKeepExpired
 } from './MainGeneral';
 
 const accessTokenAuth = localStorage.getItem('accessTokenAuthKey');
@@ -90,6 +91,7 @@ class RouteURL extends Component{
                         <Route exact path="/bond-holder" component={FBondHolder} />
                         <Route exact path="/interest-rate-sale" component={FInterestRateSale} />
                         <Route exact path="/interest-return" component={FInterestReturn} />
+                        <Route exact path="/interest-rate-no-keep-expired" component={FInterestRateNoKeepExpired} />
                         <Route exact path="/test" component={Test} />
                         <Route exact path="*" component={Error404} />
                     </Switch>
