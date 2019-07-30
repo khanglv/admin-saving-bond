@@ -1,23 +1,11 @@
 import React, {Component} from 'react';
-import {createItemFeeTrade} from '../../api/api';
+import {createListInterestRateNoReturn} from '../../api/api';
 import { 
     Modal,
     Form,
-    Input,
-    notification,
-    Select,
-    InputNumber
+    Input
 } from 'antd';
 import * as common from '../Common/Common';
-
-const { Option } = Select;
-
-const openNotificationWithIcon = (type, data) => {
-    notification[type]({
-        message: 'Thông báo',
-        description: data,
-    });
-};
 
 class ModalInterestRateNoKeepExpired extends Component{
 
@@ -26,12 +14,8 @@ class ModalInterestRateNoKeepExpired extends Component{
         const value = props.value || {};
         this.state = {
             currency: value.currency || 'Open',
-            nameFeeTrade: '',
-            ratio: '',
-            note: '',
-            feeMin: null,
-            feeMax: null,
-            typeOfFeeTrace: 1,
+            monthLimit: null,
+            interestRateNoReturn: null,
             isShowNotice: false
         };
     }
@@ -59,36 +43,28 @@ class ModalInterestRateNoKeepExpired extends Component{
 
     onHandleOk = async()=>{
         try {
-            if(!this.state.nameFeeTrade || !this.state.ratio || !this.state.feeMin || !this.state.feeMax){
+            if(!this.state.monthLimit || !this.state.interestRateNoReturn){
                 this.setState({isShowNotice: true});
             }else{
                 let dataTmp = {
-                    "TENPHI": this.state.nameFeeTrade,
-                    "TYLETINH": this.state.ratio,
-                    "PHIMIN": this.state.feeMin,
-                    "PHIMAX": this.state.feeMax,
-                    "GHICHU": this.state.note,
-                    "LOAIGIAODICH": this.state.typeOfFeeTrace
+                    "THANGGIOIHAN": this.state.monthLimit,
+                    "LS_TOIDA": this.state.interestRateNoReturn
                 }
-                const res = await createItemFeeTrade(dataTmp);
+                const res = await createListInterestRateNoReturn(dataTmp);
                 if (res.error) {
-                    openNotificationWithIcon('error', 'Thao tác thất bại :( ' + res.error);
+                    common.notify('error', 'Thao tác thất bại :( ' + res.error);
                 } else {
                     this.setState({
-                        nameFeeTrade: '',
-                        ratio: '',
-                        note: '',
-                        feeMin: null,
-                        feeMax: null,
-                        typeOfFeeTrace: 1,
+                        monthLimit: null,
+                        interestRateNoReturn: null,
                         isShowNotice: false
                     });
                     await this.props.reloadData();
-                    await openNotificationWithIcon('success', 'Thao tác thành công ^^!');
+                    await common.notify('success', 'Thao tác thành công ^^!');
                 }
             }
         } catch (err) {
-            openNotificationWithIcon('error', 'Thao tác thất bại :( ' + err);
+            common.notify('error', 'Thao tác thất bại :( ' + err);
         }
     }
 
@@ -106,7 +82,7 @@ class ModalInterestRateNoKeepExpired extends Component{
 
         return(
             <Modal
-                title="Phí giao dịch"
+                title="Lãi suất không giữ tới đáo hạn"
                 centered
                 visible={this.props.isOpen}
                 onOk={() => this.onHandleOk()}
@@ -114,59 +90,18 @@ class ModalInterestRateNoKeepExpired extends Component{
                 size="lg"
             >
                 <Form {...formItemLayout}>
-                    <Form.Item 
-                        label="* Tên phí"
-                        validateStatus = {(this.state.nameFeeTrade.length === 0 && this.state.isShowNotice)  ? "error" : null}
-                        help = {(this.state.nameFeeTrade.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
-                    >
-                        <Input name="nameFeeTrade" placeholder="Tên phí giao dịch" value={this.state.nameFeeTrade} onChange={event => this.updateInputValue(event)}/>
-                    </Form.Item>
                     <Form.Item
-                        label="* Tỉ lệ tính"
-                        validateStatus = {(this.state.ratio.length === 0 && this.state.isShowNotice)  ? "error" : null}
-                        help = {(this.state.ratio.length === 0 && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                        label="* Tháng giới hạn"
+                        validateStatus = {((this.state.monthLimit === 0 || this.state.monthLimit === null) && this.state.isShowNotice)  ? "error" : null}
+                        help = {((this.state.monthLimit === 0 || this.state.monthLimit === null) && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                     >
-                        <Input name="ratio" placeholder="Tỉ lệ tính" value={this.state.ratio} onChange={event => this.updateInputValue(event)}/>
+                        <Input name="monthLimit" type="number" placeholder="Số tháng áp dụng lãi suất" value={this.state.monthLimit} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
-                    <Form.Item
-                        label="* Mức tiền min"
-                        validateStatus = {((this.state.feeMin === 0 || this.state.feeMin === null) && this.state.isShowNotice)  ? "error" : null}
-                        help = {((this.state.feeMin === 0 || this.state.feeMin === null) && this.state.isShowNotice) ? "Không được bỏ trống" : null}
+                    <Form.Item label="* Lãi suất (%)"
+                        validateStatus = {((this.state.interestRateNoReturn === 0 || this.state.interestRateNoReturn === null) && this.state.isShowNotice)  ? "error" : null}
+                        help = {((this.state.interestRateNoReturn === 0 || this.state.interestRateNoReturn === null) && this.state.isShowNotice) ? "Không được bỏ trống" : null}
                     >
-                        <InputNumber
-                            name="feeMin"
-                            style={{width: '100%'}}
-                            formatter={value => common.formatterNumber(value)}
-                            parser={value => common.parserNumber(value)}
-                            onChange={this.updateSelectValue("feeMin")}
-                        />
-                    </Form.Item>
-                    <Form.Item
-                        label="* Mức tiền max"
-                        validateStatus = {((this.state.feeMax === 0 || this.state.feeMax === null) && this.state.isShowNotice)  ? "error" : null}
-                        help = {((this.state.feeMax === 0 || this.state.feeMax === null) && this.state.isShowNotice) ? "Không được bỏ trống" : null}
-                    >
-                        <InputNumber
-                            name="feeMax"
-                            style={{width: '100%'}}
-                            formatter={value => common.formatterNumber(value)}
-                            parser={value => common.parserNumber(value)}
-                            onChange={this.updateSelectValue("feeMax")}
-                        />
-                    </Form.Item>
-                    <Form.Item label="Ghi chú">
-                        <Input name="note" placeholder="Ghi chú" value={this.state.note} onChange={event => this.updateInputValue(event)}/>
-                    </Form.Item>
-                    <Form.Item label="* Loại chi phí">
-                        <Select
-                            defaultValue={1}
-                            placeholder="Chọn loại phí giao dịch"
-                            onChange={this.updateSelectValue('typeOfFeeTrace')}
-                        >
-                            <Option value={1}>Phí giao dịch</Option>
-                            <Option value={2}>Thuế</Option>
-                            <Option value={3}>Thuế lãi</Option>
-                        </Select>
+                        <Input name="interestRateNoReturn" type="number" placeholder="Nhập lãi suất áp dụng" value={this.state.interestRateNoReturn} onChange={event => this.updateInputValue(event)}/>
                     </Form.Item>
                 </Form>
             </Modal>

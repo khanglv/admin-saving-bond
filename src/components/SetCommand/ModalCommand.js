@@ -7,7 +7,6 @@ import {
     List,
     Tag
 } from 'antd';
-import * as common from '../Common/Common';
 
 class ModalCommand extends Component{
 
